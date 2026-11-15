@@ -284,10 +284,11 @@
           </button>
         </form>
 
-        <!-- ABA 2: PUBLICAR VÍDEO CURTO 24H (COMPATIBILIDADE TOTAL ANDROID / IPHONE) -->
+        <!-- ABA 2: PUBLICAR VÍDEO CURTO 24H (SISTEMA CONSOLIDADO) -->
         <form id="newVideoForm" onsubmit="handleSaveVideoStory(event)" class="space-y-4 hidden">
-          <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-900">
-            <i class="fa-solid fa-mobile-screen-button mr-1"></i> Escolha um vídeo da galeria do celular (<b>até 15s</b>). Compatível com Android, iPhone e PC. Expira automaticamente em <b>24h</b>.
+          <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-900 space-y-1">
+            <p><i class="fa-solid fa-mobile-screen-button mr-1"></i> Suba um vídeo curto da galeria (<b>até 15s e até 7,5 MB</b>) ou cole um link direto de vídeo <code>.mp4</code>.</p>
+            <p class="text-[10px] text-amber-700">Dica: Se o vídeo do celular for maior que 7,5 MB, grave em HD/720p (15s) ou recorte na galeria antes de enviar.</p>
           </div>
 
           <div>
@@ -300,18 +301,25 @@
             </select>
           </div>
 
-          <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1">Selecionar Vídeo da Galeria *</label>
-            <!-- accept="video/*" garante compatibilidade total com galeria Android e iOS -->
-            <input type="file" id="videoFileInput" accept="video/*" onchange="handleVideoFileLoaded(event)"
-              class="w-full text-xs text-gray-600 file:mr-3 file:py-2.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-100 file:text-amber-900 hover:file:bg-amber-200" />
-            <p id="videoFileStatus" class="text-[11px] text-gray-500 mt-1"></p>
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">Opção A: Escolher Vídeo da Galeria *</label>
+              <input type="file" id="videoFileInput" accept="video/*,video/mp4,video/quicktime" onchange="handleVideoFileLoaded(event)"
+                class="w-full text-xs text-gray-600 file:mr-3 file:py-2.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-100 file:text-amber-900 hover:file:bg-amber-200" />
+              <p id="videoFileStatus" class="text-[11px] text-gray-600 font-medium mt-1"></p>
+            </div>
+
+            <div class="border-t border-gray-200 pt-2.5">
+              <label class="block text-[11px] font-bold text-gray-600 mb-1">Opção B (Opcional): Ou cole um Link Direto de Vídeo (.mp4)</label>
+              <input type="url" id="videoDirectUrlInput" placeholder="https://.../video.mp4" oninput="handleDirectVideoUrlInput()"
+                class="w-full border border-gray-300 rounded-xl px-3 py-2 text-xs bg-white" />
+            </div>
           </div>
 
           <!-- PRÉ-VISUALIZAÇÃO E RECORTE DE TRECHO (ATÉ 15s) -->
           <div id="videoTrimmerBox" class="hidden p-3.5 rounded-xl bg-slate-900 text-white space-y-3">
             <div class="flex items-center justify-between text-xs">
-              <span class="font-bold text-amber-400"><i class="fa-solid fa-scissors mr-1"></i> Ajustar Trecho (Máx. 15s)</span>
+              <span class="font-bold text-amber-400"><i class="fa-solid fa-scissors mr-1"></i> Enquadrar Trecho (Máx. 15s)</span>
               <span id="trimDurationBadge" class="bg-white/15 px-2 py-0.5 rounded-full text-[11px] font-bold">0.0s / 15s</span>
             </div>
 
@@ -319,7 +327,7 @@
               <video id="trimPreviewVideo" playsinline webkit-playsinline muted class="max-h-56 w-auto object-contain"></video>
             </div>
 
-            <div class="grid grid-cols-2 gap-3 text-xs">
+            <div id="trimSlidersContainer" class="grid grid-cols-2 gap-3 text-xs">
               <div>
                 <label class="block text-[11px] text-gray-300 mb-1">Início: <b id="trimStartLabel">0.0s</b></label>
                 <input type="range" id="trimStartRange" min="0" max="15" step="0.5" value="0" oninput="updateTrimControls('start')"
@@ -440,8 +448,9 @@
 
     const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
     const MAX_VIDEO_SECONDS = 15;
+    const MAX_DIRECT_FILE_BYTES = 7.2 * 1024 * 1024;
+    const MAX_INPUT_FILE_BYTES = 22 * 1024 * 1024;
 
-    // DETETAR MODO VITRINE (?vitrine=1)
     const urlParams = new URLSearchParams(window.location.search);
     const isSharedVitrineMode = urlParams.get("vitrine") === "1";
 
@@ -467,7 +476,6 @@
     let pendingLogoData = "";
     let viewerMuted = true;
 
-    // Estado do Editor de Vídeo 24h
     let selectedRawVideoFile = null;
     let loadedVideoObjectUrl = "";
     let videoTotalDuration = 0;
@@ -475,7 +483,6 @@
     let trimEndSec = 15;
     let trimCheckInterval = null;
 
-    // SINCRONIZAR CONFIGURAÇÕES DA NUVEM
     const configRef = ref(db, "config");
     onValue(configRef, (snapshot) => {
       if (snapshot.exists()) {
@@ -488,7 +495,6 @@
       renderFeed();
     });
 
-    // SINCRONIZAR VÍDEOS CURTOS 24H DA NUVEM
     const videosRef = ref(db, "stories24h");
     onValue(videosRef, (snapshot) => {
       const data = snapshot.val();
@@ -511,7 +517,6 @@
       renderAdminVideosList();
     });
 
-    // SINCRONIZAR PUBLICAÇÕES DA NUVEM
     const postsRef = ref(db, "posts");
     onValue(postsRef, (snapshot) => {
       const data = snapshot.val();
@@ -574,7 +579,6 @@
       return `Expira em ${hours}h`;
     }
 
-    // RENDERIZAR CARROSSEL DE VÍDEOS 24H ABAIXO DO CABEÇALHO/SLOGAN
     function renderStoriesCarousel() {
       const section = document.getElementById("storiesSection");
       const carousel = document.getElementById("storiesCarousel");
@@ -588,7 +592,7 @@
       carousel.innerHTML = activeVideos.map((vid, idx) => `
         <div class="snap-start flex-shrink-0 w-36 rounded-2xl story-ring shadow-xs relative group">
           <div class="bg-slate-950 rounded-[14px] overflow-hidden relative aspect-[9/15]">
-            <video id="mini-vid-${vid.id}" src="${vid.videoData}" autoplay loop muted playsinline webkit-playsinline
+            <video id="mini-vid-${vid.id}" src="${vid.videoData}" autoplay loop muted playsinline webkit-playsinline preload="metadata"
               onclick="openStoryViewer(${idx})"
               class="w-full h-full object-contain bg-black cursor-pointer"></video>
 
@@ -614,6 +618,15 @@
           </div>
         </div>
       `).join("");
+
+      activeVideos.forEach(vid => {
+        const vEl = document.getElementById(`mini-vid-${vid.id}`);
+        if (vEl) {
+          vEl.defaultMuted = true;
+          vEl.muted = true;
+          vEl.play().catch(() => {});
+        }
+      });
     }
 
     window.toggleMiniVideoAudio = function(event, vidId) {
@@ -631,11 +644,14 @@
       });
 
       videoEl.muted = !videoEl.muted;
-      if (!videoEl.muted) videoEl.play().catch(() => {});
+      if (!videoEl.muted) {
+        videoEl.play().catch(() => {
+          showToast("Toque no vídeo para abrir com som.");
+        });
+      }
       iconEl.className = videoEl.muted ? "fa-solid fa-volume-xmark" : "fa-solid fa-volume-high text-amber-400";
     };
 
-    // VISUALIZADOR EM TELA CHEIA DOS VÍDEOS 24H
     window.openStoryViewer = function(startIndex) {
       document.querySelectorAll("#storiesCarousel video").forEach(v => v.muted = true);
 
@@ -735,7 +751,6 @@
       }
     };
 
-    // FILTROS DE NAVEGAÇÃO
     window.setFilter = function(filter) {
       currentFilter = filter;
       ["all", "venda", "conserto", "saved"].forEach(tab => {
@@ -751,7 +766,6 @@
       renderFeed();
     };
 
-    // RENDERIZAÇÃO DO FEED
     function renderFeed() {
       const container = document.getElementById("feedContainer");
       let filtered = posts;
@@ -1042,16 +1056,34 @@
     };
 
     // =========================================================================
-    // SISTEMA CORRIGIDO DE VÍDEOS CURTOS (COMPATÍVEL COM GALERIA ANDROID / IOS)
+    // SISTEMA CONSOLIDADO DE VÍDEOS CURTOS 24H (GALERIA + LINK + RECORTE 15S)
     // =========================================================================
+    window.handleDirectVideoUrlInput = function() {
+      const urlVal = document.getElementById("videoDirectUrlInput").value.trim();
+      const statusEl = document.getElementById("videoFileStatus");
+      if (!urlVal) return;
+
+      selectedRawVideoFile = null;
+      document.getElementById("videoFileInput").value = "";
+      statusEl.textContent = "Link direto de vídeo informado.";
+
+      const videoEl = document.getElementById("trimPreviewVideo");
+      videoEl.src = urlVal;
+      document.getElementById("trimSlidersContainer").classList.add("hidden");
+      document.getElementById("trimDurationBadge").textContent = "Link Externo";
+      document.getElementById("videoTrimmerBox").classList.remove("hidden");
+    };
+
     window.handleVideoFileLoaded = function(event) {
       const file = event.target.files[0];
       const statusEl = document.getElementById("videoFileStatus");
       if (!file) return;
 
+      document.getElementById("videoDirectUrlInput").value = "";
       const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
-      if (file.size > 25 * 1024 * 1024) {
-        showToast(`Vídeo muito grande (${sizeMB}MB). Escolha um vídeo menor que 25MB.`);
+
+      if (file.size > MAX_INPUT_FILE_BYTES) {
+        showToast(`Vídeo muito pesado (${sizeMB} MB). Selecione um vídeo de até 20 MB.`);
         event.target.value = "";
         selectedRawVideoFile = null;
         document.getElementById("videoTrimmerBox").classList.add("hidden");
@@ -1059,7 +1091,7 @@
       }
 
       selectedRawVideoFile = file;
-      statusEl.textContent = `Arquivo selecionado: ${file.name} (${sizeMB} MB)`;
+      statusEl.textContent = `Selecionado: ${file.name} (${sizeMB} MB)`;
 
       if (loadedVideoObjectUrl) URL.revokeObjectURL(loadedVideoObjectUrl);
       loadedVideoObjectUrl = URL.createObjectURL(file);
@@ -1067,6 +1099,8 @@
       const videoEl = document.getElementById("trimPreviewVideo");
       videoEl.src = loadedVideoObjectUrl;
       videoEl.load();
+
+      document.getElementById("trimSlidersContainer").classList.remove("hidden");
 
       videoEl.onloadedmetadata = () => {
         videoTotalDuration = isFinite(videoEl.duration) && videoEl.duration > 0 ? videoEl.duration : 15;
@@ -1077,7 +1111,7 @@
         startInput.value = 0;
 
         const initialEnd = Math.min(videoTotalDuration, MAX_VIDEO_SECONDS);
-        endInput.max = videoTotalDuration.toFixed(1);
+        endInput.max = totalOrMax(videoTotalDuration);
         endInput.value = initialEnd.toFixed(1);
 
         trimStartSec = 0;
@@ -1086,11 +1120,14 @@
         document.getElementById("videoTrimmerBox").classList.remove("hidden");
       };
 
-      // Fallback caso o navegador móvel demore para ler metadados
       videoEl.onerror = () => {
-        statusEl.textContent = `Vídeo pronto (${sizeMB} MB) - envio direto ativado.`;
+        statusEl.textContent = `Vídeo carregado (${sizeMB} MB) — pronto para envio.`;
       };
     };
+
+    function totalOrMax(dur) {
+      return Math.max(1, dur).toFixed(1);
+    }
 
     window.updateTrimControls = function(changedHandle) {
       const startInput = document.getElementById("trimStartRange");
@@ -1127,157 +1164,190 @@
 
     window.previewTrimmedSegment = function() {
       const videoEl = document.getElementById("trimPreviewVideo");
-      if (!videoEl || !loadedVideoObjectUrl) return;
+      if (!videoEl || (!loadedVideoObjectUrl && !videoEl.src)) return;
       if (trimCheckInterval) clearInterval(trimCheckInterval);
 
       videoEl.muted = false;
-      videoEl.currentTime = trimStartSec;
+      if (loadedVideoObjectUrl) videoEl.currentTime = trimStartSec;
       videoEl.play().catch(() => {
         videoEl.muted = true;
         videoEl.play();
       });
 
-      trimCheckInterval = setInterval(() => {
-        if (videoEl.currentTime >= trimEndSec || videoEl.paused) {
-          videoEl.pause();
-          videoEl.currentTime = trimStartSec;
-          clearInterval(trimCheckInterval);
-        }
-      }, 100);
+      if (loadedVideoObjectUrl) {
+        trimCheckInterval = setInterval(() => {
+          if (videoEl.currentTime >= trimEndSec || videoEl.paused) {
+            videoEl.pause();
+            videoEl.currentTime = trimStartSec;
+            clearInterval(trimCheckInterval);
+          }
+        }, 100);
+      }
     };
 
     function fileToBase64Direct(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
+        reader.onerror = () => reject(new Error("Falha ao ler arquivo da galeria."));
         reader.readAsDataURL(file);
       });
     }
 
-    // Re-codificação leve com timeout de segurança e fallback automático para iOS/Safari
-    function processVideoWithFallback(file, videoUrl, startSec, endSec, keepAudio) {
+    function processVideoSafely(file, videoUrl, startSec, endSec, keepAudio) {
       return new Promise(async (resolve, reject) => {
-        const isSmallEnoughDirect = file.size <= 7.5 * 1024 * 1024 && startSec === 0 && (videoTotalDuration <= 15.5 || videoTotalDuration === 0);
-        const supportsMediaRecorder = typeof MediaRecorder !== "undefined" && typeof HTMLCanvasElement.prototype.captureStream === "function";
+        const isUnmodifiedTrim = startSec <= 0.1 && (videoTotalDuration <= MAX_VIDEO_SECONDS + 0.5 || videoTotalDuration === 0);
 
-        // Se o vídeo já for <= 7.5MB e <= 15s, ou se o dispositivo (iPhone/iOS) não suportar captureStream, envia direto sem travar!
-        if (isSmallEnoughDirect || !supportsMediaRecorder) {
-          if (file.size > 8.5 * 1024 * 1024) {
-            return reject(new Error("Este dispositivo não suporta recorte automático. Escolha um vídeo de até 8MB na galeria."));
-          }
+        if (isUnmodifiedTrim && file.size <= MAX_DIRECT_FILE_BYTES) {
           try {
-            const directBase64 = await fileToBase64Direct(file);
-            return resolve(directBase64);
+            return resolve(await fileToBase64Direct(file));
           } catch (err) {
             return reject(err);
           }
         }
 
-        // Caso suporte recorte/compressão (Android Chrome / Desktop), processa o trecho escolhido
-        let finished = false;
-        const safetyTimer = setTimeout(async () => {
-          if (!finished && file.size <= 8.5 * 1024 * 1024) {
-            finished = true;
-            resolve(await fileToBase64Direct(file));
+        const supportsRecorder = typeof MediaRecorder !== "undefined" && typeof HTMLCanvasElement.prototype.captureStream === "function";
+
+        if (!supportsRecorder) {
+          if (file.size <= MAX_DIRECT_FILE_BYTES) {
+            return resolve(await fileToBase64Direct(file));
           }
-        }, 22000);
-
-        try {
-          const tempVideo = document.createElement("video");
-          tempVideo.src = videoUrl;
-          tempVideo.playsInline = true;
-          tempVideo.muted = !keepAudio;
-
-          tempVideo.onloadedmetadata = () => {
-            const targetMaxW = 420;
-            const scale = Math.min(1, targetMaxW / (tempVideo.videoWidth || 420));
-            const canvas = document.createElement("canvas");
-            canvas.width = Math.round((tempVideo.videoWidth || 420) * scale);
-            canvas.height = Math.round((tempVideo.videoHeight || 746) * scale);
-            const ctx = canvas.getContext("2d");
-
-            const canvasStream = canvas.captureStream(20);
-            let combinedStream = canvasStream;
-
-            if (keepAudio) {
-              try {
-                const rawStream = tempVideo.captureStream ? tempVideo.captureStream() : (tempVideo.mozCaptureStream ? tempVideo.mozCaptureStream() : null);
-                if (rawStream && rawStream.getAudioTracks().length > 0) {
-                  combinedStream = new MediaStream([
-                    ...canvasStream.getVideoTracks(),
-                    ...rawStream.getAudioTracks()
-                  ]);
-                }
-              } catch (_) {}
-            }
-
-            const mimeOptions = ["video/webm;codecs=vp8,opus", "video/webm", "video/mp4"];
-            const supportedMime = mimeOptions.find(m => MediaRecorder.isTypeSupported(m)) || "";
-
-            const recorder = supportedMime
-              ? new MediaRecorder(combinedStream, { mimeType: supportedMime, videoBitsPerSecond: 750000 })
-              : new MediaRecorder(combinedStream);
-
-            const chunks = [];
-            recorder.ondataavailable = (e) => {
-              if (e.data && e.data.size > 0) chunks.push(e.data);
-            };
-
-            recorder.onstop = () => {
-              if (finished) return;
-              finished = true;
-              clearTimeout(safetyTimer);
-              const blob = new Blob(chunks, { type: supportedMime || "video/webm" });
-              const reader = new FileReader();
-              reader.onloadend = () => resolve(reader.result);
-              reader.onerror = reject;
-              reader.readAsDataURL(blob);
-            };
-
-            tempVideo.currentTime = startSec;
-            tempVideo.onseeked = () => {
-              recorder.start(250);
-              tempVideo.play().catch(async () => {
-                if (!finished) {
-                  finished = true;
-                  clearTimeout(safetyTimer);
-                  resolve(await fileToBase64Direct(file));
-                }
-              });
-
-              const drawFrame = () => {
-                if (finished) return;
-                if (tempVideo.currentTime >= endSec || tempVideo.ended || tempVideo.paused) {
-                  tempVideo.pause();
-                  if (recorder.state !== "inactive") recorder.stop();
-                  return;
-                }
-                ctx.drawImage(tempVideo, 0, 0, canvas.width, canvas.height);
-                requestAnimationFrame(drawFrame);
-              };
-              drawFrame();
-            };
-          };
-
-          tempVideo.onerror = async () => {
-            if (!finished) {
-              finished = true;
-              clearTimeout(safetyTimer);
-              resolve(await fileToBase64Direct(file));
-            }
-          };
-        } catch (err) {
-          clearTimeout(safetyTimer);
-          reject(err);
+          return reject(new Error("No iPhone/Safari, recorte o vídeo para até 15s (máx. 7 MB) na própria galeria antes de enviar."));
         }
+
+        let finished = false;
+        const tempVideo = document.createElement("video");
+        tempVideo.style.position = "fixed";
+        tempVideo.style.left = "-9999px";
+        tempVideo.style.width = "1px";
+        tempVideo.style.height = "1px";
+        tempVideo.src = videoUrl;
+        tempVideo.playsInline = true;
+        tempVideo.muted = !keepAudio;
+        document.body.appendChild(tempVideo);
+
+        const cleanup = () => {
+          if (tempVideo.parentNode) tempVideo.parentNode.removeChild(tempVideo);
+        };
+
+        const safetyTimer = setTimeout(async () => {
+          if (finished) return;
+          finished = true;
+          cleanup();
+          if (file.size <= MAX_DIRECT_FILE_BYTES) {
+            resolve(await fileToBase64Direct(file));
+          } else {
+            reject(new Error("Tempo limite excedido. Envie um vídeo mais curto (até 15s e 7 MB)."));
+          }
+        }, 25000);
+
+        tempVideo.onloadedmetadata = () => {
+          const targetMaxW = 400;
+          const scale = Math.min(1, targetMaxW / (tempVideo.videoWidth || 400));
+          const canvas = document.createElement("canvas");
+          canvas.width = Math.max(2, Math.round((tempVideo.videoWidth || 400) * scale));
+          canvas.height = Math.max(2, Math.round((tempVideo.videoHeight || 710) * scale));
+          const ctx = canvas.getContext("2d");
+
+          const canvasStream = canvas.captureStream(20);
+          let combinedStream = canvasStream;
+
+          if (keepAudio) {
+            try {
+              const rawStream = tempVideo.captureStream ? tempVideo.captureStream() : (tempVideo.mozCaptureStream ? tempVideo.mozCaptureStream() : null);
+              if (rawStream && rawStream.getAudioTracks().length > 0) {
+                combinedStream = new MediaStream([
+                  ...canvasStream.getVideoTracks(),
+                  ...rawStream.getAudioTracks()
+                ]);
+              }
+            } catch (_) {}
+          }
+
+          const mimeOptions = ["video/mp4", "video/webm;codecs=vp8,opus", "video/webm"];
+          const supportedMime = mimeOptions.find(m => MediaRecorder.isTypeSupported(m)) || "";
+
+          const recorder = supportedMime
+            ? new MediaRecorder(combinedStream, { mimeType: supportedMime, videoBitsPerSecond: 680000 })
+            : new MediaRecorder(combinedStream);
+
+          const chunks = [];
+          recorder.ondataavailable = (e) => {
+            if (e.data && e.data.size > 0) chunks.push(e.data);
+          };
+
+          recorder.onstop = () => {
+            if (finished) return;
+            finished = true;
+            clearTimeout(safetyTimer);
+            cleanup();
+
+            const blob = new Blob(chunks, { type: supportedMime || "video/webm" });
+            if (blob.size > MAX_DIRECT_FILE_BYTES) {
+              return reject(new Error("O trecho ainda ficou maior que 7,2 MB. Reduza a duração do recorte."));
+            }
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          };
+
+          let recordingStarted = false;
+          const beginCapture = () => {
+            if (recordingStarted || finished) return;
+            recordingStarted = true;
+            recorder.start(250);
+            tempVideo.play().catch(async () => {
+              if (!finished) {
+                finished = true;
+                clearTimeout(safetyTimer);
+                cleanup();
+                if (file.size <= MAX_DIRECT_FILE_BYTES) {
+                  resolve(await fileToBase64Direct(file));
+                } else {
+                  reject(new Error("Não foi possível processar este vídeo. Tente um arquivo menor (até 7 MB)."));
+                }
+              }
+            });
+
+            const drawLoop = () => {
+              if (finished) return;
+              if (tempVideo.currentTime >= endSec || tempVideo.ended || tempVideo.paused) {
+                tempVideo.pause();
+                if (recorder.state !== "inactive") recorder.stop();
+                return;
+              }
+              ctx.drawImage(tempVideo, 0, 0, canvas.width, canvas.height);
+              requestAnimationFrame(drawLoop);
+            };
+            drawLoop();
+          };
+
+          tempVideo.onseeked = beginCapture;
+          tempVideo.currentTime = startSec;
+          setTimeout(beginCapture, 350);
+        };
+
+        tempVideo.onerror = async () => {
+          if (finished) return;
+          finished = true;
+          clearTimeout(safetyTimer);
+          cleanup();
+          if (file.size <= MAX_DIRECT_FILE_BYTES) {
+            resolve(await fileToBase64Direct(file));
+          } else {
+            reject(new Error("Formato de vídeo não suportado pelo navegador."));
+          }
+        };
       });
     }
 
     window.handleSaveVideoStory = async function(event) {
       event.preventDefault();
-      if (!selectedRawVideoFile) {
-        showToast("Selecione um vídeo da galeria primeiro.");
+      const directUrl = document.getElementById("videoDirectUrlInput").value.trim();
+
+      if (!selectedRawVideoFile && !directUrl) {
+        showToast("Selecione um vídeo da galeria ou cole um link .mp4.");
         return;
       }
 
@@ -1286,16 +1356,20 @@
       btn.textContent = "Preparando vídeo...";
 
       try {
-        const keepAudio = document.getElementById("includeVideoAudio").checked;
-        const finalVideoBase64 = await processVideoWithFallback(
-          selectedRawVideoFile,
-          loadedVideoObjectUrl,
-          trimStartSec,
-          trimEndSec,
-          keepAudio
-        );
+        let finalVideoSource = directUrl;
 
-        btn.textContent = "Enviando para a nuvem...";
+        if (selectedRawVideoFile) {
+          const keepAudio = document.getElementById("includeVideoAudio").checked;
+          finalVideoSource = await processVideoSafely(
+            selectedRawVideoFile,
+            loadedVideoObjectUrl,
+            trimStartSec,
+            trimEndSec,
+            keepAudio
+          );
+        }
+
+        btn.textContent = "Salvando na nuvem...";
         const badge = document.getElementById("videoBadge").value;
         const title = document.getElementById("videoTitle").value.trim();
         const contactLink = document.getElementById("videoContactLink").value.trim();
@@ -1305,7 +1379,7 @@
           badge,
           title,
           contactLink,
-          videoData: finalVideoBase64,
+          videoData: finalVideoSource,
           timestamp: Date.now()
         });
 
@@ -1318,10 +1392,10 @@
         }
         selectedRawVideoFile = null;
         closeModal("adminModal");
-        showToast("Vídeo 24h publicado no topo da vitrine!");
+        showToast("Vídeo 24h publicado com sucesso!");
       } catch (err) {
         console.error(err);
-        showToast(err.message || "Erro ao enviar vídeo. Tente um vídeo mais curto (até 15s).");
+        showToast(err.message || "Falha ao enviar vídeo. Use um vídeo de até 15s (máx. 7 MB).");
       } finally {
         btn.disabled = false;
         btn.textContent = "Publicar Vídeo 24h";
@@ -1579,7 +1653,7 @@
       const toast = document.getElementById("toast");
       toast.textContent = msg;
       toast.classList.remove("opacity-0");
-      setTimeout(() => toast.classList.add("opacity-0"), 3200);
+      setTimeout(() => toast.classList.add("opacity-0"), 3400);
     }
   </script>
 </body>
