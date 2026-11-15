@@ -9,7 +9,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    /* Ocultar barra de rolagem horizontal nos carrosséis mas manter o swipe fluido */
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     .carousel-track {
@@ -30,10 +29,10 @@
       <div class="flex items-center gap-2.5 overflow-hidden">
         <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 via-pink-500 to-purple-600 p-0.5 flex-shrink-0">
           <div class="w-full h-full bg-white rounded-full flex items-center justify-center font-bold text-xs text-gray-800" id="headerAvatar">
-            LOJA
+            PG
           </div>
         </div>
-        <h1 id="headerCompanyName" class="font-bold text-lg tracking-tight truncate">Minha Empresa</h1>
+        <h1 id="headerCompanyName" class="font-bold text-lg tracking-tight truncate">Carregando...</h1>
       </div>
 
       <div class="flex items-center gap-2">
@@ -65,7 +64,10 @@
 
   <!-- FEED PRINCIPAL -->
   <main id="feedContainer" class="max-w-lg mx-auto divide-y divide-gray-200 bg-white shadow-sm min-h-screen">
-    <!-- Os cards serão renderizados via JavaScript -->
+    <div class="py-24 px-6 text-center text-gray-400">
+      <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-gray-700"></i>
+      <p class="text-xs font-medium">Conectando à vitrine na nuvem...</p>
+    </div>
   </main>
 
   <!-- TOAST DE NOTIFICAÇÃO -->
@@ -79,7 +81,7 @@
         <h2 class="font-bold text-lg">Acesso Administrativo</h2>
         <button onclick="closeModal('loginModal')" class="text-gray-400 hover:text-gray-700"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
-      <p class="text-xs text-gray-500 mb-4">Digite a senha de administrador para gerenciar banners e configurações. (Senha padrão: <b>admin123</b>)</p>
+      <p class="text-xs text-gray-500 mb-4">Digite a senha de administrador para publicar banners e editar a loja. (Senha inicial: <b>admin123</b>)</p>
       <input type="password" id="adminPasswordInput" placeholder="Senha do administrador" class="w-full border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm mb-3 focus:outline-none focus:border-black" />
       <button onclick="verifyAdminLogin()" class="w-full bg-black text-white font-semibold py-2.5 rounded-xl text-sm hover:bg-gray-800 transition">
         Entrar no Painel
@@ -90,9 +92,11 @@
   <!-- MODAL PAINEL ADMINISTRATIVO -->
   <div id="adminModal" class="fixed inset-0 z-50 bg-black/60 hidden items-end sm:items-center justify-center">
     <div class="bg-white w-full max-w-lg rounded-t-2xl sm:rounded-2xl max-h-[92vh] flex flex-col shadow-2xl">
-      <!-- Topo Modal Admin -->
       <div class="px-5 py-4 border-b border-gray-200 flex items-center justify-between">
-        <h2 class="font-bold text-base">Painel do Administrador</h2>
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <h2 class="font-bold text-base">Painel do Administrador (Nuvem)</h2>
+        </div>
         <div class="flex items-center gap-3">
           <button onclick="logoutAdmin()" class="text-xs text-red-600 font-semibold hover:underline">Sair</button>
           <button onclick="closeModal('adminModal')" class="text-gray-500 hover:text-black"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -158,8 +162,8 @@
               class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-black"></textarea>
           </div>
 
-          <button type="submit" class="w-full bg-black text-white font-semibold py-3 rounded-xl text-sm hover:bg-gray-800 transition">
-            Publicar no Feed
+          <button type="submit" id="publishBtn" class="w-full bg-black text-white font-semibold py-3 rounded-xl text-sm hover:bg-gray-800 transition">
+            Publicar na Nuvem
           </button>
         </form>
 
@@ -185,8 +189,8 @@
             <label class="block text-xs font-bold text-gray-700 mb-1">Alterar Senha do Administrador</label>
             <input type="text" id="cfgPassword" required class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm" />
           </div>
-          <button type="submit" class="w-full bg-black text-white font-semibold py-3 rounded-xl text-sm hover:bg-gray-800 transition">
-            Salvar Configurações
+          <button type="submit" id="saveCfgBtn" class="w-full bg-black text-white font-semibold py-3 rounded-xl text-sm hover:bg-gray-800 transition">
+            Salvar Configurações na Nuvem
           </button>
         </form>
 
@@ -194,55 +198,73 @@
     </div>
   </div>
 
-  <script>
-    // ESTADO INICIAL PADRÃO
+  <!-- FIREBASE REALTIME DATABASE INTEGRATION -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, set, push, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC0wXUH9fz_ZmyqW6CAphG28LmjtkFTmOA",
+      authDomain: "projeto-gold-658a1.firebaseapp.com",
+      databaseURL: "https://projeto-gold-658a1-default-rtdb.firebaseio.com",
+      projectId: "projeto-gold-658a1",
+      storageBucket: "projeto-gold-658a1.firebasestorage.app",
+      messagingSenderId: "724189004504",
+      appId: "1:724189004504:web:7ec567faab926291a24dad",
+      measurementId: "G-J8TP84MGXS"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
     const DEFAULT_CONFIG = {
-      companyName: "TechStore & Assistência",
+      companyName: "Projeto Gold",
       instagram: "instagram",
       phone: "(86) 99999-0000",
-      address: "Centro • Seg a Sáb das 08h às 18h",
+      address: "Atendimento Online e Presencial",
       adminPass: "admin123"
     };
 
-    const DEFAULT_POSTS = [
-      {
-        id: "post-1",
-        type: "venda",
-        title: "Smartwatch Ultra Series 9 - Lacrado",
-        price: "R$ 349,90",
-        description: "Tela AMOLED de alta definição, bateria para até 7 dias, resistente à água e garantia de 90 dias.",
-        images: [
-          "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?auto=format&fit=crop&w=1080&q=90",
-          "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=1080&q=90"
-        ],
-        createdAt: "Hoje"
-      },
-      {
-        id: "post-2",
-        type: "conserto",
-        title: "Troca de Tela e Bateria Especializada",
-        price: "Orçamento na Hora",
-        description: "Serviço técnico especializado com peças de primeira linha. Manutenção realizada em até 40 minutos com garantia.",
-        images: [
-          "https://images.unsplash.com/photo-1597740985671-2a8a3b80502e?auto=format&fit=crop&w=1080&q=90",
-          "https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=1080&q=90"
-        ],
-        createdAt: "Ontem"
-      }
-    ];
-
-    let config = JSON.parse(localStorage.getItem("app_config")) || DEFAULT_CONFIG;
-    let posts = JSON.parse(localStorage.getItem("app_posts")) || DEFAULT_POSTS;
+    let config = { ...DEFAULT_CONFIG };
+    let posts = [];
     let savedIds = JSON.parse(localStorage.getItem("app_saved")) || [];
     let currentFilter = "all";
     let isAdminLogged = false;
     let pendingBase64Images = [];
 
-    // INICIALIZAÇÃO
-    function init() {
+    // OUVIR CONFIGURAÇÕES DA EMPRESA EM TEMPO REAL
+    const configRef = ref(db, "config");
+    onValue(configRef, (snapshot) => {
+      if (snapshot.exists()) {
+        config = { ...DEFAULT_CONFIG, ...snapshot.val() };
+      } else {
+        set(configRef, DEFAULT_CONFIG);
+      }
       applyConfigUI();
       renderFeed();
-    }
+    });
+
+    // OUVIR PUBLICAÇÕES (VENDAS E CONSERTOS) EM TEMPO REAL
+    const postsRef = ref(db, "posts");
+    onValue(postsRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        posts = Object.entries(data)
+          .map(([id, val]) => ({ id, ...val }))
+          .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+      } else {
+        posts = [];
+      }
+      renderFeed();
+    }, (error) => {
+      console.error(error);
+      document.getElementById("feedContainer").innerHTML = `
+        <div class="py-16 px-6 text-center text-red-600">
+          <i class="fa-solid fa-triangle-exclamation text-3xl mb-2"></i>
+          <p class="text-sm font-bold">Erro de permissão no banco de dados</p>
+          <p class="text-xs text-gray-500 mt-1">Verifique se o Realtime Database foi iniciado no Modo de Teste.</p>
+        </div>`;
+    });
 
     function applyConfigUI() {
       document.title = config.companyName;
@@ -250,8 +272,8 @@
       document.getElementById("headerAvatar").textContent = config.companyName.substring(0, 2).toUpperCase();
     }
 
-    // FILTROS
-    function setFilter(filter) {
+    // EXPOR FUNÇÕES GLOBAIS PARA OS BOTÕES HTML
+    window.setFilter = function(filter) {
       currentFilter = filter;
       ["all", "venda", "conserto", "saved"].forEach(tab => {
         const el = document.getElementById(`tab-${tab}`);
@@ -264,9 +286,8 @@
         }
       });
       renderFeed();
-    }
+    };
 
-    // RENDERIZAR FEED ESTILO INSTAGRAM
     function renderFeed() {
       const container = document.getElementById("feedContainer");
       let filtered = posts;
@@ -279,17 +300,20 @@
         container.innerHTML = `
           <div class="py-20 px-6 text-center text-gray-400">
             <i class="fa-regular fa-images text-4xl mb-3"></i>
-            <p class="text-sm font-medium">Nenhuma publicação encontrada nesta aba.</p>
+            <p class="text-sm font-medium">Nenhuma publicação disponível aqui ainda.</p>
+            <p class="text-xs mt-1">Use o ícone de cadeado no topo para adicionar banners.</p>
           </div>`;
         return;
       }
 
       container.innerHTML = filtered.map(post => {
         const isSaved = savedIds.includes(post.id);
+        const images = post.images || [];
         const badgeClass = post.type === "venda"
           ? "bg-emerald-100 text-emerald-800"
           : "bg-blue-100 text-blue-800";
         const badgeLabel = post.type === "venda" ? "VENDA" : "CONSERTO";
+        const safeTitle = (post.title || "").replace(/'/g, "");
 
         return `
           <article class="pb-5 bg-white">
@@ -301,7 +325,7 @@
                 </div>
                 <div>
                   <p class="text-xs font-bold leading-tight">${config.companyName}</p>
-                  <p class="text-[11px] text-gray-400">${config.address}</p>
+                  <p class="text-[11px] text-gray-400">${config.address || ""}</p>
                 </div>
               </div>
               <div class="flex items-center gap-2">
@@ -315,26 +339,26 @@
 
             <!-- Carrossel Horizontal (Até 10 Imagens) -->
             <div class="relative bg-black">
-              <div id="track-${post.id}" onscroll="updateCarouselIndicator('${post.id}', ${post.images.length})"
+              <div id="track-${post.id}" onscroll="updateCarouselIndicator('${post.id}', ${images.length})"
                 class="carousel-track flex overflow-x-auto no-scrollbar aspect-square">
-                ${post.images.map((img, idx) => `
+                ${images.map((img, idx) => `
                   <div class="carousel-slide relative w-full h-full flex items-center justify-center bg-neutral-950">
-                    <img src="${img}" alt="${post.title} - Foto ${idx + 1}" loading="lazy" class="w-full h-full object-cover" />
+                    <img src="${img}" alt="${safeTitle} - Foto ${idx + 1}" loading="lazy" class="w-full h-full object-cover" />
                   </div>
                 `).join("")}
               </div>
 
-              ${post.images.length > 1 ? `
+              ${images.length > 1 ? `
                 <div id="counter-${post.id}" class="absolute top-3 right-3 bg-black/70 text-white text-[11px] font-semibold px-2.5 py-1 rounded-full">
-                  1/${post.images.length}
+                  1/${images.length}
                 </div>
               ` : ""}
             </div>
 
             <!-- Indicador de Bolinhas (Dots) -->
-            ${post.images.length > 1 ? `
+            ${images.length > 1 ? `
               <div id="dots-${post.id}" class="flex justify-center gap-1.5 pt-2.5">
-                ${post.images.map((_, i) => `
+                ${images.map((_, i) => `
                   <span class="w-1.5 h-1.5 rounded-full transition-all ${i === 0 ? "bg-blue-600 w-3" : "bg-gray-300"}"></span>
                 `).join("")}
               </div>
@@ -343,13 +367,13 @@
             <!-- Barra de Ações & Link Direto Instagram -->
             <div class="px-4 pt-3">
               <div class="flex items-center justify-between gap-2 mb-3">
-                <button onclick="contactInstagram('${post.title.replace(/'/g, "")}', '${badgeLabel}')"
+                <button onclick="contactInstagram('${safeTitle}', '${badgeLabel}')"
                   class="flex-1 bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-bold text-xs py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm active:scale-[0.99] transition">
                   <i class="fa-brands fa-instagram text-base"></i>
                   <span>Falar no Instagram</span>
                 </button>
 
-                <button onclick="sharePost('${post.title.replace(/'/g, "")}')" title="Compartilhar"
+                <button onclick="sharePost('${safeTitle}')" title="Compartilhar"
                   class="p-2.5 rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-50 transition">
                   <i class="fa-regular fa-paper-plane text-base"></i>
                 </button>
@@ -380,8 +404,7 @@
       }).join("");
     }
 
-    // ATUALIZAR INDICADOR DO CARROSSEL
-    function updateCarouselIndicator(postId, total) {
+    window.updateCarouselIndicator = function(postId, total) {
       const track = document.getElementById(`track-${postId}`);
       const index = Math.round(track.scrollLeft / track.clientWidth);
       const counter = document.getElementById(`counter-${postId}`);
@@ -395,10 +418,9 @@
             : "w-1.5 h-1.5 rounded-full bg-gray-300 transition-all";
         });
       }
-    }
+    };
 
-    // LINK INTELIGENTE PARA INSTAGRAM (PROPOSTA DE OURO #3)
-    function contactInstagram(title, category) {
+    window.contactInstagram = function(title, category) {
       const msg = `Olá! Vi o anúncio de ${category}: "${title}" na vitrine da ${config.companyName} e gostaria de mais informações.`;
       if (navigator.clipboard) {
         navigator.clipboard.writeText(msg).catch(() => {});
@@ -407,10 +429,9 @@
       setTimeout(() => {
         window.open(`https://instagram.com/${config.instagram}`, "_blank");
       }, 650);
-    }
+    };
 
-    // SALVAR / FAVORITAR (MODO CLIENTE)
-    function toggleSave(postId) {
+    window.toggleSave = function(postId) {
       if (savedIds.includes(postId)) {
         savedIds = savedIds.filter(id => id !== postId);
         showToast("Removido dos salvos");
@@ -420,10 +441,9 @@
       }
       localStorage.setItem("app_saved", JSON.stringify(savedIds));
       renderFeed();
-    }
+    };
 
-    // COMPARTILHAR APP / PRODUTO
-    function shareApp() {
+    window.shareApp = function() {
       const shareData = {
         title: config.companyName,
         text: `Confira os produtos e serviços de ${config.companyName}:`,
@@ -435,9 +455,9 @@
         navigator.clipboard.writeText(window.location.href);
         showToast("Link da vitrine copiado para compartilhar!");
       }
-    }
+    };
 
-    function sharePost(title) {
+    window.sharePost = function(title) {
       const text = `Olha esse item em ${config.companyName}: ${title} - ${window.location.href}`;
       if (navigator.share) {
         navigator.share({ title, text, url: window.location.href }).catch(() => {});
@@ -445,19 +465,18 @@
         navigator.clipboard.writeText(text);
         showToast("Link do anúncio copiado!");
       }
-    }
+    };
 
-    // CONTROLE ADMINISTRATIVO
-    function openAdminGate() {
+    window.openAdminGate = function() {
       if (isAdminLogged) {
         openAdminPanel();
       } else {
         document.getElementById("adminPasswordInput").value = "";
         document.getElementById("loginModal").classList.replace("hidden", "flex");
       }
-    }
+    };
 
-    function verifyAdminLogin() {
+    window.verifyAdminLogin = function() {
       const pass = document.getElementById("adminPasswordInput").value;
       if (pass === config.adminPass) {
         isAdminLogged = true;
@@ -469,15 +488,15 @@
       } else {
         showToast("Senha incorreta!");
       }
-    }
+    };
 
-    function logoutAdmin() {
+    window.logoutAdmin = function() {
       isAdminLogged = false;
       document.getElementById("adminToggleBtn").innerHTML = `<i class="fa-solid fa-lock text-base"></i>`;
       closeModal("adminModal");
       renderFeed();
       showToast("Modo Cliente ativado");
-    }
+    };
 
     function openAdminPanel() {
       document.getElementById("cfgCompanyName").value = config.companyName;
@@ -488,11 +507,11 @@
       document.getElementById("adminModal").classList.replace("hidden", "flex");
     }
 
-    function closeModal(id) {
+    window.closeModal = function(id) {
       document.getElementById(id).classList.replace("flex", "hidden");
-    }
+    };
 
-    function switchAdminTab(tab) {
+    window.switchAdminTab = function(tab) {
       const isNew = tab === "newPost";
       document.getElementById("newPostForm").classList.toggle("hidden", !isNew);
       document.getElementById("settingsForm").classList.toggle("hidden", isNew);
@@ -503,28 +522,27 @@
       document.getElementById("admTab-settings").className = !isNew
         ? "flex-1 py-3 border-b-2 border-black text-black"
         : "flex-1 py-3 border-b-2 border-transparent text-gray-500";
-    }
+    };
 
-    // PROCESSAMENTO DE ATÉ 10 IMAGENS EM ALTA DEFINIÇÃO (COM OTIMIZAÇÃO)
-    async function previewSelectedImages(event) {
+    window.previewSelectedImages = async function(event) {
       const files = Array.from(event.target.files).slice(0, 10);
       if (event.target.files.length > 10) {
         showToast("Limite máximo de 10 imagens por banner.");
       }
 
       const grid = document.getElementById("imagePreviewGrid");
-      grid.innerHTML = "<p class='col-span-5 text-xs text-gray-400'>Processando imagens...</p>";
+      grid.innerHTML = "<p class='col-span-5 text-xs text-gray-400'>Otimizando imagens em alta definição...</p>";
       pendingBase64Images = [];
 
       for (const file of files) {
-        const compressed = await compressImage(file, 1080, 0.85);
+        const compressed = await compressImage(file, 1080, 0.82);
         pendingBase64Images.push(compressed);
       }
 
       grid.innerHTML = pendingBase64Images.map(src => `
         <img src="${src}" class="w-full aspect-square object-cover rounded-lg border border-gray-200" />
       `).join("");
-    }
+    };
 
     function compressImage(file, maxWidth, quality) {
       return new Promise((resolve) => {
@@ -551,65 +569,83 @@
       });
     }
 
-    // CRIAR NOVA PUBLICAÇÃO
-    function handleCreatePost(event) {
+    window.handleCreatePost = async function(event) {
       event.preventDefault();
       if (pendingBase64Images.length === 0) {
         showToast("Selecione pelo menos 1 imagem.");
         return;
       }
 
-      const type = document.querySelector('input[name="postType"]:checked').value;
-      const title = document.getElementById("postTitle").value.trim();
-      const price = document.getElementById("postPrice").value.trim();
-      const description = document.getElementById("postDescription").value.trim();
+      const btn = document.getElementById("publishBtn");
+      btn.disabled = true;
+      btn.textContent = "Enviando para a nuvem...";
 
-      const newPost = {
-        id: "post-" + Date.now(),
-        type,
-        title,
-        price,
-        description,
-        images: pendingBase64Images,
-        createdAt: "Agora"
-      };
+      try {
+        const type = document.querySelector('input[name="postType"]:checked').value;
+        const title = document.getElementById("postTitle").value.trim();
+        const price = document.getElementById("postPrice").value.trim();
+        const description = document.getElementById("postDescription").value.trim();
 
-      posts.unshift(newPost);
-      localStorage.setItem("app_posts", JSON.stringify(posts));
+        const newPostRef = push(ref(db, "posts"));
+        await set(newPostRef, {
+          type,
+          title,
+          price,
+          description,
+          images: pendingBase64Images,
+          timestamp: Date.now()
+        });
 
-      document.getElementById("newPostForm").reset();
-      document.getElementById("imagePreviewGrid").innerHTML = "";
-      pendingBase64Images = [];
+        document.getElementById("newPostForm").reset();
+        document.getElementById("imagePreviewGrid").innerHTML = "";
+        pendingBase64Images = [];
 
-      closeModal("adminModal");
-      setFilter("all");
-      showToast("Banner publicado com sucesso!");
-    }
+        closeModal("adminModal");
+        setFilter("all");
+        showToast("Banner publicado na nuvem com sucesso!");
+      } catch (err) {
+        console.error(err);
+        showToast("Erro ao salvar na nuvem. Verifique as regras do Firebase.");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Publicar na Nuvem";
+      }
+    };
 
-    function deletePost(postId) {
-      if (!confirm("Deseja realmente excluir esta publicação?")) return;
-      posts = posts.filter(p => p.id !== postId);
-      localStorage.setItem("app_posts", JSON.stringify(posts));
-      renderFeed();
-      showToast("Publicação removida.");
-    }
+    window.deletePost = async function(postId) {
+      if (!confirm("Deseja realmente excluir esta publicação da nuvem?")) return;
+      try {
+        await remove(ref(db, `posts/${postId}`));
+        showToast("Publicação removida.");
+      } catch (err) {
+        showToast("Erro ao excluir publicação.");
+      }
+    };
 
-    // SALVAR CONFIGURAÇÕES DA EMPRESA
-    function handleSaveSettings(event) {
+    window.handleSaveSettings = async function(event) {
       event.preventDefault();
-      config = {
-        companyName: document.getElementById("cfgCompanyName").value.trim(),
-        instagram: document.getElementById("cfgInstagram").value.trim().replace("@", ""),
-        phone: document.getElementById("cfgPhone").value.trim(),
-        address: document.getElementById("cfgAddress").value.trim(),
-        adminPass: document.getElementById("cfgPassword").value.trim() || "admin123"
-      };
-      localStorage.setItem("app_config", JSON.stringify(config));
-      applyConfigUI();
-      renderFeed();
-      closeModal("adminModal");
-      showToast("Configurações atualizadas!");
-    }
+      const btn = document.getElementById("saveCfgBtn");
+      btn.disabled = true;
+      btn.textContent = "Salvando...";
+
+      try {
+        const updatedConfig = {
+          companyName: document.getElementById("cfgCompanyName").value.trim(),
+          instagram: document.getElementById("cfgInstagram").value.trim().replace("@", ""),
+          phone: document.getElementById("cfgPhone").value.trim(),
+          address: document.getElementById("cfgAddress").value.trim(),
+          adminPass: document.getElementById("cfgPassword").value.trim() || "admin123"
+        };
+        await set(ref(db, "config"), updatedConfig);
+        closeModal("adminModal");
+        showToast("Configurações salvas na nuvem!");
+      } catch (err) {
+        showToast("Erro ao salvar configurações.");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Salvar Configurações na Nuvem";
+      }
+    };
 
     function showToast(msg) {
       const toast = document.getElementById("toast");
@@ -617,8 +653,6 @@
       toast.classList.remove("opacity-0");
       setTimeout(() => toast.classList.add("opacity-0"), 2800);
     }
-
-    init();
   </script>
 </body>
 </html>
