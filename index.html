@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Vitrine Digital</title>
+  <title>TERÊ SHOP • Teresina-PI</title>
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#ffffff" />
+  <meta name="theme-color" content="#081c45" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
@@ -21,33 +21,48 @@
     }
   </style>
 </head>
-<body class="bg-gray-50 text-gray-900 font-sans antialiased pb-20">
+<body class="bg-slate-100 text-gray-900 font-sans antialiased pb-20">
 
-  <!-- CABEÇALHO FIXO -->
-  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-gray-200">
-    <div class="max-w-lg mx-auto px-4 h-14 flex items-center justify-between">
-      <div class="flex items-center gap-2.5 overflow-hidden">
-        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 via-pink-500 to-purple-600 p-0.5 flex-shrink-0">
-          <div class="w-full h-full bg-white rounded-full flex items-center justify-center font-bold text-xs text-gray-800" id="headerAvatar">
-            PG
-          </div>
-        </div>
-        <h1 id="headerCompanyName" class="font-bold text-lg tracking-tight truncate">Carregando...</h1>
-      </div>
-
-      <div class="flex items-center gap-2">
-        <button onclick="shareApp()" title="Compartilhar Vitrine" class="p-2 text-gray-600 hover:text-black transition">
+  <!-- CABEÇALHO FIXO COM TÍTULO/SLOGAN CENTRALIZADO -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-gray-200 shadow-xs">
+    <div class="max-w-lg mx-auto px-3 min-h-[60px] py-1.5 grid grid-cols-5 items-center">
+      
+      <!-- Esquerda: Botão Compartilhar Vitrine -->
+      <div class="col-span-1 flex items-center justify-start">
+        <button onclick="shareApp()" title="Compartilhar Vitrine" class="p-2 text-slate-700 hover:text-blue-700 transition rounded-full hover:bg-slate-100">
           <i class="fa-solid fa-share-nodes text-lg"></i>
         </button>
-        <button onclick="openAdminGate()" id="adminToggleBtn" title="Área do Administrador" class="p-2 text-gray-500 hover:text-black transition">
-          <i class="fa-solid fa-lock text-base"></i>
+      </div>
+
+      <!-- Centro: Logotipo/Slogan em Alta Definição ou Título Fixo TERÊ SHOP -->
+      <div class="col-span-3 flex flex-col items-center justify-center text-center overflow-hidden">
+        <!-- Modo Imagem de Slogan (Exibido quando ativado e carregado pelo ADM) -->
+        <div id="headerLogoWrapper" class="hidden items-center justify-center">
+          <img id="headerLogoImg" src="" alt="TERÊ SHOP" class="max-h-14 w-auto object-contain drop-shadow-xs" />
+        </div>
+
+        <!-- Modo Título Escrito Fixo: TERÊ SHOP -->
+        <div id="headerTitleWrapper" class="flex flex-col items-center justify-center">
+          <h1 id="headerCompanyName" class="font-black text-xl tracking-tight leading-none bg-gradient-to-r from-[#081c45] via-[#0055ff] to-[#081c45] bg-clip-text text-transparent">
+            TERÊ SHOP
+          </h1>
+          <span class="text-[10px] font-bold tracking-widest text-amber-600 uppercase mt-0.5">
+            Teresina - PI
+          </span>
+        </div>
+      </div>
+
+      <!-- Direita: Acesso ADM (Ocultado automaticamente no modo compartilhamento ?vitrine=1) -->
+      <div class="col-span-1 flex items-center justify-end">
+        <button onclick="openAdminGate()" id="adminToggleBtn" title="Acesso Administrativo" class="p-2 text-slate-400 hover:text-slate-900 transition rounded-full hover:bg-slate-100">
+          <i class="fa-solid fa-shield-halved text-base"></i>
         </button>
       </div>
     </div>
 
     <!-- ABAS DE FILTRO (TODOS | VENDAS | CONSERTOS | SALVOS) -->
-    <nav class="max-w-lg mx-auto flex border-t border-gray-100 text-xs font-semibold">
-      <button onclick="setFilter('all')" id="tab-all" class="flex-1 py-2.5 text-center border-b-2 border-black text-black transition">
+    <nav class="max-w-lg mx-auto flex border-t border-gray-100 text-xs font-bold bg-white">
+      <button onclick="setFilter('all')" id="tab-all" class="flex-1 py-2.5 text-center border-b-2 border-blue-700 text-blue-700 transition">
         Todos
       </button>
       <button onclick="setFilter('venda')" id="tab-venda" class="flex-1 py-2.5 text-center border-b-2 border-transparent text-gray-500 hover:text-gray-800 transition">
@@ -65,27 +80,42 @@
   <!-- FEED PRINCIPAL -->
   <main id="feedContainer" class="max-w-lg mx-auto divide-y divide-gray-200 bg-white shadow-sm min-h-screen">
     <div class="py-24 px-6 text-center text-gray-400">
-      <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-gray-700"></i>
-      <p class="text-xs font-medium">Conectando à vitrine na nuvem...</p>
+      <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-blue-600"></i>
+      <p class="text-xs font-medium">Carregando vitrine TERÊ SHOP...</p>
     </div>
   </main>
 
   <!-- TOAST DE NOTIFICAÇÃO -->
-  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-gray-900 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 text-center max-w-[90vw]">
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 text-center max-w-[90vw]">
   </div>
 
-  <!-- MODAL LOGIN DO ADMINISTRADOR -->
-  <div id="loginModal" class="fixed inset-0 z-50 bg-black/60 hidden items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl">
-      <div class="flex justify-between items-center mb-4">
-        <h2 class="font-bold text-lg">Acesso Administrativo</h2>
-        <button onclick="closeModal('loginModal')" class="text-gray-400 hover:text-gray-700"><i class="fa-solid fa-xmark text-lg"></i></button>
+  <!-- MODAL LOGIN DO ADMINISTRADOR (SENHA OCULTA) -->
+  <div id="loginModal" class="fixed inset-0 z-50 bg-black/60 hidden items-center justify-center p-4 backdrop-blur-xs">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl">
+      <div class="flex justify-between items-center mb-3">
+        <div class="flex items-center gap-2">
+          <span class="w-8 h-8 rounded-full bg-blue-50 text-blue-700 flex items-center justify-center">
+            <i class="fa-solid fa-lock text-sm"></i>
+          </span>
+          <h2 class="font-bold text-base">Acesso Administrativo</h2>
+        </div>
+        <button onclick="closeModal('loginModal')" class="text-gray-400 hover:text-gray-700 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
-      <p class="text-xs text-gray-500 mb-4">Digite a senha de administrador para publicar banners e editar a loja. (Senha inicial: <b>admin123</b>)</p>
-      <input type="password" id="adminPasswordInput" placeholder="Senha do administrador" class="w-full border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm mb-3 focus:outline-none focus:border-black" />
-      <button onclick="verifyAdminLogin()" class="w-full bg-black text-white font-semibold py-2.5 rounded-xl text-sm hover:bg-gray-800 transition">
-        Entrar no Painel
-      </button>
+      <p class="text-xs text-gray-500 mb-4">Insira a senha de administrador para gerir anúncios e configurações.</p>
+      
+      <form onsubmit="event.preventDefault(); verifyAdminLogin();">
+        <div class="relative mb-4">
+          <input type="password" id="adminPasswordInput" autocomplete="current-password" placeholder="••••••••"
+            class="w-full border border-gray-300 rounded-xl pl-3.5 pr-10 py-2.5 text-sm focus:outline-none focus:border-blue-600" />
+          <button type="button" onclick="togglePasswordVisibility('adminPasswordInput', 'loginEyeIcon')"
+            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700">
+            <i id="loginEyeIcon" class="fa-regular fa-eye text-sm"></i>
+          </button>
+        </div>
+        <button type="submit" class="w-full bg-[#081c45] text-white font-semibold py-2.5 rounded-xl text-sm hover:bg-blue-900 transition">
+          Entrar no Painel
+        </button>
+      </form>
     </div>
   </div>
 
@@ -94,8 +124,8 @@
     <div class="bg-white w-full max-w-lg rounded-t-2xl sm:rounded-2xl max-h-[92vh] flex flex-col shadow-2xl">
       <div class="px-5 py-4 border-b border-gray-200 flex items-center justify-between">
         <div class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-          <h2 class="font-bold text-base">Painel do Administrador (Nuvem)</h2>
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+          <h2 class="font-bold text-base text-slate-900">Gestão TERÊ SHOP</h2>
         </div>
         <div class="flex items-center gap-3">
           <button onclick="logoutAdmin()" class="text-xs text-red-600 font-semibold hover:underline">Sair</button>
@@ -104,20 +134,27 @@
       </div>
 
       <!-- Navegação Interna do Admin -->
-      <div class="flex border-b border-gray-200 text-xs font-semibold bg-gray-50">
-        <button onclick="switchAdminTab('newPost')" id="admTab-newPost" class="flex-1 py-3 border-b-2 border-black text-black">
+      <div class="flex border-b border-gray-200 text-xs font-bold bg-gray-50">
+        <button onclick="switchAdminTab('newPost')" id="admTab-newPost" class="flex-1 py-3 border-b-2 border-blue-700 text-blue-700">
           + Novo Banner / Post
         </button>
         <button onclick="switchAdminTab('settings')" id="admTab-settings" class="flex-1 py-3 border-b-2 border-transparent text-gray-500">
-          Configurações da Empresa
+          Configurações & Slogan
         </button>
       </div>
 
       <!-- Conteúdo Scrollável Admin -->
       <div class="p-5 overflow-y-auto space-y-4">
 
-        <!-- ABA 1: CRIAR POST / BANNER -->
-        <form id="newPostForm" onsubmit="handleCreatePost(event)" class="space-y-4">
+        <!-- ABA 1: CRIAR OU EDITAR POST / BANNER -->
+        <form id="newPostForm" onsubmit="handleSavePost(event)" class="space-y-4">
+          <input type="hidden" id="editingPostId" value="" />
+
+          <div id="editingBannerAlert" class="hidden bg-amber-50 border border-amber-200 text-amber-800 px-3 py-2 rounded-xl text-xs flex items-center justify-between">
+            <span><i class="fa-solid fa-pen mr-1"></i> Editando anúncio existente</span>
+            <button type="button" onclick="resetPostForm()" class="underline font-bold">Cancelar edição</button>
+          </div>
+
           <div>
             <label class="block text-xs font-bold text-gray-700 mb-1">Categoria da Divulgação *</label>
             <div class="grid grid-cols-2 gap-2">
@@ -138,58 +175,109 @@
 
           <div>
             <label class="block text-xs font-bold text-gray-700 mb-1">Imagens em Alta Definição (Máx. 10) *</label>
-            <input type="file" id="postImagesInput" accept="image/*" multiple required onchange="previewSelectedImages(event)"
-              class="w-full text-xs text-gray-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-gray-800 hover:file:bg-gray-200" />
-            <p class="text-[11px] text-gray-400 mt-1">Arraste lateralmente no feed para ver até 10 fotos.</p>
+            <input type="file" id="postImagesInput" accept="image/*" multiple onchange="previewSelectedImages(event)"
+              class="w-full text-xs text-gray-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+            <p class="text-[11px] text-gray-400 mt-1">Rolagem lateral interativa no feed para até 10 fotos.</p>
             <div id="imagePreviewGrid" class="grid grid-cols-5 gap-1.5 mt-2"></div>
           </div>
 
           <div>
             <label class="block text-xs font-bold text-gray-700 mb-1">Título do Produto ou Serviço *</label>
             <input type="text" id="postTitle" required placeholder="Ex: iPhone 15 Pro Max ou Troca de Tela Express"
-              class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-black" />
+              class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-600" />
           </div>
 
           <div>
             <label class="block text-xs font-bold text-gray-700 mb-1">Valor ou Condição (Opcional)</label>
             <input type="text" id="postPrice" placeholder="Ex: R$ 4.500,00 ou Orçamento Grátis"
-              class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-black" />
+              class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-600" />
           </div>
 
           <div>
             <label class="block text-xs font-bold text-gray-700 mb-1">Descrição e Detalhes *</label>
             <textarea id="postDescription" rows="3" required placeholder="Descreva garantia, especificações, prazo de entrega..."
-              class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-black"></textarea>
+              class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-600"></textarea>
           </div>
 
-          <button type="submit" id="publishBtn" class="w-full bg-black text-white font-semibold py-3 rounded-xl text-sm hover:bg-gray-800 transition">
-            Publicar na Nuvem
+          <button type="submit" id="publishBtn" class="w-full bg-[#081c45] text-white font-semibold py-3 rounded-xl text-sm hover:bg-blue-900 transition">
+            Publicar na Vitrine
           </button>
         </form>
 
-        <!-- ABA 2: CONFIGURAÇÕES DA EMPRESA -->
+        <!-- ABA 2: CONFIGURAÇÕES DA EMPRESA, SLOGAN E LINKS DE CONTATO -->
         <form id="settingsForm" onsubmit="handleSaveSettings(event)" class="space-y-4 hidden">
-          <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1">Nome da Empresa (Título Principal) *</label>
-            <input type="text" id="cfgCompanyName" required class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm" />
+          
+          <!-- Identidade Visual: Slogan em Imagem ou Título Escrito -->
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+            <label class="block text-xs font-bold text-slate-800">Exibição no Topo da Plataforma</label>
+            <div class="grid grid-cols-2 gap-2">
+              <label class="cursor-pointer">
+                <input type="radio" name="headerMode" value="title" checked class="peer sr-only" onchange="toggleHeaderModeFields()" />
+                <div class="text-center py-2 rounded-lg border border-gray-300 bg-white text-xs font-semibold peer-checked:bg-[#081c45] peer-checked:text-white transition">
+                  Título Escrito
+                </div>
+              </label>
+              <label class="cursor-pointer">
+                <input type="radio" name="headerMode" value="logo" class="peer sr-only" onchange="toggleHeaderModeFields()" />
+                <div class="text-center py-2 rounded-lg border border-gray-300 bg-white text-xs font-semibold peer-checked:bg-[#081c45] peer-checked:text-white transition">
+                  Imagem Slogan (HD)
+                </div>
+              </label>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold text-gray-600 mb-1">Título Escrito (Padrão: TERÊ SHOP)</label>
+              <input type="text" id="cfgCompanyName" required value="TERÊ SHOP" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm bg-white" />
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold text-gray-600 mb-1">Substituir Imagem do Slogan / Logo (Alta Definição)</label>
+              <input type="file" id="cfgLogoInput" accept="image/*" onchange="handleLogoUpload(event)"
+                class="w-full text-xs text-gray-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-100 file:text-amber-900 hover:file:bg-amber-200" />
+              <div id="cfgLogoPreviewBox" class="mt-2 hidden items-center gap-3 bg-white p-2 rounded-lg border border-gray-200">
+                <img id="cfgLogoPreviewImg" src="" class="h-12 w-auto object-contain" />
+                <button type="button" onclick="removeLogoImage()" class="text-xs text-red-600 font-semibold hover:underline">Remover imagem</button>
+              </div>
+            </div>
           </div>
-          <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1">Usuário do Instagram (sem @) *</label>
-            <input type="text" id="cfgInstagram" required placeholder="ex: suaempresaoficial" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm" />
+
+          <!-- Links Manuais de Contato -->
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+            <label class="block text-xs font-bold text-slate-800">Links Diretos de Atendimento</label>
+            
+            <div>
+              <label class="block text-[11px] font-bold text-gray-600 mb-1">
+                <i class="fa-brands fa-instagram text-pink-600 mr-1"></i> Link ou @Usuário do Instagram
+              </label>
+              <input type="text" id="cfgInstagram" placeholder="Ex: https://instagram.com/tereshop ou @tereshop" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm bg-white" />
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold text-gray-600 mb-1">
+                <i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i> Link ou Número do WhatsApp (com DDD)
+              </label>
+              <input type="text" id="cfgWhatsapp" placeholder="Ex: https://wa.me/5586999999999 ou 86999999999" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm bg-white" />
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold text-gray-600 mb-1">Subtítulo / Localização nos Cards</label>
+              <input type="text" id="cfgAddress" placeholder="Ex: Teresina - PI • Entrega Rápida" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm bg-white" />
+            </div>
           </div>
+
+          <!-- Senha Administrativa -->
           <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1">WhatsApp / Telefone Complementar</label>
-            <input type="text" id="cfgPhone" placeholder="Ex: (86) 99999-9999" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm" />
+            <label class="block text-xs font-bold text-gray-700 mb-1">Senha de Acesso Administrativo</label>
+            <div class="relative">
+              <input type="password" id="cfgPassword" required class="w-full border border-gray-300 rounded-xl pl-3 pr-10 py-2 text-sm" />
+              <button type="button" onclick="togglePasswordVisibility('cfgPassword', 'cfgEyeIcon')"
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700">
+                <i id="cfgEyeIcon" class="fa-regular fa-eye text-sm"></i>
+              </button>
+            </div>
           </div>
-          <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1">Endereço / Horário de Funcionamento</label>
-            <input type="text" id="cfgAddress" placeholder="Ex: Av. Principal, 100 - Seg a Sáb 08h às 18h" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm" />
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1">Alterar Senha do Administrador</label>
-            <input type="text" id="cfgPassword" required class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm" />
-          </div>
-          <button type="submit" id="saveCfgBtn" class="w-full bg-black text-white font-semibold py-3 rounded-xl text-sm hover:bg-gray-800 transition">
+
+          <button type="submit" id="saveCfgBtn" class="w-full bg-[#081c45] text-white font-semibold py-3 rounded-xl text-sm hover:bg-blue-900 transition">
             Salvar Configurações na Nuvem
           </button>
         </form>
@@ -217,22 +305,34 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
+    // DETETAR MODO VITRINE (COMPARTILHAMENTO PÚBLICO SEM BOTÃO ADM)
+    const urlParams = new URLSearchParams(window.location.search);
+    const isSharedVitrineMode = urlParams.get("vitrine") === "1";
+
+    if (isSharedVitrineMode) {
+      const adminBtn = document.getElementById("adminToggleBtn");
+      if (adminBtn) adminBtn.style.display = "none";
+    }
+
     const DEFAULT_CONFIG = {
-      companyName: "Projeto Gold",
-      instagram: "instagram",
-      phone: "(86) 99999-0000",
-      address: "Atendimento Online e Presencial",
+      companyName: "TERÊ SHOP",
+      headerMode: "title",
+      logoData: "",
+      instagram: "https://instagram.com/",
+      whatsapp: "",
+      address: "Teresina - PI • Vendas e Assistência",
       adminPass: "admin123"
     };
 
     let config = { ...DEFAULT_CONFIG };
     let posts = [];
-    let savedIds = JSON.parse(localStorage.getItem("app_saved")) || [];
+    let savedIds = JSON.parse(localStorage.getItem("tereshop_saved")) || [];
     let currentFilter = "all";
     let isAdminLogged = false;
-    let pendingBase64Images = [];
+    let pendingPostImages = [];
+    let pendingLogoData = "";
 
-    // OUVIR CONFIGURAÇÕES DA EMPRESA EM TEMPO REAL
+    // SINCRONIZAR CONFIGURAÇÕES DA NUVEM
     const configRef = ref(db, "config");
     onValue(configRef, (snapshot) => {
       if (snapshot.exists()) {
@@ -240,11 +340,12 @@
       } else {
         set(configRef, DEFAULT_CONFIG);
       }
+      pendingLogoData = config.logoData || "";
       applyConfigUI();
       renderFeed();
     });
 
-    // OUVIR PUBLICAÇÕES (VENDAS E CONSERTOS) EM TEMPO REAL
+    // SINCRONIZAR PUBLICAÇÕES DA NUVEM
     const postsRef = ref(db, "posts");
     onValue(postsRef, (snapshot) => {
       const data = snapshot.val();
@@ -256,38 +357,69 @@
         posts = [];
       }
       renderFeed();
-    }, (error) => {
-      console.error(error);
-      document.getElementById("feedContainer").innerHTML = `
-        <div class="py-16 px-6 text-center text-red-600">
-          <i class="fa-solid fa-triangle-exclamation text-3xl mb-2"></i>
-          <p class="text-sm font-bold">Erro de permissão no banco de dados</p>
-          <p class="text-xs text-gray-500 mt-1">Verifique se o Realtime Database foi iniciado no Modo de Teste.</p>
-        </div>`;
     });
 
     function applyConfigUI() {
-      document.title = config.companyName;
-      document.getElementById("headerCompanyName").textContent = config.companyName;
-      document.getElementById("headerAvatar").textContent = config.companyName.substring(0, 2).toUpperCase();
+      const titleText = config.companyName || "TERÊ SHOP";
+      document.title = `${titleText} • Teresina-PI`;
+      document.getElementById("headerCompanyName").textContent = titleText;
+
+      const logoWrapper = document.getElementById("headerLogoWrapper");
+      const titleWrapper = document.getElementById("headerTitleWrapper");
+      const logoImg = document.getElementById("headerLogoImg");
+
+      if (config.headerMode === "logo" && config.logoData) {
+        logoImg.src = config.logoData;
+        logoWrapper.classList.remove("hidden");
+        logoWrapper.classList.add("flex");
+        titleWrapper.classList.add("hidden");
+      } else {
+        logoWrapper.classList.add("hidden");
+        logoWrapper.classList.remove("flex");
+        titleWrapper.classList.remove("hidden");
+      }
     }
 
-    // EXPOR FUNÇÕES GLOBAIS PARA OS BOTÕES HTML
+    // NORMALIZADORES DE LINKS MANUAIS (INSTAGRAM E WHATSAPP)
+    function resolveInstagramUrl(raw) {
+      if (!raw) return "";
+      const val = raw.trim();
+      if (val.startsWith("http://") || val.startsWith("https://")) return val;
+      return `https://instagram.com/${val.replace(/^@/, "")}`;
+    }
+
+    function resolveWhatsappUrl(raw, message) {
+      if (!raw) return "";
+      const val = raw.trim();
+      const encodedMsg = encodeURIComponent(message);
+      if (val.startsWith("http://") || val.startsWith("https://")) {
+        const sep = val.includes("?") ? "&" : "?";
+        return `${val}${sep}text=${encodedMsg}`;
+      }
+      let digits = val.replace(/\D/g, "");
+      if (digits.length === 10 || digits.length === 11) {
+        digits = "55" + digits;
+      }
+      return `https://wa.me/${digits}?text=${encodedMsg}`;
+    }
+
+    // FILTROS DE NAVEGAÇÃO
     window.setFilter = function(filter) {
       currentFilter = filter;
       ["all", "venda", "conserto", "saved"].forEach(tab => {
         const el = document.getElementById(`tab-${tab}`);
         if (tab === filter) {
-          el.classList.add("border-black", "text-black");
+          el.classList.add("border-blue-700", "text-blue-700");
           el.classList.remove("border-transparent", "text-gray-500");
         } else {
-          el.classList.remove("border-black", "text-black");
+          el.classList.remove("border-blue-700", "text-blue-700");
           el.classList.add("border-transparent", "text-gray-500");
         }
       });
       renderFeed();
     };
 
+    // RENDERIZAÇÃO DO FEED
     function renderFeed() {
       const container = document.getElementById("feedContainer");
       let filtered = posts;
@@ -298,13 +430,16 @@
 
       if (filtered.length === 0) {
         container.innerHTML = `
-          <div class="py-20 px-6 text-center text-gray-400">
-            <i class="fa-regular fa-images text-4xl mb-3"></i>
-            <p class="text-sm font-medium">Nenhuma publicação disponível aqui ainda.</p>
-            <p class="text-xs mt-1">Use o ícone de cadeado no topo para adicionar banners.</p>
+          <div class="py-24 px-6 text-center text-gray-400">
+            <i class="fa-regular fa-images text-4xl mb-3 text-slate-300"></i>
+            <p class="text-sm font-semibold text-slate-600">Nenhuma publicação encontrada.</p>
+            <p class="text-xs mt-1">Explore outras abas ou aguarde novas ofertas da TERÊ SHOP.</p>
           </div>`;
         return;
       }
+
+      const hasInsta = Boolean(config.instagram && config.instagram.trim());
+      const hasWhats = Boolean(config.whatsapp && config.whatsapp.trim());
 
       container.innerHTML = filtered.map(post => {
         const isSaved = savedIds.includes(post.id);
@@ -315,88 +450,95 @@
         const badgeLabel = post.type === "venda" ? "VENDA" : "CONSERTO";
         const safeTitle = (post.title || "").replace(/'/g, "");
 
+        const avatarHtml = config.logoData
+          ? `<img src="${config.logoData}" class="w-9 h-9 rounded-full object-contain bg-slate-900 p-0.5 border border-blue-200" />`
+          : `<div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#081c45] to-blue-600 text-amber-400 flex items-center justify-center text-xs font-black border border-amber-400/40">TS</div>`;
+
         return `
           <article class="pb-5 bg-white">
-            <!-- Topo do Post -->
+            <!-- Cabeçalho do Card -->
             <div class="px-4 py-3 flex items-center justify-between">
               <div class="flex items-center gap-2.5">
-                <div class="w-8 h-8 rounded-full bg-gray-900 text-white flex items-center justify-center text-xs font-bold">
-                  ${config.companyName.substring(0, 2).toUpperCase()}
-                </div>
+                ${avatarHtml}
                 <div>
-                  <p class="text-xs font-bold leading-tight">${config.companyName}</p>
-                  <p class="text-[11px] text-gray-400">${config.address || ""}</p>
+                  <p class="text-xs font-extrabold text-slate-900 leading-tight">${config.companyName || "TERÊ SHOP"}</p>
+                  <p class="text-[11px] text-gray-400">${config.address || "Teresina - PI"}</p>
                 </div>
               </div>
               <div class="flex items-center gap-2">
-                <span class="text-[10px] font-bold px-2.5 py-1 rounded-full ${badgeClass}">${badgeLabel}</span>
-                ${isAdminLogged ? `
-                  <button onclick="deletePost('${post.id}')" title="Excluir post" class="text-red-500 hover:text-red-700 p-1">
+                <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full tracking-wide ${badgeClass}">${badgeLabel}</span>
+                ${isAdminLogged && !isSharedVitrineMode ? `
+                  <button onclick="startEditPost('${post.id}')" title="Editar anúncio" class="text-blue-600 hover:text-blue-800 p-1.5 bg-blue-50 rounded-lg">
+                    <i class="fa-solid fa-pen text-xs"></i>
+                  </button>
+                  <button onclick="deletePost('${post.id}')" title="Excluir anúncio" class="text-red-500 hover:text-red-700 p-1.5 bg-red-50 rounded-lg">
                     <i class="fa-solid fa-trash text-xs"></i>
                   </button>` : ""}
               </div>
             </div>
 
-            <!-- Carrossel Horizontal (Até 10 Imagens) -->
-            <div class="relative bg-black">
+            <!-- Carrossel Horizontal de até 10 Imagens em Alta Definição -->
+            <div class="relative bg-slate-950">
               <div id="track-${post.id}" onscroll="updateCarouselIndicator('${post.id}', ${images.length})"
                 class="carousel-track flex overflow-x-auto no-scrollbar aspect-square">
                 ${images.map((img, idx) => `
-                  <div class="carousel-slide relative w-full h-full flex items-center justify-center bg-neutral-950">
+                  <div class="carousel-slide relative w-full h-full flex items-center justify-center bg-slate-950">
                     <img src="${img}" alt="${safeTitle} - Foto ${idx + 1}" loading="lazy" class="w-full h-full object-cover" />
                   </div>
                 `).join("")}
               </div>
 
               ${images.length > 1 ? `
-                <div id="counter-${post.id}" class="absolute top-3 right-3 bg-black/70 text-white text-[11px] font-semibold px-2.5 py-1 rounded-full">
+                <div id="counter-${post.id}" class="absolute top-3 right-3 bg-black/75 text-white text-[11px] font-bold px-2.5 py-1 rounded-full backdrop-blur-xs">
                   1/${images.length}
                 </div>
               ` : ""}
             </div>
 
-            <!-- Indicador de Bolinhas (Dots) -->
+            <!-- Indicadores de Bolinhas (Dots) -->
             ${images.length > 1 ? `
               <div id="dots-${post.id}" class="flex justify-center gap-1.5 pt-2.5">
                 ${images.map((_, i) => `
-                  <span class="w-1.5 h-1.5 rounded-full transition-all ${i === 0 ? "bg-blue-600 w-3" : "bg-gray-300"}"></span>
+                  <span class="w-1.5 h-1.5 rounded-full transition-all ${i === 0 ? "bg-blue-600 w-3.5" : "bg-gray-300"}"></span>
                 `).join("")}
               </div>
             ` : ""}
 
-            <!-- Barra de Ações & Link Direto Instagram -->
+            <!-- Área de Ações: Botões Instagram + WhatsApp + Salvar + Partilhar -->
             <div class="px-4 pt-3">
-              <div class="flex items-center justify-between gap-2 mb-3">
-                <button onclick="contactInstagram('${safeTitle}', '${badgeLabel}')"
-                  class="flex-1 bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-bold text-xs py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm active:scale-[0.99] transition">
-                  <i class="fa-brands fa-instagram text-base"></i>
-                  <span>Falar no Instagram</span>
-                </button>
+              <div class="flex items-center gap-2 mb-3">
+                ${hasInsta ? `
+                  <button onclick="openInstagramContact('${safeTitle}', '${badgeLabel}')"
+                    class="flex-1 bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-bold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.98] transition">
+                    <i class="fa-brands fa-instagram text-base"></i>
+                    <span>Instagram</span>
+                  </button>` : ""}
 
-                <button onclick="sharePost('${safeTitle}')" title="Compartilhar"
-                  class="p-2.5 rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-50 transition">
+                ${hasWhats ? `
+                  <button onclick="openWhatsappContact('${safeTitle}', '${badgeLabel}')"
+                    class="flex-1 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.98] transition">
+                    <i class="fa-brands fa-whatsapp text-base"></i>
+                    <span>WhatsApp</span>
+                  </button>` : ""}
+
+                <button onclick="sharePost('${safeTitle}')" title="Partilhar anúncio"
+                  class="p-2.5 rounded-xl border border-gray-200 text-slate-700 hover:bg-gray-50 transition flex-shrink-0">
                   <i class="fa-regular fa-paper-plane text-base"></i>
                 </button>
 
-                <button onclick="toggleSave('${post.id}')" title="Salvar item"
-                  class="p-2.5 rounded-xl border border-gray-200 ${isSaved ? "text-black bg-gray-100" : "text-gray-700"} hover:bg-gray-50 transition">
+                <button onclick="toggleSave('${post.id}')" title="Guardar nos favoritos"
+                  class="p-2.5 rounded-xl border border-gray-200 ${isSaved ? "text-blue-700 bg-blue-50 border-blue-200" : "text-slate-700"} hover:bg-gray-50 transition flex-shrink-0">
                   <i class="${isSaved ? "fa-solid" : "fa-regular"} fa-bookmark text-base"></i>
                 </button>
               </div>
 
-              <!-- Título, Valor e Descrição -->
+              <!-- Título, Preço e Descrição -->
               <div class="space-y-1">
                 <div class="flex items-baseline justify-between gap-2">
-                  <h2 class="font-bold text-sm text-gray-900">${post.title}</h2>
-                  ${post.price ? `<span class="font-extrabold text-sm text-emerald-700 whitespace-nowrap">${post.price}</span>` : ""}
+                  <h2 class="font-extrabold text-sm text-slate-900">${post.title}</h2>
+                  ${post.price ? `<span class="font-black text-sm text-emerald-700 whitespace-nowrap">${post.price}</span>` : ""}
                 </div>
-                <p class="text-xs text-gray-600 leading-relaxed">${post.description}</p>
-              </div>
-
-              <!-- Rodapé de Dados Complementares -->
-              <div class="mt-3 pt-2.5 border-t border-gray-100 flex flex-wrap items-center justify-between text-[11px] text-gray-500 gap-2">
-                <span><i class="fa-brands fa-instagram mr-1"></i>@${config.instagram}</span>
-                ${config.phone ? `<span><i class="fa-solid fa-phone mr-1"></i>${config.phone}</span>` : ""}
+                <p class="text-xs text-gray-600 leading-relaxed whitespace-pre-line">${post.description}</p>
               </div>
             </div>
           </article>
@@ -404,6 +546,7 @@
       }).join("");
     }
 
+    // INDICADOR DO CARROSSEL
     window.updateCarouselIndicator = function(postId, total) {
       const track = document.getElementById(`track-${postId}`);
       const index = Math.round(track.scrollLeft / track.clientWidth);
@@ -414,23 +557,33 @@
       if (dotsContainer) {
         Array.from(dotsContainer.children).forEach((dot, i) => {
           dot.className = i === index
-            ? "w-3 h-1.5 rounded-full bg-blue-600 transition-all"
+            ? "w-3.5 h-1.5 rounded-full bg-blue-600 transition-all"
             : "w-1.5 h-1.5 rounded-full bg-gray-300 transition-all";
         });
       }
     };
 
-    window.contactInstagram = function(title, category) {
-      const msg = `Olá! Vi o anúncio de ${category}: "${title}" na vitrine da ${config.companyName} e gostaria de mais informações.`;
+    // CONTACTOS DIRETOS (INSTAGRAM E WHATSAPP)
+    window.openInstagramContact = function(title, category) {
+      const url = resolveInstagramUrl(config.instagram);
+      if (!url) return showToast("Link do Instagram não configurado.");
+
+      const msg = `Olá! Vi o anúncio de ${category}: "${title}" na vitrine ${config.companyName} e gostaria de mais informações.`;
       if (navigator.clipboard) {
         navigator.clipboard.writeText(msg).catch(() => {});
       }
       showToast("Mensagem copiada! Cole no Direct do Instagram.");
-      setTimeout(() => {
-        window.open(`https://instagram.com/${config.instagram}`, "_blank");
-      }, 650);
+      setTimeout(() => window.open(url, "_blank"), 600);
     };
 
+    window.openWhatsappContact = function(title, category) {
+      const msg = `Olá! Vi o anúncio de ${category}: "${title}" na vitrine ${config.companyName} e gostaria de mais informações.`;
+      const url = resolveWhatsappUrl(config.whatsapp, msg);
+      if (!url) return showToast("Link do WhatsApp não configurado.");
+      window.open(url, "_blank");
+    };
+
+    // FAVORITOS DO CLIENTE
     window.toggleSave = function(postId) {
       if (savedIds.includes(postId)) {
         savedIds = savedIds.filter(id => id !== postId);
@@ -439,35 +592,46 @@
         savedIds.push(postId);
         showToast("Salvo na sua lista!");
       }
-      localStorage.setItem("app_saved", JSON.stringify(savedIds));
+      localStorage.setItem("tereshop_saved", JSON.stringify(savedIds));
       renderFeed();
     };
 
+    // PARTILHA BLINDADA (GERA LINK SEM ACESSO ADM: ?vitrine=1)
+    function getPublicShareUrl() {
+      const url = new URL(window.location.href);
+      url.searchParams.set("vitrine", "1");
+      return url.toString();
+    }
+
     window.shareApp = function() {
+      const publicUrl = getPublicShareUrl();
       const shareData = {
-        title: config.companyName,
-        text: `Confira os produtos e serviços de ${config.companyName}:`,
-        url: window.location.href
+        title: config.companyName || "TERÊ SHOP",
+        text: `Confira os produtos e serviços de ${config.companyName || "TERÊ SHOP"}:`,
+        url: publicUrl
       };
       if (navigator.share) {
         navigator.share(shareData).catch(() => {});
       } else {
-        navigator.clipboard.writeText(window.location.href);
-        showToast("Link da vitrine copiado para compartilhar!");
+        navigator.clipboard.writeText(publicUrl);
+        showToast("Link da vitrine pública copiado!");
       }
     };
 
     window.sharePost = function(title) {
-      const text = `Olha esse item em ${config.companyName}: ${title} - ${window.location.href}`;
+      const publicUrl = getPublicShareUrl();
+      const text = `Confira este item em ${config.companyName || "TERÊ SHOP"}: ${title} - ${publicUrl}`;
       if (navigator.share) {
-        navigator.share({ title, text, url: window.location.href }).catch(() => {});
+        navigator.share({ title, text, url: publicUrl }).catch(() => {});
       } else {
         navigator.clipboard.writeText(text);
         showToast("Link do anúncio copiado!");
       }
     };
 
+    // CONTROLO DE ACESSO ADMINISTRATIVO
     window.openAdminGate = function() {
+      if (isSharedVitrineMode) return;
       if (isAdminLogged) {
         openAdminPanel();
       } else {
@@ -476,11 +640,23 @@
       }
     };
 
+    window.togglePasswordVisibility = function(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      if (input.type === "password") {
+        input.type = "text";
+        icon.classList.replace("fa-eye", "fa-eye-slash");
+      } else {
+        input.type = "password";
+        icon.classList.replace("fa-eye-slash", "fa-eye");
+      }
+    };
+
     window.verifyAdminLogin = function() {
       const pass = document.getElementById("adminPasswordInput").value;
       if (pass === config.adminPass) {
         isAdminLogged = true;
-        document.getElementById("adminToggleBtn").innerHTML = `<i class="fa-solid fa-gear text-base text-black"></i>`;
+        document.getElementById("adminToggleBtn").innerHTML = `<i class="fa-solid fa-gear text-base text-blue-700"></i>`;
         closeModal("loginModal");
         openAdminPanel();
         renderFeed();
@@ -492,18 +668,29 @@
 
     window.logoutAdmin = function() {
       isAdminLogged = false;
-      document.getElementById("adminToggleBtn").innerHTML = `<i class="fa-solid fa-lock text-base"></i>`;
+      document.getElementById("adminToggleBtn").innerHTML = `<i class="fa-solid fa-shield-halved text-base"></i>`;
       closeModal("adminModal");
       renderFeed();
-      showToast("Modo Cliente ativado");
+      showToast("Sessão encerrada");
     };
 
     function openAdminPanel() {
-      document.getElementById("cfgCompanyName").value = config.companyName;
-      document.getElementById("cfgInstagram").value = config.instagram;
-      document.getElementById("cfgPhone").value = config.phone;
-      document.getElementById("cfgAddress").value = config.address;
-      document.getElementById("cfgPassword").value = config.adminPass;
+      document.getElementById("cfgCompanyName").value = config.companyName || "TERÊ SHOP";
+      document.getElementById("cfgInstagram").value = config.instagram || "";
+      document.getElementById("cfgWhatsapp").value = config.whatsapp || "";
+      document.getElementById("cfgAddress").value = config.address || "";
+      document.getElementById("cfgPassword").value = config.adminPass || "admin123";
+
+      const modeRadio = document.querySelector(`input[name="headerMode"][value="${config.headerMode || "title"}"]`);
+      if (modeRadio) modeRadio.checked = true;
+
+      if (config.logoData) {
+        document.getElementById("cfgLogoPreviewImg").src = config.logoData;
+        document.getElementById("cfgLogoPreviewBox").classList.replace("hidden", "flex");
+      } else {
+        document.getElementById("cfgLogoPreviewBox").classList.replace("flex", "hidden");
+      }
+
       document.getElementById("adminModal").classList.replace("hidden", "flex");
     }
 
@@ -517,29 +704,71 @@
       document.getElementById("settingsForm").classList.toggle("hidden", isNew);
 
       document.getElementById("admTab-newPost").className = isNew
-        ? "flex-1 py-3 border-b-2 border-black text-black"
+        ? "flex-1 py-3 border-b-2 border-blue-700 text-blue-700"
         : "flex-1 py-3 border-b-2 border-transparent text-gray-500";
       document.getElementById("admTab-settings").className = !isNew
-        ? "flex-1 py-3 border-b-2 border-black text-black"
+        ? "flex-1 py-3 border-b-2 border-blue-700 text-blue-700"
         : "flex-1 py-3 border-b-2 border-transparent text-gray-500";
     };
 
+    // UPLOAD DO SLOGAN / LOGOTIPO EM ALTA DEFINIÇÃO (MANTÉM TRANSPARÊNCIA PNG)
+    window.handleLogoUpload = function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const maxH = 320;
+          let width = img.width;
+          let height = img.height;
+          if (height > maxH) {
+            width = Math.round((width * maxH) / height);
+            height = maxH;
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, width, height);
+          pendingLogoData = canvas.toDataURL("image/png");
+
+          document.getElementById("cfgLogoPreviewImg").src = pendingLogoData;
+          document.getElementById("cfgLogoPreviewBox").classList.replace("hidden", "flex");
+          const logoRadio = document.querySelector('input[name="headerMode"][value="logo"]');
+          if (logoRadio) logoRadio.checked = true;
+          showToast("Imagem do slogan carregada! Clique em Salvar.");
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    };
+
+    window.removeLogoImage = function() {
+      pendingLogoData = "";
+      document.getElementById("cfgLogoInput").value = "";
+      document.getElementById("cfgLogoPreviewBox").classList.replace("flex", "hidden");
+      const titleRadio = document.querySelector('input[name="headerMode"][value="title"]');
+      if (titleRadio) titleRadio.checked = true;
+    };
+
+    // PROCESSAR ATÉ 10 IMAGENS DO ANÚNCIO EM ALTA DEFINIÇÃO
     window.previewSelectedImages = async function(event) {
       const files = Array.from(event.target.files).slice(0, 10);
       if (event.target.files.length > 10) {
-        showToast("Limite máximo de 10 imagens por banner.");
+        showToast("Limite máximo de 10 imagens por anúncio.");
       }
 
       const grid = document.getElementById("imagePreviewGrid");
-      grid.innerHTML = "<p class='col-span-5 text-xs text-gray-400'>Otimizando imagens em alta definição...</p>";
-      pendingBase64Images = [];
+      grid.innerHTML = "<p class='col-span-5 text-xs text-gray-400'>Otimizando imagens em HD...</p>";
+      pendingPostImages = [];
 
       for (const file of files) {
-        const compressed = await compressImage(file, 1080, 0.82);
-        pendingBase64Images.push(compressed);
+        const compressed = await compressImage(file, 1080, 0.84);
+        pendingPostImages.push(compressed);
       }
 
-      grid.innerHTML = pendingBase64Images.map(src => `
+      grid.innerHTML = pendingPostImages.map(src => `
         <img src="${src}" class="w-full aspect-square object-cover rounded-lg border border-gray-200" />
       `).join("");
     };
@@ -569,16 +798,51 @@
       });
     }
 
-    window.handleCreatePost = async function(event) {
+    // CRIAR OU ATUALIZAR ANÚNCIO
+    window.startEditPost = function(postId) {
+      const post = posts.find(p => p.id === postId);
+      if (!post) return;
+
+      switchAdminTab("newPost");
+      document.getElementById("editingPostId").value = post.id;
+      document.getElementById("editingBannerAlert").classList.remove("hidden");
+      document.getElementById("publishBtn").textContent = "Salvar Alterações";
+
+      const typeRadio = document.querySelector(`input[name="postType"][value="${post.type}"]`);
+      if (typeRadio) typeRadio.checked = true;
+
+      document.getElementById("postTitle").value = post.title || "";
+      document.getElementById("postPrice").value = post.price || "";
+      document.getElementById("postDescription").value = post.description || "";
+      pendingPostImages = [...(post.images || [])];
+
+      document.getElementById("imagePreviewGrid").innerHTML = pendingPostImages.map(src => `
+        <img src="${src}" class="w-full aspect-square object-cover rounded-lg border border-gray-200" />
+      `).join("");
+
+      openAdminPanel();
+    };
+
+    window.resetPostForm = function() {
+      document.getElementById("newPostForm").reset();
+      document.getElementById("editingPostId").value = "";
+      document.getElementById("editingBannerAlert").classList.add("hidden");
+      document.getElementById("publishBtn").textContent = "Publicar na Vitrine";
+      document.getElementById("imagePreviewGrid").innerHTML = "";
+      pendingPostImages = [];
+    };
+
+    window.handleSavePost = async function(event) {
       event.preventDefault();
-      if (pendingBase64Images.length === 0) {
+      if (pendingPostImages.length === 0) {
         showToast("Selecione pelo menos 1 imagem.");
         return;
       }
 
       const btn = document.getElementById("publishBtn");
+      const editingId = document.getElementById("editingPostId").value;
       btn.disabled = true;
-      btn.textContent = "Enviando para a nuvem...";
+      btn.textContent = "Salvando na nuvem...";
 
       try {
         const type = document.querySelector('input[name="postType"]:checked').value;
@@ -586,42 +850,42 @@
         const price = document.getElementById("postPrice").value.trim();
         const description = document.getElementById("postDescription").value.trim();
 
-        const newPostRef = push(ref(db, "posts"));
-        await set(newPostRef, {
+        const existingPost = editingId ? posts.find(p => p.id === editingId) : null;
+        const targetRef = editingId ? ref(db, `posts/${editingId}`) : push(ref(db, "posts"));
+
+        await set(targetRef, {
           type,
           title,
           price,
           description,
-          images: pendingBase64Images,
-          timestamp: Date.now()
+          images: pendingPostImages,
+          timestamp: existingPost ? existingPost.timestamp : Date.now()
         });
 
-        document.getElementById("newPostForm").reset();
-        document.getElementById("imagePreviewGrid").innerHTML = "";
-        pendingBase64Images = [];
-
+        resetPostForm();
         closeModal("adminModal");
         setFilter("all");
-        showToast("Banner publicado na nuvem com sucesso!");
+        showToast(editingId ? "Anúncio atualizado!" : "Anúncio publicado na nuvem!");
       } catch (err) {
         console.error(err);
-        showToast("Erro ao salvar na nuvem. Verifique as regras do Firebase.");
+        showToast("Erro ao guardar na nuvem. Verifique as regras do Firebase.");
       } finally {
         btn.disabled = false;
-        btn.textContent = "Publicar na Nuvem";
+        btn.textContent = "Publicar na Vitrine";
       }
     };
 
     window.deletePost = async function(postId) {
-      if (!confirm("Deseja realmente excluir esta publicação da nuvem?")) return;
+      if (!confirm("Deseja realmente excluir este anúncio?")) return;
       try {
         await remove(ref(db, `posts/${postId}`));
-        showToast("Publicação removida.");
+        showToast("Anúncio removido.");
       } catch (err) {
-        showToast("Erro ao excluir publicação.");
+        showToast("Erro ao excluir anúncio.");
       }
     };
 
+    // GUARDAR CONFIGURAÇÕES DA EMPRESA
     window.handleSaveSettings = async function(event) {
       event.preventDefault();
       const btn = document.getElementById("saveCfgBtn");
@@ -629,18 +893,21 @@
       btn.textContent = "Salvando...";
 
       try {
+        const headerMode = document.querySelector('input[name="headerMode"]:checked').value;
         const updatedConfig = {
-          companyName: document.getElementById("cfgCompanyName").value.trim(),
-          instagram: document.getElementById("cfgInstagram").value.trim().replace("@", ""),
-          phone: document.getElementById("cfgPhone").value.trim(),
+          companyName: document.getElementById("cfgCompanyName").value.trim() || "TERÊ SHOP",
+          headerMode: headerMode === "logo" && pendingLogoData ? "logo" : "title",
+          logoData: pendingLogoData,
+          instagram: document.getElementById("cfgInstagram").value.trim(),
+          whatsapp: document.getElementById("cfgWhatsapp").value.trim(),
           address: document.getElementById("cfgAddress").value.trim(),
           adminPass: document.getElementById("cfgPassword").value.trim() || "admin123"
         };
         await set(ref(db, "config"), updatedConfig);
         closeModal("adminModal");
-        showToast("Configurações salvas na nuvem!");
+        showToast("Configurações guardadas na nuvem!");
       } catch (err) {
-        showToast("Erro ao salvar configurações.");
+        showToast("Erro ao guardar configurações.");
       } finally {
         btn.disabled = false;
         btn.textContent = "Salvar Configurações na Nuvem";
