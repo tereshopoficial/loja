@@ -79,14 +79,14 @@
     </nav>
   </header>
 
-  <!-- CARROSSEL HORIZONTAL DE VÍDEOS CURTOS 24H (ABAIXO DO SLOGAN) -->
+  <!-- CARROSSEL HORIZONTAL DE VÍDEOS CURTOS 24H (ABAIXO DO CABEÇALHO/SLOGAN) -->
   <section id="storiesSection" class="max-w-lg mx-auto bg-white border-b border-gray-200 hidden">
     <div class="px-4 pt-3 pb-1 flex items-center justify-between">
       <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
         <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
         Destaques Rápidos • 24h
       </span>
-      <span class="text-[10px] text-gray-400">Deslize para o lado <i class="fa-solid fa-arrow-right-long ml-0.5"></i></span>
+      <span class="text-[10px] text-gray-400">Deslize <i class="fa-solid fa-arrow-right-long ml-0.5"></i></span>
     </div>
     <div id="storiesCarousel" class="flex gap-3 overflow-x-auto no-scrollbar px-4 py-3 snap-x snap-mandatory">
       <!-- Cards de vídeos 24h renderizados dinamicamente -->
@@ -101,9 +101,8 @@
     </div>
   </main>
 
-  <!-- VISUALIZADOR EM TELA CHEIA PARA VÍDEOS 24H (DESLIZE LATERAL) -->
+  <!-- VISUALIZADOR EM TELA CHEIA PARA VÍDEOS 24H (ROLAGEM LATERAL DEDO DIREITA/ESQUERDA) -->
   <div id="storyViewerModal" class="fixed inset-0 z-50 bg-black hidden flex-col justify-between">
-    <!-- Topo do Viewer -->
     <div class="relative z-20 p-4 bg-gradient-to-b from-black/80 to-transparent flex items-center justify-between text-white">
       <div class="flex items-center gap-2.5">
         <span id="viewerBadge" class="text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full bg-amber-500 text-slate-950">
@@ -121,12 +120,10 @@
       </div>
     </div>
 
-    <!-- Track Deslizável Horizontalmente entre todos os Vídeos 24h -->
     <div id="viewerTrack" onscroll="handleViewerScroll()" class="carousel-track flex-1 flex overflow-x-auto no-scrollbar items-center">
       <!-- Slides de vídeo em tela cheia -->
     </div>
 
-    <!-- Rodapé do Viewer com Ação Direta -->
     <div id="viewerFooter" class="relative z-20 p-4 bg-gradient-to-t from-black/90 via-black/60 to-transparent text-white space-y-2.5">
       <p id="viewerTitle" class="font-bold text-sm"></p>
       <div id="viewerActionBtnContainer"></div>
@@ -197,7 +194,7 @@
       <!-- Conteúdo Scrollável Admin -->
       <div class="p-5 overflow-y-auto space-y-4">
 
-        <!-- ABA 1: CRIAR OU EDITAR POST / BANNER COM LINKS INDIVIDUAIS -->
+        <!-- ABA 1: CRIAR OU EDITAR POST / BANNER COM CATEGORIA, ATENDIMENTO E LINKS INDIVIDUAIS -->
         <form id="newPostForm" onsubmit="handleSavePost(event)" class="space-y-4">
           <input type="hidden" id="editingPostId" value="" />
 
@@ -206,21 +203,34 @@
             <button type="button" onclick="resetPostForm()" class="underline font-bold">Cancelar edição</button>
           </div>
 
-          <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1">Categoria da Divulgação *</label>
-            <div class="grid grid-cols-2 gap-2">
-              <label class="cursor-pointer">
-                <input type="radio" name="postType" value="venda" checked class="peer sr-only" />
-                <div class="text-center py-2.5 rounded-xl border border-gray-300 text-xs font-semibold peer-checked:bg-emerald-600 peer-checked:text-white peer-checked:border-emerald-600 transition">
-                  <i class="fa-solid fa-tag mr-1"></i> Somente Venda
-                </div>
-              </label>
-              <label class="cursor-pointer">
-                <input type="radio" name="postType" value="conserto" class="peer sr-only" />
-                <div class="text-center py-2.5 rounded-xl border border-gray-300 text-xs font-semibold peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 transition">
-                  <i class="fa-solid fa-wrench mr-1"></i> Somente Conserto
-                </div>
-              </label>
+          <!-- Categoria de Divulgação + Modalidade de Atendimento Individual -->
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1.5">Categoria da Divulgação *</label>
+              <div class="grid grid-cols-2 gap-2">
+                <label class="cursor-pointer">
+                  <input type="radio" name="postType" value="venda" checked class="peer sr-only" />
+                  <div class="text-center py-2.5 rounded-xl border border-gray-300 bg-white text-xs font-semibold peer-checked:bg-emerald-600 peer-checked:text-white peer-checked:border-emerald-600 transition">
+                    <i class="fa-solid fa-tag mr-1"></i> Somente Venda
+                  </div>
+                </label>
+                <label class="cursor-pointer">
+                  <input type="radio" name="postType" value="conserto" class="peer sr-only" />
+                  <div class="text-center py-2.5 rounded-xl border border-gray-300 bg-white text-xs font-semibold peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 transition">
+                    <i class="fa-solid fa-wrench mr-1"></i> Somente Conserto
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">Modalidade de Atendimento (Individual deste Post) *</label>
+              <select id="postServiceMode" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-xs font-semibold bg-white text-slate-800 focus:outline-none focus:border-blue-600">
+                <option value="Atendimento Online e Presencial">Atendimento Online e Presencial</option>
+                <option value="Atendimento Online">Atendimento Online</option>
+                <option value="Atendimento Presencial">Atendimento Presencial</option>
+                <option value="Entrega em Domicílio • Teresina-PI">Entrega em Domicílio • Teresina-PI</option>
+              </select>
             </div>
           </div>
 
@@ -252,9 +262,7 @@
 
           <!-- LINKS DIRETOS DE ATENDIMENTO INDIVIDUAIS DESTE ANÚNCIO -->
           <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
-            <div class="flex items-center justify-between">
-              <label class="text-xs font-bold text-slate-800">Links Diretos de Atendimento (Exclusivos deste Post)</label>
-            </div>
+            <label class="block text-xs font-bold text-slate-800">Links Diretos de Atendimento (Exclusivos deste Post)</label>
             
             <div>
               <label class="block text-[11px] font-bold text-gray-600 mb-1">
@@ -278,10 +286,10 @@
           </button>
         </form>
 
-        <!-- ABA 2: PUBLICAR VÍDEO CURTO 24H -->
+        <!-- ABA 2: PUBLICAR VÍDEO CURTO 24H COM RECORTE DE DURAÇÃO (ATÉ 15 SEGUNDOS) -->
         <form id="newVideoForm" onsubmit="handleSaveVideoStory(event)" class="space-y-4 hidden">
           <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-900">
-            <i class="fa-solid fa-clock mr-1"></i> Os vídeos publicados aqui aparecem logo abaixo do slogan com rolagem lateral e <b>expiram automaticamente após 24 horas</b>.
+            <i class="fa-solid fa-scissors mr-1"></i> Envie um vídeo curto (máx. <b>7,5 MB</b>) e ajuste o recorte de até <b>15 segundos</b>. Ele ficará ativo no topo por <b>24 horas</b>.
           </div>
 
           <div>
@@ -295,10 +303,44 @@
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1">Selecionar Vídeo Curto (MP4/MOV até 7MB) *</label>
-            <input type="file" id="videoFileInput" accept="video/mp4,video/webm,video/quicktime" onchange="handleVideoSelect(event)"
+            <label class="block text-xs font-bold text-gray-700 mb-1">Selecionar Vídeo (MP4/MOV até 7,5 MB) *</label>
+            <input type="file" id="videoFileInput" accept="video/mp4,video/webm,video/quicktime" onchange="handleVideoFileLoaded(event)"
               class="w-full text-xs text-gray-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-100 file:text-amber-900 hover:file:bg-amber-200" />
-            <p class="text-[11px] text-gray-400 mt-1">O vídeo inicia mudo com ícone para o cliente ativar o áudio com um toque.</p>
+          </div>
+
+          <!-- FERRAMENTA DE PRÉ-VISUALIZAÇÃO E RECORTE DE DURAÇÃO (ATÉ 15s) -->
+          <div id="videoTrimmerBox" class="hidden p-3.5 rounded-xl bg-slate-900 text-white space-y-3">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-amber-400"><i class="fa-solid fa-scissors mr-1"></i> Recortar Duração (Máx. 15s)</span>
+              <span id="trimDurationBadge" class="bg-white/15 px-2 py-0.5 rounded-full text-[11px] font-bold">0.0s / 15s</span>
+            </div>
+
+            <div class="relative bg-black rounded-lg overflow-hidden flex items-center justify-center max-h-56">
+              <video id="trimPreviewVideo" playsinline muted class="max-h-56 w-auto object-contain"></video>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div>
+                <label class="block text-[11px] text-gray-300 mb-1">Início (seg): <b id="trimStartLabel">0.0s</b></label>
+                <input type="range" id="trimStartRange" min="0" max="15" step="0.5" value="0" oninput="updateTrimControls('start')"
+                  class="w-full accent-amber-500" />
+              </div>
+              <div>
+                <label class="block text-[11px] text-gray-300 mb-1">Fim (seg): <b id="trimEndLabel">15.0s</b></label>
+                <input type="range" id="trimEndRange" min="1" max="15" step="0.5" value="15" oninput="updateTrimControls('end')"
+                  class="w-full accent-amber-500" />
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-1">
+              <button type="button" onclick="previewTrimmedSegment()" class="text-xs bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-lg font-semibold">
+                <i class="fa-solid fa-play mr-1"></i> Testar Trecho Recortado
+              </button>
+              <label class="flex items-center gap-1.5 text-xs cursor-pointer">
+                <input type="checkbox" id="includeVideoAudio" checked class="accent-amber-500" />
+                <span>Manter Áudio</span>
+              </label>
+            </div>
           </div>
 
           <div>
@@ -314,7 +356,7 @@
           </div>
 
           <button type="submit" id="publishVideoBtn" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold py-3 rounded-xl text-sm transition">
-            Publicar Vídeo 24h
+            Recortar e Publicar Vídeo 24h
           </button>
 
           <!-- Lista de Vídeos 24h Ativos para Exclusão Manual -->
@@ -354,11 +396,6 @@
                 <img id="cfgLogoPreviewImg" src="" class="h-12 w-auto object-contain" />
                 <button type="button" onclick="removeLogoImage()" class="text-xs text-red-600 font-semibold hover:underline">Remover imagem</button>
               </div>
-            </div>
-
-            <div>
-              <label class="block text-[11px] font-bold text-gray-600 mb-1">Subtítulo / Localização nos Cards</label>
-              <input type="text" id="cfgAddress" placeholder="Ex: Teresina - PI • Vendas e Assistência" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm bg-white" />
             </div>
           </div>
 
@@ -402,6 +439,7 @@
     const db = getDatabase(app);
 
     const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
+    const MAX_VIDEO_SECONDS = 15;
 
     // DETETAR MODO VITRINE (COMPARTILHAMENTO PÚBLICO SEM BOTÃO ADM)
     const urlParams = new URLSearchParams(window.location.search);
@@ -416,7 +454,6 @@
       companyName: "TERÊ SHOP",
       headerMode: "title",
       logoData: "",
-      address: "Teresina - PI • Vendas e Assistência",
       adminPass: "admin123"
     };
 
@@ -428,8 +465,13 @@
     let isAdminLogged = false;
     let pendingPostImages = [];
     let pendingLogoData = "";
-    let pendingVideoBase64 = "";
     let viewerMuted = true;
+
+    // Estado do Editor de Vídeo 24h
+    let loadedVideoObjectUrl = "";
+    let trimStartSec = 0;
+    let trimEndSec = 15;
+    let trimCheckInterval = null;
 
     // SINCRONIZAR CONFIGURAÇÕES DA NUVEM
     const configRef = ref(db, "config");
@@ -451,7 +493,6 @@
       const now = Date.now();
       if (data) {
         const allItems = Object.entries(data).map(([id, val]) => ({ id, ...val }));
-        // Filtrar apenas os vídeos dentro do prazo de 24h
         activeVideos = allItems
           .filter(v => (now - (v.timestamp || 0)) < TWENTY_FOUR_HOURS_MS)
           .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
@@ -504,7 +545,6 @@
       }
     }
 
-    // NORMALIZADORES DE LINKS MANUAIS INDIVIDUAIS
     function resolveInstagramUrl(raw) {
       if (!raw) return "";
       const val = raw.trim();
@@ -533,7 +573,7 @@
       return `Expira em ${hours}h`;
     }
 
-    // RENDERIZAR CARROSSEL DE VÍDEOS 24H ABAIXO DO SLOGAN
+    // RENDERIZAR CARROSSEL DE VÍDEOS 24H ABAIXO DO CABEÇALHO/SLOGAN
     function renderStoriesCarousel() {
       const section = document.getElementById("storiesSection");
       const carousel = document.getElementById("storiesCarousel");
@@ -556,7 +596,7 @@
               ${vid.badge || "24h"}
             </span>
 
-            <!-- Ícone de Áudio (Mudo / Com Som) com 1 Toque -->
+            <!-- Ícone de Áudio (Mudo / Com Som) -->
             <button onclick="toggleMiniVideoAudio(event, '${vid.id}')" title="Ativar/Desativar Som"
               class="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/65 text-white flex items-center justify-center text-xs backdrop-blur-xs hover:bg-black transition">
               <i id="mini-audio-icon-${vid.id}" class="fa-solid fa-volume-xmark"></i>
@@ -569,7 +609,7 @@
                 <i class="fa-solid fa-trash"></i>
               </button>` : ""}
 
-            <!-- Rodapé do Mini Vídeo -->
+            <!-- Rodapé do Mini Vídeo com Contador 24h -->
             <div onclick="openStoryViewer(${idx})" class="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-black/90 via-black/50 to-transparent text-white cursor-pointer">
               <p class="text-[11px] font-bold leading-tight line-clamp-2">${vid.title}</p>
               <p class="text-[9px] text-amber-300 mt-0.5 font-semibold">${getRemainingHoursText(vid.timestamp)}</p>
@@ -585,7 +625,6 @@
       const iconEl = document.getElementById(`mini-audio-icon-${vidId}`);
       if (!videoEl) return;
 
-      // Silenciar outros vídeos antes de ativar este
       document.querySelectorAll("#storiesCarousel video").forEach(v => {
         if (v.id !== `mini-vid-${vidId}`) {
           v.muted = true;
@@ -598,9 +637,8 @@
       iconEl.className = videoEl.muted ? "fa-solid fa-volume-xmark" : "fa-solid fa-volume-high text-amber-400";
     };
 
-    // VISUALIZADOR EM TELA CHEIA DOS VÍDEOS 24H (ROLAGEM LATERAL DEDO DIREITA/ESQUERDA)
+    // VISUALIZADOR EM TELA CHEIA DOS VÍDEOS 24H
     window.openStoryViewer = function(startIndex) {
-      // Silenciar mini-vídeos do feed
       document.querySelectorAll("#storiesCarousel video").forEach(v => v.muted = true);
 
       const modal = document.getElementById("storyViewerModal");
@@ -712,7 +750,7 @@
       renderFeed();
     };
 
-    // RENDERIZAÇÃO DO FEED (IMAGENS ENQUADRADAS POR INTEIRO + LINKS INDIVIDUAIS)
+    // RENDERIZAÇÃO DO FEED (COM ATENDIMENTO INDIVIDUAL POR POST)
     function renderFeed() {
       const container = document.getElementById("feedContainer");
       let filtered = posts;
@@ -738,9 +776,9 @@
           ? "bg-emerald-100 text-emerald-800"
           : "bg-blue-100 text-blue-800";
         const badgeLabel = post.type === "venda" ? "VENDA" : "CONSERTO";
+        const serviceModeLabel = post.serviceMode || "Atendimento Online e Presencial";
         const safeTitle = (post.title || "").replace(/'/g, "");
 
-        // Links individuais exclusivos deste post (sem réplicas globais)
         const hasPostInsta = Boolean(post.instagram && post.instagram.trim());
         const hasPostWhats = Boolean(post.whatsapp && post.whatsapp.trim());
 
@@ -750,13 +788,13 @@
 
         return `
           <article class="pb-5 bg-white">
-            <!-- Cabeçalho do Card -->
+            <!-- Cabeçalho do Card com Modalidade Individual de Atendimento -->
             <div class="px-4 py-3 flex items-center justify-between">
               <div class="flex items-center gap-2.5">
                 ${avatarHtml}
                 <div>
                   <p class="text-xs font-extrabold text-slate-900 leading-tight">${config.companyName || "TERÊ SHOP"}</p>
-                  <p class="text-[11px] text-gray-400">${config.address || "Teresina - PI"}</p>
+                  <p class="text-[11px] text-gray-500 font-medium">${serviceModeLabel}</p>
                 </div>
               </div>
               <div class="flex items-center gap-2">
@@ -858,13 +896,12 @@
       }
     };
 
-    // CONTACTOS INDIVIDUAIS DE CADA PUBLICAÇÃO
     window.openPostInstagram = function(postId) {
       const post = posts.find(p => p.id === postId);
       if (!post || !post.instagram) return;
       const url = resolveInstagramUrl(post.instagram);
       const category = post.type === "venda" ? "VENDA" : "CONSERTO";
-      const msg = `Olá! Vi o anúncio de ${category}: "${post.title}" na vitrine ${config.companyName} e gostaria de mais informações.`;
+      const msg = `Olá! Vi o anúncio de ${category}: "${post.title}" (${post.serviceMode || "Atendimento"}) na vitrine ${config.companyName} e gostaria de mais informações.`;
 
       if (navigator.clipboard) navigator.clipboard.writeText(msg).catch(() => {});
       showToast("Mensagem copiada! Cole no Direct do Instagram.");
@@ -875,12 +912,11 @@
       const post = posts.find(p => p.id === postId);
       if (!post || !post.whatsapp) return;
       const category = post.type === "venda" ? "VENDA" : "CONSERTO";
-      const msg = `Olá! Vi o anúncio de ${category}: "${post.title}" na vitrine ${config.companyName} e gostaria de mais informações.`;
+      const msg = `Olá! Vi o anúncio de ${category}: "${post.title}" (${post.serviceMode || "Atendimento"}) na vitrine ${config.companyName} e gostaria de mais informações.`;
       const url = resolveWhatsappUrl(post.whatsapp, msg);
       window.open(url, "_blank");
     };
 
-    // FAVORITOS DO CLIENTE
     window.toggleSave = function(postId) {
       if (savedIds.includes(postId)) {
         savedIds = savedIds.filter(id => id !== postId);
@@ -893,7 +929,6 @@
       renderFeed();
     };
 
-    // PARTILHA BLINDADA (?vitrine=1)
     function getPublicShareUrl() {
       const url = new URL(window.location.href);
       url.searchParams.set("vitrine", "1");
@@ -926,7 +961,6 @@
       }
     };
 
-    // CONTROLO ADMINISTRATIVO
     window.openAdminGate = function() {
       if (isSharedVitrineMode) return;
       if (isAdminLogged) {
@@ -975,7 +1009,6 @@
 
     function openAdminPanel() {
       document.getElementById("cfgCompanyName").value = config.companyName || "TERÊ SHOP";
-      document.getElementById("cfgAddress").value = config.address || "";
       document.getElementById("cfgPassword").value = config.adminPass || "admin123";
 
       const modeRadio = document.querySelector(`input[name="headerMode"][value="${config.headerMode || "title"}"]`);
@@ -993,6 +1026,9 @@
     }
 
     window.closeModal = function(id) {
+      if (trimCheckInterval) clearInterval(trimCheckInterval);
+      const trimVid = document.getElementById("trimPreviewVideo");
+      if (trimVid) trimVid.pause();
       document.getElementById(id).classList.replace("flex", "hidden");
     };
 
@@ -1009,38 +1045,193 @@
       });
     };
 
-    // UPLOAD E GESTÃO DE VÍDEOS 24H
-    window.handleVideoSelect = function(event) {
+    // =========================================================================
+    // EDITOR DE RECORTE E COMPRESSÃO DE VÍDEO CURTO (ATÉ 15 SEGUNDOS / 7,5 MB)
+    // =========================================================================
+    window.handleVideoFileLoaded = function(event) {
       const file = event.target.files[0];
       if (!file) return;
 
       if (file.size > 7.5 * 1024 * 1024) {
-        showToast("O vídeo deve ter no máximo 7.5MB para carregar rápido.");
+        showToast("O arquivo deve ter no máximo 7,5 MB.");
         event.target.value = "";
-        pendingVideoBase64 = "";
+        document.getElementById("videoTrimmerBox").classList.add("hidden");
         return;
       }
 
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        pendingVideoBase64 = e.target.result;
-        showToast("Vídeo pronto para publicar!");
+      if (loadedVideoObjectUrl) URL.revokeObjectURL(loadedVideoObjectUrl);
+      loadedVideoObjectUrl = URL.createObjectURL(file);
+
+      const videoEl = document.getElementById("trimPreviewVideo");
+      videoEl.src = loadedVideoObjectUrl;
+      videoEl.onloadedmetadata = () => {
+        const totalDur = Math.max(1, videoEl.duration || 15);
+        const startInput = document.getElementById("trimStartRange");
+        const endInput = document.getElementById("trimEndRange");
+
+        startInput.max = Math.max(0, totalDur - 1).toFixed(1);
+        startInput.value = 0;
+
+        const initialEnd = Math.min(totalDur, MAX_VIDEO_SECONDS);
+        endInput.max = totalDur.toFixed(1);
+        endInput.value = initialEnd.toFixed(1);
+
+        trimStartSec = 0;
+        trimEndSec = initialEnd;
+        updateTrimLabels();
+        document.getElementById("videoTrimmerBox").classList.remove("hidden");
       };
-      reader.readAsDataURL(file);
     };
+
+    window.updateTrimControls = function(changedHandle) {
+      const startInput = document.getElementById("trimStartRange");
+      const endInput = document.getElementById("trimEndRange");
+      let s = parseFloat(startInput.value);
+      let e = parseFloat(endInput.value);
+
+      if (changedHandle === "start") {
+        if (s >= e) e = Math.min(parseFloat(endInput.max), s + 1);
+        if (e - s > MAX_VIDEO_SECONDS) e = s + MAX_VIDEO_SECONDS;
+      } else {
+        if (e <= s) s = Math.max(0, e - 1);
+        if (e - s > MAX_VIDEO_SECONDS) s = e - MAX_VIDEO_SECONDS;
+      }
+
+      startInput.value = s.toFixed(1);
+      endInput.value = e.toFixed(1);
+      trimStartSec = s;
+      trimEndSec = e;
+      updateTrimLabels();
+
+      const videoEl = document.getElementById("trimPreviewVideo");
+      if (videoEl) videoEl.currentTime = s;
+    };
+
+    function updateTrimLabels() {
+      const dur = Math.max(0.5, trimEndSec - trimStartSec);
+      document.getElementById("trimStartLabel").textContent = `${trimStartSec.toFixed(1)}s`;
+      document.getElementById("trimEndLabel").textContent = `${trimEndSec.toFixed(1)}s`;
+      document.getElementById("trimDurationBadge").textContent = `${dur.toFixed(1)}s / 15s`;
+    }
+
+    window.previewTrimmedSegment = function() {
+      const videoEl = document.getElementById("trimPreviewVideo");
+      if (!videoEl || !loadedVideoObjectUrl) return;
+      if (trimCheckInterval) clearInterval(trimCheckInterval);
+
+      videoEl.muted = false;
+      videoEl.currentTime = trimStartSec;
+      videoEl.play();
+
+      trimCheckInterval = setInterval(() => {
+        if (videoEl.currentTime >= trimEndSec || videoEl.paused) {
+          videoEl.pause();
+          videoEl.currentTime = trimStartSec;
+          clearInterval(trimCheckInterval);
+        }
+      }, 100);
+    };
+
+    // Processa e recorta exatamente o trecho [trimStartSec -> trimEndSec] em vídeo leve
+    function renderTrimmedVideoToBase64(videoUrl, startSec, endSec, keepAudio) {
+      return new Promise((resolve, reject) => {
+        const tempVideo = document.createElement("video");
+        tempVideo.src = videoUrl;
+        tempVideo.crossOrigin = "anonymous";
+        tempVideo.playsInline = true;
+        tempVideo.muted = !keepAudio;
+
+        tempVideo.onloadedmetadata = async () => {
+          try {
+            const targetMaxW = 480;
+            const scale = Math.min(1, targetMaxW / (tempVideo.videoWidth || 480));
+            const canvas = document.createElement("canvas");
+            canvas.width = Math.round((tempVideo.videoWidth || 480) * scale);
+            canvas.height = Math.round((tempVideo.videoHeight || 854) * scale);
+            const ctx = canvas.getContext("2d");
+
+            const canvasStream = canvas.captureStream(24);
+            let combinedStream = canvasStream;
+
+            // Capturar trilha de áudio original se disponível e ativada
+            if (keepAudio) {
+              try {
+                const rawStream = tempVideo.captureStream ? tempVideo.captureStream() : (tempVideo.mozCaptureStream ? tempVideo.mozCaptureStream() : null);
+                if (rawStream && rawStream.getAudioTracks().length > 0) {
+                  combinedStream = new MediaStream([
+                    ...canvasStream.getVideoTracks(),
+                    ...rawStream.getAudioTracks()
+                  ]);
+                }
+              } catch (audioErr) {
+                console.warn("Áudio capturado apenas pelo vídeo:", audioErr);
+              }
+            }
+
+            const mimeType = MediaRecorder.isTypeSupported("video/webm;codecs=vp8,opus")
+              ? "video/webm;codecs=vp8,opus"
+              : (MediaRecorder.isTypeSupported("video/mp4") ? "video/mp4" : "video/webm");
+
+            const recorder = new MediaRecorder(combinedStream, {
+              mimeType,
+              videoBitsPerSecond: 950000 // ~950 kbps (alta nitidez e leve para Firebase)
+            });
+
+            const chunks = [];
+            recorder.ondataavailable = (e) => {
+              if (e.data && e.data.size > 0) chunks.push(e.data);
+            };
+
+            recorder.onstop = () => {
+              const blob = new Blob(chunks, { type: mimeType });
+              const reader = new FileReader();
+              reader.onloadend = () => resolve(reader.result);
+              reader.onerror = reject;
+              reader.readAsDataURL(blob);
+            };
+
+            tempVideo.currentTime = startSec;
+            tempVideo.onseeked = () => {
+              recorder.start(200);
+              tempVideo.play();
+
+              const drawFrame = () => {
+                if (tempVideo.currentTime >= endSec || tempVideo.ended || tempVideo.paused) {
+                  tempVideo.pause();
+                  if (recorder.state !== "inactive") recorder.stop();
+                  return;
+                }
+                ctx.drawImage(tempVideo, 0, 0, canvas.width, canvas.height);
+                requestAnimationFrame(drawFrame);
+              };
+              drawFrame();
+            };
+          } catch (err) {
+            reject(err);
+          }
+        };
+
+        tempVideo.onerror = reject;
+      });
+    }
 
     window.handleSaveVideoStory = async function(event) {
       event.preventDefault();
-      if (!pendingVideoBase64) {
+      if (!loadedVideoObjectUrl) {
         showToast("Selecione um arquivo de vídeo curto primeiro.");
         return;
       }
 
       const btn = document.getElementById("publishVideoBtn");
       btn.disabled = true;
-      btn.textContent = "Enviando vídeo para a nuvem...";
+      const clipDuration = Math.ceil(trimEndSec - trimStartSec);
+      btn.textContent = `Processando recorte (${clipDuration}s)...`;
 
       try {
+        const keepAudio = document.getElementById("includeVideoAudio").checked;
+        const trimmedBase64 = await renderTrimmedVideoToBase64(loadedVideoObjectUrl, trimStartSec, trimEndSec, keepAudio);
+
+        btn.textContent = "Enviando para a nuvem...";
         const badge = document.getElementById("videoBadge").value;
         const title = document.getElementById("videoTitle").value.trim();
         const contactLink = document.getElementById("videoContactLink").value.trim();
@@ -1050,20 +1241,24 @@
           badge,
           title,
           contactLink,
-          videoData: pendingVideoBase64,
+          videoData: trimmedBase64,
           timestamp: Date.now()
         });
 
         document.getElementById("newVideoForm").reset();
-        pendingVideoBase64 = "";
+        document.getElementById("videoTrimmerBox").classList.add("hidden");
+        if (loadedVideoObjectUrl) {
+          URL.revokeObjectURL(loadedVideoObjectUrl);
+          loadedVideoObjectUrl = "";
+        }
         closeModal("adminModal");
-        showToast("Vídeo 24h publicado no topo da vitrine!");
+        showToast("Vídeo 24h recortado e publicado no topo!");
       } catch (err) {
         console.error(err);
-        showToast("Erro ao publicar vídeo. Tente um vídeo mais curto.");
+        showToast("Erro ao processar vídeo. Tente um trecho menor.");
       } finally {
         btn.disabled = false;
-        btn.textContent = "Publicar Vídeo 24h";
+        btn.textContent = "Recortar e Publicar Vídeo 24h";
       }
     };
 
@@ -1193,7 +1388,7 @@
       });
     }
 
-    // CRIAR OU ATUALIZAR ANÚNCIO COM CONTATOS INDIVIDUAIS
+    // CRIAR OU ATUALIZAR ANÚNCIO COM ATENDIMENTO E CONTATOS INDIVIDUAIS
     window.startEditPost = function(postId) {
       const post = posts.find(p => p.id === postId);
       if (!post) return;
@@ -1206,6 +1401,7 @@
       const typeRadio = document.querySelector(`input[name="postType"][value="${post.type}"]`);
       if (typeRadio) typeRadio.checked = true;
 
+      document.getElementById("postServiceMode").value = post.serviceMode || "Atendimento Online e Presencial";
       document.getElementById("postTitle").value = post.title || "";
       document.getElementById("postPrice").value = post.price || "";
       document.getElementById("postDescription").value = post.description || "";
@@ -1243,6 +1439,7 @@
 
       try {
         const type = document.querySelector('input[name="postType"]:checked').value;
+        const serviceMode = document.getElementById("postServiceMode").value;
         const title = document.getElementById("postTitle").value.trim();
         const price = document.getElementById("postPrice").value.trim();
         const description = document.getElementById("postDescription").value.trim();
@@ -1254,6 +1451,7 @@
 
         await set(targetRef, {
           type,
+          serviceMode,
           title,
           price,
           description,
@@ -1299,7 +1497,6 @@
           companyName: document.getElementById("cfgCompanyName").value.trim() || "TERÊ SHOP",
           headerMode: headerMode === "logo" && pendingLogoData ? "logo" : "title",
           logoData: pendingLogoData,
-          address: document.getElementById("cfgAddress").value.trim(),
           adminPass: document.getElementById("cfgPassword").value.trim() || "admin123"
         };
         await set(ref(db, "config"), updatedConfig);
