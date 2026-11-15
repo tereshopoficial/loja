@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Vitrine Digital</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#ffffff" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* Ocultar barra de rolagem horizontal nos carrosséis mas manter o swipe fluido */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .carousel-track {
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+    }
+    .carousel-slide {
+      scroll-snap-align: start;
+      flex: 0 0 100%;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans antialiased pb-20">
+
+  <!-- CABEÇALHO FIXO -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-gray-200">
+    <div class="max-w-lg mx-auto px-4 h-14 flex items-center justify-between">
+      <div class="flex items-center gap-2.5 overflow-hidden">
+        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 via-pink-500 to-purple-600 p-0.5 flex-shrink-0">
+          <div class="w-full h-full bg-white rounded-full flex items-center justify-center font-bold text-xs text-gray-800" id="headerAvatar">
+            LOJA
+          </div>
+        </div>
+        <h1 id="headerCompanyName" class="font-bold text-lg tracking-tight truncate">Minha Empresa</h1>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="shareApp()" title="Compartilhar Vitrine" class="p-2 text-gray-600 hover:text-black transition">
+          <i class="fa-solid fa-share-nodes text-lg"></i>
+        </button>
+        <button onclick="openAdminGate()" id="adminToggleBtn" title="Área do Administrador" class="p-2 text-gray-500 hover:text-black transition">
+          <i class="fa-solid fa-lock text-base"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- ABAS DE FILTRO (TODOS | VENDAS | CONSERTOS | SALVOS) -->
+    <nav class="max-w-lg mx-auto flex border-t border-gray-100 text-xs font-semibold">
+      <button onclick="setFilter('all')" id="tab-all" class="flex-1 py-2.5 text-center border-b-2 border-black text-black transition">
+        Todos
+      </button>
+      <button onclick="setFilter('venda')" id="tab-venda" class="flex-1 py-2.5 text-center border-b-2 border-transparent text-gray-500 hover:text-gray-800 transition">
+        Vendas
+      </button>
+      <button onclick="setFilter('conserto')" id="tab-conserto" class="flex-1 py-2.5 text-center border-b-2 border-transparent text-gray-500 hover:text-gray-800 transition">
+        Consertos
+      </button>
+      <button onclick="setFilter('saved')" id="tab-saved" class="flex-1 py-2.5 text-center border-b-2 border-transparent text-gray-500 hover:text-gray-800 transition">
+        <i class="fa-regular fa-bookmark mr-1"></i>Salvos
+      </button>
+    </nav>
+  </header>
+
+  <!-- FEED PRINCIPAL -->
+  <main id="feedContainer" class="max-w-lg mx-auto divide-y divide-gray-200 bg-white shadow-sm min-h-screen">
+    <!-- Os cards serão renderizados via JavaScript -->
+  </main>
+
+  <!-- TOAST DE NOTIFICAÇÃO -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-gray-900 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 text-center max-w-[90vw]">
+  </div>
+
+  <!-- MODAL LOGIN DO ADMINISTRADOR -->
+  <div id="loginModal" class="fixed inset-0 z-50 bg-black/60 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="font-bold text-lg">Acesso Administrativo</h2>
+        <button onclick="closeModal('loginModal')" class="text-gray-400 hover:text-gray-700"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <p class="text-xs text-gray-500 mb-4">Digite a senha de administrador para gerenciar banners e configurações. (Senha padrão: <b>admin123</b>)</p>
+      <input type="password" id="adminPasswordInput" placeholder="Senha do administrador" class="w-full border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm mb-3 focus:outline-none focus:border-black" />
+      <button onclick="verifyAdminLogin()" class="w-full bg-black text-white font-semibold py-2.5 rounded-xl text-sm hover:bg-gray-800 transition">
+        Entrar no Painel
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL PAINEL ADMINISTRATIVO -->
+  <div id="adminModal" class="fixed inset-0 z-50 bg-black/60 hidden items-end sm:items-center justify-center">
+    <div class="bg-white w-full max-w-lg rounded-t-2xl sm:rounded-2xl max-h-[92vh] flex flex-col shadow-2xl">
+      <!-- Topo Modal Admin -->
+      <div class="px-5 py-4 border-b border-gray-200 flex items-center justify-between">
+        <h2 class="font-bold text-base">Painel do Administrador</h2>
+        <div class="flex items-center gap-3">
+          <button onclick="logoutAdmin()" class="text-xs text-red-600 font-semibold hover:underline">Sair</button>
+          <button onclick="closeModal('adminModal')" class="text-gray-500 hover:text-black"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+      </div>
+
+      <!-- Navegação Interna do Admin -->
+      <div class="flex border-b border-gray-200 text-xs font-semibold bg-gray-50">
+        <button onclick="switchAdminTab('newPost')" id="admTab-newPost" class="flex-1 py-3 border-b-2 border-black text-black">
+          + Novo Banner / Post
+        </button>
+        <button onclick="switchAdminTab('settings')" id="admTab-settings" class="flex-1 py-3 border-b-2 border-transparent text-gray-500">
+          Configurações da Empresa
+        </button>
+      </div>
+
+      <!-- Conteúdo Scrollável Admin -->
+      <div class="p-5 overflow-y-auto space-y-4">
+
+        <!-- ABA 1: CRIAR POST / BANNER -->
+        <form id="newPostForm" onsubmit="handleCreatePost(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1">Categoria da Divulgação *</label>
+            <div class="grid grid-cols-2 gap-2">
+              <label class="cursor-pointer">
+                <input type="radio" name="postType" value="venda" checked class="peer sr-only" />
+                <div class="text-center py-2.5 rounded-xl border border-gray-300 text-xs font-semibold peer-checked:bg-emerald-600 peer-checked:text-white peer-checked:border-emerald-600 transition">
+                  <i class="fa-solid fa-tag mr-1"></i> Somente Venda
+                </div>
+              </label>
+              <label class="cursor-pointer">
+                <input type="radio" name="postType" value="conserto" class="peer sr-only" />
+                <div class="text-center py-2.5 rounded-xl border border-gray-300 text-xs font-semibold peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 transition">
+                  <i class="fa-solid fa-wrench mr-1"></i> Somente Conserto
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1">Imagens em Alta Definição (Máx. 10) *</label>
+            <input type="file" id="postImagesInput" accept="image/*" multiple required onchange="previewSelectedImages(event)"
+              class="w-full text-xs text-gray-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-gray-800 hover:file:bg-gray-200" />
+            <p class="text-[11px] text-gray-400 mt-1">Arraste lateralmente no feed para ver até 10 fotos.</p>
+            <div id="imagePreviewGrid" class="grid grid-cols-5 gap-1.5 mt-2"></div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1">Título do Produto ou Serviço *</label>
+            <input type="text" id="postTitle" required placeholder="Ex: iPhone 15 Pro Max ou Troca de Tela Express"
+              class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-black" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1">Valor ou Condição (Opcional)</label>
+            <input type="text" id="postPrice" placeholder="Ex: R$ 4.500,00 ou Orçamento Grátis"
+              class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-black" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1">Descrição e Detalhes *</label>
+            <textarea id="postDescription" rows="3" required placeholder="Descreva garantia, especificações, prazo de entrega..."
+              class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-black"></textarea>
+          </div>
+
+          <button type="submit" class="w-full bg-black text-white font-semibold py-3 rounded-xl text-sm hover:bg-gray-800 transition">
+            Publicar no Feed
+          </button>
+        </form>
+
+        <!-- ABA 2: CONFIGURAÇÕES DA EMPRESA -->
+        <form id="settingsForm" onsubmit="handleSaveSettings(event)" class="space-y-4 hidden">
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1">Nome da Empresa (Título Principal) *</label>
+            <input type="text" id="cfgCompanyName" required class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1">Usuário do Instagram (sem @) *</label>
+            <input type="text" id="cfgInstagram" required placeholder="ex: suaempresaoficial" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1">WhatsApp / Telefone Complementar</label>
+            <input type="text" id="cfgPhone" placeholder="Ex: (86) 99999-9999" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1">Endereço / Horário de Funcionamento</label>
+            <input type="text" id="cfgAddress" placeholder="Ex: Av. Principal, 100 - Seg a Sáb 08h às 18h" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1">Alterar Senha do Administrador</label>
+            <input type="text" id="cfgPassword" required class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm" />
+          </div>
+          <button type="submit" class="w-full bg-black text-white font-semibold py-3 rounded-xl text-sm hover:bg-gray-800 transition">
+            Salvar Configurações
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ESTADO INICIAL PADRÃO
+    const DEFAULT_CONFIG = {
+      companyName: "TechStore & Assistência",
+      instagram: "instagram",
+      phone: "(86) 99999-0000",
+      address: "Centro • Seg a Sáb das 08h às 18h",
+      adminPass: "admin123"
+    };
+
+    const DEFAULT_POSTS = [
+      {
+        id: "post-1",
+        type: "venda",
+        title: "Smartwatch Ultra Series 9 - Lacrado",
+        price: "R$ 349,90",
+        description: "Tela AMOLED de alta definição, bateria para até 7 dias, resistente à água e garantia de 90 dias.",
+        images: [
+          "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?auto=format&fit=crop&w=1080&q=90",
+          "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=1080&q=90"
+        ],
+        createdAt: "Hoje"
+      },
+      {
+        id: "post-2",
+        type: "conserto",
+        title: "Troca de Tela e Bateria Especializada",
+        price: "Orçamento na Hora",
+        description: "Serviço técnico especializado com peças de primeira linha. Manutenção realizada em até 40 minutos com garantia.",
+        images: [
+          "https://images.unsplash.com/photo-1597740985671-2a8a3b80502e?auto=format&fit=crop&w=1080&q=90",
+          "https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=1080&q=90"
+        ],
+        createdAt: "Ontem"
+      }
+    ];
+
+    let config = JSON.parse(localStorage.getItem("app_config")) || DEFAULT_CONFIG;
+    let posts = JSON.parse(localStorage.getItem("app_posts")) || DEFAULT_POSTS;
+    let savedIds = JSON.parse(localStorage.getItem("app_saved")) || [];
+    let currentFilter = "all";
+    let isAdminLogged = false;
+    let pendingBase64Images = [];
+
+    // INICIALIZAÇÃO
+    function init() {
+      applyConfigUI();
+      renderFeed();
+    }
+
+    function applyConfigUI() {
+      document.title = config.companyName;
+      document.getElementById("headerCompanyName").textContent = config.companyName;
+      document.getElementById("headerAvatar").textContent = config.companyName.substring(0, 2).toUpperCase();
+    }
+
+    // FILTROS
+    function setFilter(filter) {
+      currentFilter = filter;
+      ["all", "venda", "conserto", "saved"].forEach(tab => {
+        const el = document.getElementById(`tab-${tab}`);
+        if (tab === filter) {
+          el.classList.add("border-black", "text-black");
+          el.classList.remove("border-transparent", "text-gray-500");
+        } else {
+          el.classList.remove("border-black", "text-black");
+          el.classList.add("border-transparent", "text-gray-500");
+        }
+      });
+      renderFeed();
+    }
+
+    // RENDERIZAR FEED ESTILO INSTAGRAM
+    function renderFeed() {
+      const container = document.getElementById("feedContainer");
+      let filtered = posts;
+
+      if (currentFilter === "venda") filtered = posts.filter(p => p.type === "venda");
+      if (currentFilter === "conserto") filtered = posts.filter(p => p.type === "conserto");
+      if (currentFilter === "saved") filtered = posts.filter(p => savedIds.includes(p.id));
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="py-20 px-6 text-center text-gray-400">
+            <i class="fa-regular fa-images text-4xl mb-3"></i>
+            <p class="text-sm font-medium">Nenhuma publicação encontrada nesta aba.</p>
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(post => {
+        const isSaved = savedIds.includes(post.id);
+        const badgeClass = post.type === "venda"
+          ? "bg-emerald-100 text-emerald-800"
+          : "bg-blue-100 text-blue-800";
+        const badgeLabel = post.type === "venda" ? "VENDA" : "CONSERTO";
+
+        return `
+          <article class="pb-5 bg-white">
+            <!-- Topo do Post -->
+            <div class="px-4 py-3 flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-full bg-gray-900 text-white flex items-center justify-center text-xs font-bold">
+                  ${config.companyName.substring(0, 2).toUpperCase()}
+                </div>
+                <div>
+                  <p class="text-xs font-bold leading-tight">${config.companyName}</p>
+                  <p class="text-[11px] text-gray-400">${config.address}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-bold px-2.5 py-1 rounded-full ${badgeClass}">${badgeLabel}</span>
+                ${isAdminLogged ? `
+                  <button onclick="deletePost('${post.id}')" title="Excluir post" class="text-red-500 hover:text-red-700 p-1">
+                    <i class="fa-solid fa-trash text-xs"></i>
+                  </button>` : ""}
+              </div>
+            </div>
+
+            <!-- Carrossel Horizontal (Até 10 Imagens) -->
+            <div class="relative bg-black">
+              <div id="track-${post.id}" onscroll="updateCarouselIndicator('${post.id}', ${post.images.length})"
+                class="carousel-track flex overflow-x-auto no-scrollbar aspect-square">
+                ${post.images.map((img, idx) => `
+                  <div class="carousel-slide relative w-full h-full flex items-center justify-center bg-neutral-950">
+                    <img src="${img}" alt="${post.title} - Foto ${idx + 1}" loading="lazy" class="w-full h-full object-cover" />
+                  </div>
+                `).join("")}
+              </div>
+
+              ${post.images.length > 1 ? `
+                <div id="counter-${post.id}" class="absolute top-3 right-3 bg-black/70 text-white text-[11px] font-semibold px-2.5 py-1 rounded-full">
+                  1/${post.images.length}
+                </div>
+              ` : ""}
+            </div>
+
+            <!-- Indicador de Bolinhas (Dots) -->
+            ${post.images.length > 1 ? `
+              <div id="dots-${post.id}" class="flex justify-center gap-1.5 pt-2.5">
+                ${post.images.map((_, i) => `
+                  <span class="w-1.5 h-1.5 rounded-full transition-all ${i === 0 ? "bg-blue-600 w-3" : "bg-gray-300"}"></span>
+                `).join("")}
+              </div>
+            ` : ""}
+
+            <!-- Barra de Ações & Link Direto Instagram -->
+            <div class="px-4 pt-3">
+              <div class="flex items-center justify-between gap-2 mb-3">
+                <button onclick="contactInstagram('${post.title.replace(/'/g, "")}', '${badgeLabel}')"
+                  class="flex-1 bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-bold text-xs py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm active:scale-[0.99] transition">
+                  <i class="fa-brands fa-instagram text-base"></i>
+                  <span>Falar no Instagram</span>
+                </button>
+
+                <button onclick="sharePost('${post.title.replace(/'/g, "")}')" title="Compartilhar"
+                  class="p-2.5 rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-50 transition">
+                  <i class="fa-regular fa-paper-plane text-base"></i>
+                </button>
+
+                <button onclick="toggleSave('${post.id}')" title="Salvar item"
+                  class="p-2.5 rounded-xl border border-gray-200 ${isSaved ? "text-black bg-gray-100" : "text-gray-700"} hover:bg-gray-50 transition">
+                  <i class="${isSaved ? "fa-solid" : "fa-regular"} fa-bookmark text-base"></i>
+                </button>
+              </div>
+
+              <!-- Título, Valor e Descrição -->
+              <div class="space-y-1">
+                <div class="flex items-baseline justify-between gap-2">
+                  <h2 class="font-bold text-sm text-gray-900">${post.title}</h2>
+                  ${post.price ? `<span class="font-extrabold text-sm text-emerald-700 whitespace-nowrap">${post.price}</span>` : ""}
+                </div>
+                <p class="text-xs text-gray-600 leading-relaxed">${post.description}</p>
+              </div>
+
+              <!-- Rodapé de Dados Complementares -->
+              <div class="mt-3 pt-2.5 border-t border-gray-100 flex flex-wrap items-center justify-between text-[11px] text-gray-500 gap-2">
+                <span><i class="fa-brands fa-instagram mr-1"></i>@${config.instagram}</span>
+                ${config.phone ? `<span><i class="fa-solid fa-phone mr-1"></i>${config.phone}</span>` : ""}
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    // ATUALIZAR INDICADOR DO CARROSSEL
+    function updateCarouselIndicator(postId, total) {
+      const track = document.getElementById(`track-${postId}`);
+      const index = Math.round(track.scrollLeft / track.clientWidth);
+      const counter = document.getElementById(`counter-${postId}`);
+      if (counter) counter.textContent = `${index + 1}/${total}`;
+
+      const dotsContainer = document.getElementById(`dots-${postId}`);
+      if (dotsContainer) {
+        Array.from(dotsContainer.children).forEach((dot, i) => {
+          dot.className = i === index
+            ? "w-3 h-1.5 rounded-full bg-blue-600 transition-all"
+            : "w-1.5 h-1.5 rounded-full bg-gray-300 transition-all";
+        });
+      }
+    }
+
+    // LINK INTELIGENTE PARA INSTAGRAM (PROPOSTA DE OURO #3)
+    function contactInstagram(title, category) {
+      const msg = `Olá! Vi o anúncio de ${category}: "${title}" na vitrine da ${config.companyName} e gostaria de mais informações.`;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(msg).catch(() => {});
+      }
+      showToast("Mensagem copiada! Cole no Direct do Instagram.");
+      setTimeout(() => {
+        window.open(`https://instagram.com/${config.instagram}`, "_blank");
+      }, 650);
+    }
+
+    // SALVAR / FAVORITAR (MODO CLIENTE)
+    function toggleSave(postId) {
+      if (savedIds.includes(postId)) {
+        savedIds = savedIds.filter(id => id !== postId);
+        showToast("Removido dos salvos");
+      } else {
+        savedIds.push(postId);
+        showToast("Salvo na sua lista!");
+      }
+      localStorage.setItem("app_saved", JSON.stringify(savedIds));
+      renderFeed();
+    }
+
+    // COMPARTILHAR APP / PRODUTO
+    function shareApp() {
+      const shareData = {
+        title: config.companyName,
+        text: `Confira os produtos e serviços de ${config.companyName}:`,
+        url: window.location.href
+      };
+      if (navigator.share) {
+        navigator.share(shareData).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(window.location.href);
+        showToast("Link da vitrine copiado para compartilhar!");
+      }
+    }
+
+    function sharePost(title) {
+      const text = `Olha esse item em ${config.companyName}: ${title} - ${window.location.href}`;
+      if (navigator.share) {
+        navigator.share({ title, text, url: window.location.href }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(text);
+        showToast("Link do anúncio copiado!");
+      }
+    }
+
+    // CONTROLE ADMINISTRATIVO
+    function openAdminGate() {
+      if (isAdminLogged) {
+        openAdminPanel();
+      } else {
+        document.getElementById("adminPasswordInput").value = "";
+        document.getElementById("loginModal").classList.replace("hidden", "flex");
+      }
+    }
+
+    function verifyAdminLogin() {
+      const pass = document.getElementById("adminPasswordInput").value;
+      if (pass === config.adminPass) {
+        isAdminLogged = true;
+        document.getElementById("adminToggleBtn").innerHTML = `<i class="fa-solid fa-gear text-base text-black"></i>`;
+        closeModal("loginModal");
+        openAdminPanel();
+        renderFeed();
+        showToast("Modo Administrador ativado");
+      } else {
+        showToast("Senha incorreta!");
+      }
+    }
+
+    function logoutAdmin() {
+      isAdminLogged = false;
+      document.getElementById("adminToggleBtn").innerHTML = `<i class="fa-solid fa-lock text-base"></i>`;
+      closeModal("adminModal");
+      renderFeed();
+      showToast("Modo Cliente ativado");
+    }
+
+    function openAdminPanel() {
+      document.getElementById("cfgCompanyName").value = config.companyName;
+      document.getElementById("cfgInstagram").value = config.instagram;
+      document.getElementById("cfgPhone").value = config.phone;
+      document.getElementById("cfgAddress").value = config.address;
+      document.getElementById("cfgPassword").value = config.adminPass;
+      document.getElementById("adminModal").classList.replace("hidden", "flex");
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.replace("flex", "hidden");
+    }
+
+    function switchAdminTab(tab) {
+      const isNew = tab === "newPost";
+      document.getElementById("newPostForm").classList.toggle("hidden", !isNew);
+      document.getElementById("settingsForm").classList.toggle("hidden", isNew);
+
+      document.getElementById("admTab-newPost").className = isNew
+        ? "flex-1 py-3 border-b-2 border-black text-black"
+        : "flex-1 py-3 border-b-2 border-transparent text-gray-500";
+      document.getElementById("admTab-settings").className = !isNew
+        ? "flex-1 py-3 border-b-2 border-black text-black"
+        : "flex-1 py-3 border-b-2 border-transparent text-gray-500";
+    }
+
+    // PROCESSAMENTO DE ATÉ 10 IMAGENS EM ALTA DEFINIÇÃO (COM OTIMIZAÇÃO)
+    async function previewSelectedImages(event) {
+      const files = Array.from(event.target.files).slice(0, 10);
+      if (event.target.files.length > 10) {
+        showToast("Limite máximo de 10 imagens por banner.");
+      }
+
+      const grid = document.getElementById("imagePreviewGrid");
+      grid.innerHTML = "<p class='col-span-5 text-xs text-gray-400'>Processando imagens...</p>";
+      pendingBase64Images = [];
+
+      for (const file of files) {
+        const compressed = await compressImage(file, 1080, 0.85);
+        pendingBase64Images.push(compressed);
+      }
+
+      grid.innerHTML = pendingBase64Images.map(src => `
+        <img src="${src}" class="w-full aspect-square object-cover rounded-lg border border-gray-200" />
+      `).join("");
+    }
+
+    function compressImage(file, maxWidth, quality) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            let width = img.width;
+            let height = img.height;
+            if (width > maxWidth) {
+              height = Math.round((height * maxWidth) / width);
+              width = maxWidth;
+            }
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+            resolve(canvas.toDataURL("image/jpeg", quality));
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // CRIAR NOVA PUBLICAÇÃO
+    function handleCreatePost(event) {
+      event.preventDefault();
+      if (pendingBase64Images.length === 0) {
+        showToast("Selecione pelo menos 1 imagem.");
+        return;
+      }
+
+      const type = document.querySelector('input[name="postType"]:checked').value;
+      const title = document.getElementById("postTitle").value.trim();
+      const price = document.getElementById("postPrice").value.trim();
+      const description = document.getElementById("postDescription").value.trim();
+
+      const newPost = {
+        id: "post-" + Date.now(),
+        type,
+        title,
+        price,
+        description,
+        images: pendingBase64Images,
+        createdAt: "Agora"
+      };
+
+      posts.unshift(newPost);
+      localStorage.setItem("app_posts", JSON.stringify(posts));
+
+      document.getElementById("newPostForm").reset();
+      document.getElementById("imagePreviewGrid").innerHTML = "";
+      pendingBase64Images = [];
+
+      closeModal("adminModal");
+      setFilter("all");
+      showToast("Banner publicado com sucesso!");
+    }
+
+    function deletePost(postId) {
+      if (!confirm("Deseja realmente excluir esta publicação?")) return;
+      posts = posts.filter(p => p.id !== postId);
+      localStorage.setItem("app_posts", JSON.stringify(posts));
+      renderFeed();
+      showToast("Publicação removida.");
+    }
+
+    // SALVAR CONFIGURAÇÕES DA EMPRESA
+    function handleSaveSettings(event) {
+      event.preventDefault();
+      config = {
+        companyName: document.getElementById("cfgCompanyName").value.trim(),
+        instagram: document.getElementById("cfgInstagram").value.trim().replace("@", ""),
+        phone: document.getElementById("cfgPhone").value.trim(),
+        address: document.getElementById("cfgAddress").value.trim(),
+        adminPass: document.getElementById("cfgPassword").value.trim() || "admin123"
+      };
+      localStorage.setItem("app_config", JSON.stringify(config));
+      applyConfigUI();
+      renderFeed();
+      closeModal("adminModal");
+      showToast("Configurações atualizadas!");
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById("toast");
+      toast.textContent = msg;
+      toast.classList.remove("opacity-0");
+      setTimeout(() => toast.classList.add("opacity-0"), 2800);
+    }
+
+    init();
+  </script>
+</body>
+</html>
