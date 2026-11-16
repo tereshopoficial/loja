@@ -16,10 +16,10 @@
     html, body {
       overscroll-behavior-y: none;
       -webkit-tap-highlight-color: transparent;
-      user-select: none;
     }
-    input, textarea, select {
-      user-select: text;
+    input, textarea, select, label {
+      user-select: auto;
+      -webkit-user-select: auto;
     }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -47,7 +47,7 @@
       100% { opacity: 0; visibility: hidden; }
     }
     .splash-animate {
-      animation: fadeOutSplash 1.4s ease-out forwards;
+      animation: fadeOutSplash 1.2s ease-out forwards;
     }
   </style>
 </head>
@@ -157,7 +157,11 @@
   <!-- LIGHTBOX DE FOTOS EM TELA CHEIA -->
   <div id="photoLightboxModal" class="fixed inset-0 z-50 bg-black hidden flex-col justify-between safe-top safe-bottom">
     <div class="p-4 flex items-center justify-between text-white bg-gradient-to-b from-black/80 to-transparent">
-      <div>
+      <button onclick="closePhotoLightbox()" class="px-3 py-1.5 rounded-full bg-white/15 backdrop-blur flex items-center gap-1.5 text-white text-xs font-bold">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span>Voltar</span>
+      </button>
+      <div class="text-center px-2">
         <p id="lightboxTitle" class="text-xs font-bold line-clamp-1"></p>
         <p id="lightboxCounter" class="text-[11px] text-amber-400 font-semibold"></p>
       </div>
@@ -178,11 +182,14 @@
   <!-- VISUALIZADOR EM TELA CHEIA PARA VÍDEOS 24H -->
   <div id="storyViewerModal" class="fixed inset-0 z-50 bg-black hidden flex-col justify-between safe-top safe-bottom">
     <div class="relative z-20 p-4 bg-gradient-to-b from-black/80 to-transparent flex items-center justify-between text-white">
-      <div class="flex items-center gap-2.5">
+      <div class="flex items-center gap-2">
+        <button onclick="closeStoryViewer()" class="px-3 py-1.5 rounded-full bg-white/15 backdrop-blur flex items-center gap-1.5 text-white text-xs font-bold">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Voltar</span>
+        </button>
         <span id="viewerBadge" class="text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full bg-amber-500 text-slate-950">
           Oferta 24h
         </span>
-        <span id="viewerTimer" class="text-xs text-gray-200 font-medium"></span>
       </div>
       <div class="flex items-center gap-2">
         <button onclick="toggleViewerAudio()" id="viewerAudioBtn" title="Alternar Áudio" class="px-3 h-9 rounded-full bg-white/20 backdrop-blur flex items-center justify-center gap-1.5 text-white text-xs font-bold">
@@ -200,7 +207,10 @@
     </div>
 
     <div id="viewerFooter" class="relative z-20 p-4 bg-gradient-to-t from-black/90 via-black/60 to-transparent text-white space-y-2.5">
-      <p id="viewerTitle" class="font-bold text-sm"></p>
+      <div class="flex items-center justify-between gap-2">
+        <p id="viewerTitle" class="font-bold text-sm"></p>
+        <span id="viewerTimer" class="text-[11px] text-amber-300 font-semibold whitespace-nowrap"></span>
+      </div>
       <div id="viewerActionBtnContainer"></div>
     </div>
   </div>
@@ -235,7 +245,7 @@
       </div>
 
       <button onclick="closeModal('iosInstallModal')" class="w-full bg-[#081c45] text-white font-bold py-3 rounded-xl text-xs">
-        Entendi
+        Voltar ao App
       </button>
     </div>
   </div>
@@ -258,8 +268,8 @@
       </div>
       <p class="text-xs text-gray-500 mb-4">Insira a senha de administrador para gerir anúncios, vídeos 24h e configurações.</p>
       
-      <form onsubmit="event.preventDefault(); verifyAdminLogin();">
-        <div class="relative mb-4">
+      <form onsubmit="event.preventDefault(); verifyAdminLogin();" class="space-y-3">
+        <div class="relative">
           <input type="password" id="adminPasswordInput" autocomplete="current-password" placeholder="••••••••"
             class="w-full border border-gray-300 rounded-xl pl-3.5 pr-10 py-2.5 text-sm focus:outline-none focus:border-blue-600" />
           <button type="button" onclick="togglePasswordVisibility('adminPasswordInput', 'loginEyeIcon')"
@@ -270,6 +280,9 @@
         <button type="submit" class="w-full bg-[#081c45] text-white font-semibold py-2.5 rounded-xl text-sm hover:bg-blue-900 transition">
           Entrar no Painel
         </button>
+        <button type="button" onclick="closeModal('loginModal')" class="w-full bg-gray-100 text-gray-700 font-semibold py-2.5 rounded-xl text-xs hover:bg-gray-200 transition">
+          Cancelar e Voltar
+        </button>
       </form>
     </div>
   </div>
@@ -277,26 +290,33 @@
   <!-- MODAL PAINEL ADMINISTRATIVO -->
   <div id="adminModal" class="fixed inset-0 z-50 bg-black/60 hidden items-end sm:items-center justify-center">
     <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl max-h-[92vh] flex flex-col shadow-2xl">
-      <div class="px-5 py-4 border-b border-gray-200 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-          <h2 class="font-bold text-base text-slate-900">Gestão TERÊ SHOP</h2>
+      
+      <!-- Cabeçalho com Botão de Retornar Explícito -->
+      <div class="px-4 py-3.5 border-b border-gray-200 flex items-center justify-between">
+        <button type="button" onclick="cancelAndReturnFromAdmin()" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Voltar</span>
+        </button>
+
+        <div class="flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <h2 class="font-bold text-sm text-slate-900">Gestão TERÊ SHOP</h2>
         </div>
-        <div class="flex items-center gap-3">
-          <button onclick="logoutAdmin()" class="text-xs text-red-600 font-semibold hover:underline">Sair</button>
-          <button onclick="closeModal('adminModal')" class="text-gray-500 hover:text-black"><i class="fa-solid fa-xmark text-lg"></i></button>
-        </div>
+
+        <button type="button" onclick="logoutAdmin()" class="px-2.5 py-1.5 rounded-xl bg-red-50 text-red-600 text-xs font-bold hover:bg-red-100 transition">
+          Sair ADM
+        </button>
       </div>
 
       <!-- Navegação Interna do Admin (3 Abas) -->
       <div class="flex border-b border-gray-200 text-[11px] font-bold bg-gray-50">
-        <button onclick="switchAdminTab('newPost')" id="admTab-newPost" class="flex-1 py-3 border-b-2 border-blue-700 text-blue-700">
+        <button type="button" onclick="switchAdminTab('newPost')" id="admTab-newPost" class="flex-1 py-3 border-b-2 border-blue-700 text-blue-700">
           + Novo Banner/Post
         </button>
-        <button onclick="switchAdminTab('newVideo')" id="admTab-newVideo" class="flex-1 py-3 border-b-2 border-transparent text-gray-500">
+        <button type="button" onclick="switchAdminTab('newVideo')" id="admTab-newVideo" class="flex-1 py-3 border-b-2 border-transparent text-gray-500">
           + Vídeo 24h
         </button>
-        <button onclick="switchAdminTab('settings')" id="admTab-settings" class="flex-1 py-3 border-b-2 border-transparent text-gray-500">
+        <button type="button" onclick="switchAdminTab('settings')" id="admTab-settings" class="flex-1 py-3 border-b-2 border-transparent text-gray-500">
           Configurações
         </button>
       </div>
@@ -308,9 +328,9 @@
         <form id="newPostForm" onsubmit="handleSavePost(event)" class="space-y-4">
           <input type="hidden" id="editingPostId" value="" />
 
-          <div id="editingBannerAlert" class="hidden bg-amber-50 border border-amber-200 text-amber-800 px-3 py-2 rounded-xl text-xs flex items-center justify-between">
+          <div id="editingBannerAlert" class="hidden bg-amber-50 border border-amber-200 text-amber-800 px-3 py-2.5 rounded-xl text-xs flex items-center justify-between">
             <span><i class="fa-solid fa-pen mr-1"></i> Editando anúncio existente</span>
-            <button type="button" onclick="resetPostForm()" class="underline font-bold">Cancelar edição</button>
+            <button type="button" onclick="resetPostForm()" class="px-2.5 py-1 bg-amber-200/70 rounded-lg font-bold text-amber-950">Cancelar edição</button>
           </div>
 
           <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
@@ -344,10 +364,12 @@
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1">Imagens em Alta Definição (Máx. 10 — Enquadramento Total) *</label>
-            <input type="file" id="postImagesInput" accept="image/*" multiple onchange="previewSelectedImages(event)"
-              class="w-full text-xs text-gray-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
-            <p class="text-[11px] text-gray-400 mt-1">As fotos são exibidas por inteiro, sem cortes.</p>
+            <label class="block text-xs font-bold text-gray-700 mb-1.5">Imagens em Alta Definição (Máx. 10 — Enquadramento Total) *</label>
+            <label for="postImagesInput" class="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl border-2 border-dashed border-blue-300 bg-blue-50/70 text-blue-800 text-xs font-bold cursor-pointer active:scale-[0.99] transition">
+              <i class="fa-solid fa-images text-base"></i>
+              <span>Selecionar Fotos da Galeria (até 10)</span>
+            </label>
+            <input type="file" id="postImagesInput" accept="image/*" multiple onchange="previewSelectedImages(event)" class="sr-only" />
             <div id="imagePreviewGrid" class="grid grid-cols-5 gap-1.5 mt-2"></div>
           </div>
 
@@ -389,15 +411,20 @@
             </div>
           </div>
 
-          <button type="submit" id="publishBtn" class="w-full bg-[#081c45] text-white font-semibold py-3 rounded-xl text-sm hover:bg-blue-900 transition">
-            Publicar na Vitrine
-          </button>
+          <div class="space-y-2 pt-1">
+            <button type="submit" id="publishBtn" class="w-full bg-[#081c45] text-white font-semibold py-3 rounded-xl text-sm hover:bg-blue-900 transition">
+              Publicar na Vitrine
+            </button>
+            <button type="button" onclick="cancelAndReturnFromAdmin()" class="w-full bg-gray-100 text-gray-700 font-bold py-2.5 rounded-xl text-xs hover:bg-gray-200 transition">
+              Cancelar e Voltar ao Feed
+            </button>
+          </div>
         </form>
 
-        <!-- ABA 2: PUBLICAR VÍDEO CURTO 24H -->
+        <!-- ABA 2: PUBLICAR VÍDEO CURTO 24H (OTIMIZADO PARA IPHONE / iOS E ANDROID) -->
         <form id="newVideoForm" onsubmit="handleSaveVideoStory(event)" class="space-y-4 hidden">
           <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-900 space-y-1">
-            <p><i class="fa-solid fa-volume-high mr-1"></i> Suba um vídeo curto da galeria (<b>até 15s e até 7,5 MB</b>) com áudio original preservado ou cole um link direto <code>.mp4</code>.</p>
+            <p><i class="fa-solid fa-film mr-1"></i> Toque no botão abaixo para abrir a <b>Fototeca / Galeria</b> do iPhone ou Android e selecionar um vídeo curto (<b>até 15s e até 7,5 MB</b>).</p>
           </div>
 
           <div>
@@ -412,10 +439,18 @@
 
           <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
             <div>
-              <label class="block text-xs font-bold text-gray-700 mb-1">Opção A: Escolher Vídeo da Galeria *</label>
-              <input type="file" id="videoFileInput" accept="video/*,video/mp4,video/quicktime" onchange="handleVideoFileLoaded(event)"
-                class="w-full text-xs text-gray-600 file:mr-3 file:py-2.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-100 file:text-amber-900 hover:file:bg-amber-200" />
-              <p id="videoFileStatus" class="text-[11px] text-gray-600 font-medium mt-1"></p>
+              <label class="block text-xs font-bold text-gray-700 mb-1.5">Opção A: Selecionar Vídeo da Fototeca / Galeria *</label>
+              
+              <!-- Botão Label tátil de área total para iOS Safari / PWA -->
+              <label for="videoFileInput" class="flex flex-col items-center justify-center gap-1.5 w-full py-4 px-4 rounded-xl border-2 border-dashed border-amber-400 bg-amber-50 text-amber-950 text-xs font-extrabold cursor-pointer active:scale-[0.98] transition">
+                <i class="fa-solid fa-video text-xl text-amber-600"></i>
+                <span>Toque aqui para escolher Vídeo (Galeria / Câmera)</span>
+                <span class="text-[10px] font-normal text-amber-800">MP4 ou MOV • Máx. 15 segundos</span>
+              </label>
+              <!-- accept="video/*" exclusivo garante que o iOS abra a Fototeca corretamente -->
+              <input type="file" id="videoFileInput" accept="video/*" onchange="handleVideoFileLoaded(event)" class="sr-only" />
+
+              <p id="videoFileStatus" class="text-[11px] text-blue-700 font-bold mt-2"></p>
             </div>
 
             <div class="border-t border-gray-200 pt-2.5">
@@ -471,9 +506,14 @@
               class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm" />
           </div>
 
-          <button type="submit" id="publishVideoBtn" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold py-3 rounded-xl text-sm transition">
-            Publicar Vídeo 24h
-          </button>
+          <div class="space-y-2 pt-1">
+            <button type="submit" id="publishVideoBtn" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold py-3 rounded-xl text-sm transition">
+              Publicar Vídeo 24h
+            </button>
+            <button type="button" onclick="cancelAndReturnFromAdmin()" class="w-full bg-gray-100 text-gray-700 font-bold py-2.5 rounded-xl text-xs hover:bg-gray-200 transition">
+              Cancelar e Voltar ao Feed
+            </button>
+          </div>
 
           <div id="adminActiveVideosList" class="pt-3 border-t border-gray-200 space-y-2"></div>
         </form>
@@ -505,8 +545,11 @@
 
             <div>
               <label class="block text-[11px] font-bold text-gray-600 mb-1">Substituir Imagem do Slogan / Logo (Alta Definição)</label>
-              <input type="file" id="cfgLogoInput" accept="image/*" onchange="handleLogoUpload(event)"
-                class="w-full text-xs text-gray-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-100 file:text-amber-900 hover:file:bg-amber-200" />
+              <label for="cfgLogoInput" class="flex items-center justify-center gap-2 w-full py-2.5 px-3 rounded-xl border border-amber-300 bg-amber-50 text-amber-900 text-xs font-bold cursor-pointer">
+                <i class="fa-solid fa-image"></i>
+                <span>Escolher Imagem do Logo / Slogan</span>
+              </label>
+              <input type="file" id="cfgLogoInput" accept="image/*" onchange="handleLogoUpload(event)" class="sr-only" />
               <div id="cfgLogoPreviewBox" class="mt-2 hidden items-center gap-3 bg-white p-2 rounded-lg border border-gray-200">
                 <img id="cfgLogoPreviewImg" src="" class="h-12 w-auto object-contain" />
                 <button type="button" onclick="removeLogoImage()" class="text-xs text-red-600 font-semibold hover:underline">Remover imagem</button>
@@ -525,9 +568,14 @@
             </div>
           </div>
 
-          <button type="submit" id="saveCfgBtn" class="w-full bg-[#081c45] text-white font-semibold py-3 rounded-xl text-sm hover:bg-blue-900 transition">
-            Salvar Configurações na Nuvem
-          </button>
+          <div class="space-y-2 pt-1">
+            <button type="submit" id="saveCfgBtn" class="w-full bg-[#081c45] text-white font-semibold py-3 rounded-xl text-sm hover:bg-blue-900 transition">
+              Salvar Configurações na Nuvem
+            </button>
+            <button type="button" onclick="cancelAndReturnFromAdmin()" class="w-full bg-gray-100 text-gray-700 font-bold py-2.5 rounded-xl text-xs hover:bg-gray-200 transition">
+              Cancelar e Voltar ao Feed
+            </button>
+          </div>
         </form>
 
       </div>
@@ -565,7 +613,7 @@
     const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
     const MAX_VIDEO_SECONDS = 15;
     const MAX_DIRECT_FILE_BYTES = 7.2 * 1024 * 1024;
-    const MAX_INPUT_FILE_BYTES = 22 * 1024 * 1024;
+    const MAX_INPUT_FILE_BYTES = 25 * 1024 * 1024;
 
     const urlParams = new URLSearchParams(window.location.search);
     const isSharedVitrineMode = urlParams.get("vitrine") === "1";
@@ -575,7 +623,6 @@
       if (adminBtn) adminBtn.style.display = "none";
     }
 
-    // CAPTURAR EVENTO DE INSTALAÇÃO NATIVA DO APP
     let deferredInstallPrompt = null;
     window.addEventListener("beforeinstallprompt", (e) => {
       e.preventDefault();
@@ -614,7 +661,7 @@
     let isAdminLogged = false;
     let pendingPostImages = [];
     let pendingLogoData = "";
-    let viewerMuted = false; // Inicia com áudio liberado ao clicar no story
+    let viewerMuted = false;
 
     let selectedRawVideoFile = null;
     let loadedVideoObjectUrl = "";
@@ -623,7 +670,6 @@
     let trimEndSec = 15;
     let trimCheckInterval = null;
 
-    // FUNÇÃO AUXILIAR PARA DESBLOQUEAR E ATIVAR ÁUDIO COM 100% DE COMPATIBILIDADE (iOS + ANDROID)
     function applyVideoAudioState(videoEl, shouldMute) {
       if (!videoEl) return;
       if (shouldMute) {
@@ -754,7 +800,6 @@
       return `Expira em ${hours}h`;
     }
 
-    // CARROSSEL DE VÍDEOS 24H COM CONTROLE DE SOM CORRIGIDO
     function renderStoriesCarousel() {
       const section = document.getElementById("storiesSection");
       const carousel = document.getElementById("storiesCarousel");
@@ -812,7 +857,6 @@
 
       const willEnableSound = videoEl.muted;
 
-      // Silenciar todos os outros mini-vídeos
       document.querySelectorAll("#storiesCarousel video").forEach(v => {
         if (v.id !== `mini-vid-${vidId}`) {
           applyVideoAudioState(v, true);
@@ -837,9 +881,7 @@
       }
     };
 
-    // VISUALIZADOR EM TELA CHEIA COM DESBLOQUEIO SÍNCRONO DE ÁUDIO NO CLIQUE
     window.openStoryViewer = function(startIndex) {
-      // Silenciar todos os mini-vídeos do carrossel antes de abrir tela cheia
       document.querySelectorAll("#storiesCarousel video").forEach(v => {
         applyVideoAudioState(v, true);
         const icon = document.getElementById(v.id.replace("mini-vid-", "mini-audio-icon-"));
@@ -863,13 +905,11 @@
       modal.classList.remove("hidden");
       modal.classList.add("flex");
 
-      // Posicionar e iniciar reprodução com som imediatamente dentro do evento de toque do usuário
       track.scrollLeft = startIndex * track.clientWidth;
       const targetVid = document.getElementById(`full-vid-${startIndex}`);
       if (targetVid) {
         applyVideoAudioState(targetVid, false);
         targetVid.play().catch(() => {
-          // Fallback caso o navegador bloqueie áudio automático
           viewerMuted = true;
           updateViewerAudioButtonUI();
           applyVideoAudioState(targetVid, true);
@@ -975,7 +1015,6 @@
       }
     };
 
-    // NAVEGAÇÃO INFERIOR ESTILO APP NATIVO
     window.setFilter = function(filter) {
       currentFilter = filter;
       ["all", "venda", "conserto", "saved"].forEach(tab => {
@@ -997,7 +1036,6 @@
       renderFeed();
     };
 
-    // LIGHTBOX DE FOTOS EM TELA CHEIA
     let activeLightboxTotal = 0;
 
     window.openPhotoLightbox = function(postId, startIdx) {
@@ -1294,10 +1332,19 @@
     window.logoutAdmin = function() {
       isAdminLogged = false;
       document.getElementById("adminToggleBtn").innerHTML = `<i class="fa-solid fa-shield-halved text-base"></i>`;
+      resetPostForm();
+      resetVideoForm();
       closeModal("adminModal");
       renderStoriesCarousel();
       renderFeed();
       showToast("Sessão encerrada");
+    };
+
+    window.cancelAndReturnFromAdmin = function() {
+      resetPostForm();
+      resetVideoForm();
+      closeModal("adminModal");
+      showToast("Voltou para o feed");
     };
 
     function openAdminPanel() {
@@ -1338,9 +1385,20 @@
       });
     };
 
-    // =========================================================================
-    // SISTEMA CORRIGIDO DE VÍDEOS 24H COM ROTEAMENTO DE ÁUDIO WEB AUDIO API
-    // =========================================================================
+    function resetVideoForm() {
+      const form = document.getElementById("newVideoForm");
+      if (form) form.reset();
+      const status = document.getElementById("videoFileStatus");
+      if (status) status.textContent = "";
+      const trimmer = document.getElementById("videoTrimmerBox");
+      if (trimmer) trimmer.classList.add("hidden");
+      if (loadedVideoObjectUrl) {
+        URL.revokeObjectURL(loadedVideoObjectUrl);
+        loadedVideoObjectUrl = "";
+      }
+      selectedRawVideoFile = null;
+    }
+
     window.handleDirectVideoUrlInput = function() {
       const urlVal = document.getElementById("videoDirectUrlInput").value.trim();
       const statusEl = document.getElementById("videoFileStatus");
@@ -1366,7 +1424,7 @@
       const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
 
       if (file.size > MAX_INPUT_FILE_BYTES) {
-        showToast(`Vídeo muito pesado (${sizeMB} MB). Selecione um vídeo de até 20 MB.`);
+        showToast(`Vídeo muito pesado (${sizeMB} MB). Selecione um vídeo de até 25 MB.`);
         event.target.value = "";
         selectedRawVideoFile = null;
         document.getElementById("videoTrimmerBox").classList.add("hidden");
@@ -1374,7 +1432,7 @@
       }
 
       selectedRawVideoFile = file;
-      statusEl.textContent = `Selecionado: ${file.name} (${sizeMB} MB)`;
+      statusEl.textContent = `✓ Selecionado: ${file.name || "Vídeo da Fototeca"} (${sizeMB} MB)`;
 
       if (loadedVideoObjectUrl) URL.revokeObjectURL(loadedVideoObjectUrl);
       loadedVideoObjectUrl = URL.createObjectURL(file);
@@ -1404,7 +1462,7 @@
       };
 
       videoEl.onerror = () => {
-        statusEl.textContent = `Vídeo carregado (${sizeMB} MB) — pronto para envio.`;
+        statusEl.textContent = `✓ Vídeo carregado (${sizeMB} MB) — pronto para envio.`;
       };
     };
 
@@ -1479,7 +1537,6 @@
       return new Promise(async (resolve, reject) => {
         const isUnmodifiedTrim = startSec <= 0.1 && (videoTotalDuration <= MAX_VIDEO_SECONDS + 0.5 || videoTotalDuration === 0);
 
-        // Envio direto preserva 100% do codec MP4/MOV e da faixa de áudio original (compatível com iOS e Android)
         if (isUnmodifiedTrim && file.size <= MAX_DIRECT_FILE_BYTES) {
           try {
             return resolve(await fileToBase64Direct(file));
@@ -1494,7 +1551,7 @@
           if (file.size <= MAX_DIRECT_FILE_BYTES) {
             return resolve(await fileToBase64Direct(file));
           }
-          return reject(new Error("No iPhone/Safari, recorte o vídeo para até 15s (máx. 7 MB) na galeria antes de enviar."));
+          return reject(new Error("No iPhone, recorte o vídeo para até 15s (máx. 7 MB) no próprio app Fotos antes de selecionar."));
         }
 
         let finished = false;
@@ -1506,7 +1563,7 @@
         tempVideo.style.height = "1px";
         tempVideo.src = videoUrl;
         tempVideo.playsInline = true;
-        applyVideoAudioState(tempVideo, false); // Necessário não estar mudo para extrair trilha de áudio
+        applyVideoAudioState(tempVideo, false);
         document.body.appendChild(tempVideo);
 
         const cleanup = () => {
@@ -1538,7 +1595,6 @@
           const canvasStream = canvas.captureStream(20);
           const tracks = [...canvasStream.getVideoTracks()];
 
-          // Capturar faixa de áudio via Web Audio API (garante gravação de som sem eco)
           if (keepAudio) {
             try {
               const AudioContextClass = window.AudioContext || window.webkitAudioContext;
@@ -1644,7 +1700,7 @@
       const directUrl = document.getElementById("videoDirectUrlInput").value.trim();
 
       if (!selectedRawVideoFile && !directUrl) {
-        showToast("Selecione um vídeo da galeria ou cole um link .mp4.");
+        showToast("Toque no botão dourado para escolher um vídeo da Fototeca.");
         return;
       }
 
@@ -1680,14 +1736,7 @@
           timestamp: Date.now()
         });
 
-        document.getElementById("newVideoForm").reset();
-        document.getElementById("videoFileStatus").textContent = "";
-        document.getElementById("videoTrimmerBox").classList.add("hidden");
-        if (loadedVideoObjectUrl) {
-          URL.revokeObjectURL(loadedVideoObjectUrl);
-          loadedVideoObjectUrl = "";
-        }
-        selectedRawVideoFile = null;
+        resetVideoForm();
         closeModal("adminModal");
         showToast("Vídeo 24h publicado com sucesso!");
       } catch (err) {
