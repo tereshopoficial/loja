@@ -15,9 +15,10 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://tereshopoficial.github.io/loja/icon-512.png" />
 
-  <!-- Configuração PWA e Ícone Oficial iOS / Android -->
+  <!-- Configuração PWA Multi-Plataforma (Android WebAPK + iOS Safari + Desktop) -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#031238" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="TERÊ SHOP" />
@@ -31,6 +32,8 @@
       overscroll-behavior-y: none;
       -webkit-tap-highlight-color: transparent;
       overflow-x: hidden;
+      touch-action: pan-y;
+      -webkit-overflow-scrolling: touch;
     }
     input, textarea, select, label {
       user-select: auto;
@@ -38,13 +41,30 @@
     }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    /* Otimização de Rolagem Horizontal + Vertical sem travamento no Android */
     .carousel-track {
       scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
+      touch-action: pan-x pan-y;
+      will-change: scroll-position;
     }
     .carousel-slide {
       scroll-snap-align: start;
       flex: 0 0 100%;
+    }
+    .stories-scroll {
+      touch-action: pan-x pan-y;
+      will-change: scroll-position;
+    }
+    /* Isolamento de pintura e virtualização nativa para posts fora da tela no Android */
+    .feed-article {
+      content-visibility: auto;
+      contain-intrinsic-size: auto 520px;
+      contain: layout style paint;
+    }
+    .gpu-layer {
+      transform: translateZ(0);
+      backface-visibility: hidden;
     }
     .story-ring {
       background: linear-gradient(135deg, #0055ff 0%, #f59e0b 50%, #ec4899 100%);
@@ -62,7 +82,7 @@
       100% { opacity: 0; visibility: hidden; }
     }
     .splash-animate {
-      animation: fadeOutSplash 1.2s ease-out forwards;
+      animation: fadeOutSplash 1.1s ease-out forwards;
     }
   </style>
 </head>
@@ -70,39 +90,47 @@
 
   <!-- SPLASH SCREEN NATIVA DE ABERTURA -->
   <div id="splashScreen" class="fixed inset-0 z-50 bg-gradient-to-b from-[#031238] via-[#08246b] to-[#031238] flex flex-col items-center justify-center text-white splash-animate pointer-events-none">
-    <div class="w-28 h-28 rounded-3xl bg-white/10 backdrop-blur-md border border-amber-400/40 flex items-center justify-center shadow-2xl mb-4 overflow-hidden p-2">
+    <div class="w-28 h-28 rounded-3xl bg-white/10 border border-amber-400/40 flex items-center justify-center shadow-2xl mb-4 overflow-hidden p-2">
       <img id="splashLogoImg" src="./icon-512.png" alt="TERÊ SHOP" class="w-full h-full object-contain" />
     </div>
     <h2 class="font-black text-2xl tracking-tight text-white">TERÊ SHOP</h2>
     <p class="text-[11px] font-bold tracking-[0.25em] text-amber-400 uppercase mt-1">Teresina - PI</p>
   </div>
 
-  <!-- CABEÇALHO / CAPA SUPERIOR RESPONSIVA COM BOTÕES FLUTUANTES TRANSLÚCIDOS -->
-  <header class="sticky top-0 z-40 bg-[#031238] shadow-md">
+  <!-- AVISO PARA NAVEGADOR INTERNO DO INSTAGRAM / WHATSAPP -->
+  <div id="inAppBrowserBanner" class="hidden bg-amber-500 text-slate-950 px-3.5 py-2 text-[11px] font-bold">
+    <div class="max-w-2xl mx-auto flex items-center justify-between gap-2">
+      <span id="inAppBrowserText"><i class="fa-solid fa-up-right-from-square mr-1"></i> Para instalar o App, toque nos 3 pontinhos (⋮) e escolha <b>Abrir no Chrome</b>.</span>
+      <button onclick="document.getElementById('inAppBrowserBanner').classList.add('hidden')" class="px-2 py-0.5 bg-black/15 rounded-md text-xs">OK</button>
+    </div>
+  </div>
+
+  <!-- CABEÇALHO / CAPA SUPERIOR RESPONSIVA (CAMADA GPU OTIMIZADA) -->
+  <header class="sticky top-0 z-40 bg-[#031238] shadow-md gpu-layer">
     <div class="w-full max-w-2xl mx-auto relative overflow-hidden">
       
-      <!-- Botões Flutuantes Semitransparentes (Glassmorphism) sobre a Capa -->
+      <!-- Botões Flutuantes Semitransparentes (Sem backdrop-blur pesado para 60fps no Android) -->
       <div class="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-3 sm:px-4 pt-2.5 safe-top pointer-events-none">
         <button onclick="shareApp()" title="Compartilhar App"
-          class="pointer-events-auto w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-black/35 hover:bg-black/50 backdrop-blur-md border border-white/25 text-white shadow-sm active:scale-90 transition">
+          class="pointer-events-auto w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-black/55 hover:bg-black/75 border border-white/25 text-white shadow-sm active:scale-90 transition-transform">
           <i class="fa-solid fa-share-nodes text-sm sm:text-base"></i>
         </button>
 
         <button onclick="openAdminGate()" id="adminToggleBtn" title="Acesso Administrativo"
-          class="pointer-events-auto w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-black/35 hover:bg-black/50 backdrop-blur-md border border-white/25 text-white/95 shadow-sm active:scale-90 transition">
+          class="pointer-events-auto w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-black/55 hover:bg-black/75 border border-white/25 text-white/95 shadow-sm active:scale-90 transition-transform">
           <i class="fa-solid fa-shield-halved text-sm sm:text-base"></i>
         </button>
       </div>
 
-      <!-- MODO 1: CAPA PANORÂMICA / SLOGAN EM ALTA DEFINIÇÃO (ADAPTÁVEL A MOBILE E DESKTOP) -->
+      <!-- MODO 1: CAPA PANORÂMICA / SLOGAN EM ALTA DEFINIÇÃO -->
       <div id="headerLogoWrapper" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="hidden w-full bg-[#031238] cursor-pointer">
-        <img id="headerLogoImg" src="" alt="TERÊ SHOP • Teresina-PI" class="w-full h-auto max-h-[195px] sm:max-h-[245px] object-contain block mx-auto" />
+        <img id="headerLogoImg" src="" alt="TERÊ SHOP • Teresina-PI" decoding="async" class="w-full h-auto max-h-[195px] sm:max-h-[245px] object-contain block mx-auto" />
       </div>
 
-      <!-- MODO 2: TÍTULO ESCRITO ESTILIZADO (CASO NÃO HAJA CAPA ATIVA) -->
+      <!-- MODO 2: TÍTULO ESCRITO ESTILIZADO -->
       <div id="headerTitleWrapper" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
         class="w-full min-h-[74px] sm:min-h-[84px] pt-2 pb-2.5 px-14 flex flex-col items-center justify-center text-center bg-gradient-to-r from-[#031238] via-[#0a2d82] to-[#031238] safe-top cursor-pointer">
-        <h1 id="headerCompanyName" class="font-black text-xl sm:text-2xl tracking-tight leading-none text-white drop-shadow-xs">
+        <h1 id="headerCompanyName" class="font-black text-xl sm:text-2xl tracking-tight leading-none text-white">
           TERÊ SHOP
         </h1>
         <span class="text-[10px] sm:text-[11px] font-bold tracking-[0.22em] text-amber-400 uppercase mt-1">
@@ -113,19 +141,19 @@
     </div>
   </header>
 
-  <!-- CONTENTOR PRINCIPAL FLUIDO (MOBILE + TABLET + DESKTOP) -->
+  <!-- CONTENTOR PRINCIPAL FLUIDO (ANDROID + IOS + DESKTOP) -->
   <div class="w-full max-w-2xl mx-auto md:my-3 md:rounded-2xl md:overflow-hidden md:shadow-md md:border md:border-gray-200/80 bg-white">
 
     <!-- CARROSSEL HORIZONTAL DE VÍDEOS CURTOS 24H -->
     <section id="storiesSection" class="w-full bg-white border-b border-gray-200 hidden">
       <div class="px-3.5 sm:px-5 pt-3 pb-1 flex items-center justify-between gap-2">
         <span class="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse flex-shrink-0"></span>
+          <span class="w-2 h-2 rounded-full bg-amber-500 flex-shrink-0"></span>
           <span>Destaques Rápidos • 24h</span>
         </span>
         <span class="text-[10px] sm:text-[11px] text-gray-400 whitespace-nowrap">Som <i class="fa-solid fa-volume-high ml-0.5"></i></span>
       </div>
-      <div id="storiesCarousel" class="flex gap-2.5 sm:gap-3.5 overflow-x-auto no-scrollbar px-3.5 sm:px-5 py-3 snap-x snap-mandatory">
+      <div id="storiesCarousel" class="stories-scroll flex gap-2.5 sm:gap-3.5 overflow-x-auto no-scrollbar px-3.5 sm:px-5 py-3 snap-x snap-mandatory">
         <!-- Cards de vídeos 24h renderizados dinamicamente -->
       </div>
     </section>
@@ -140,25 +168,25 @@
 
   </div>
 
-  <!-- BARRA DE NAVEGAÇÃO INFERIOR ADAPTÁVEL (FIXA NO MOBILE / DOCK FLUTUANTE NO DESKTOP) -->
-  <nav class="fixed bottom-0 inset-x-0 md:bottom-3 md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-2xl z-40 bg-white/95 backdrop-blur-md border-t md:border border-gray-200 md:rounded-2xl shadow-[0_-2px_12px_rgba(0,0,0,0.05)] md:shadow-xl safe-bottom">
+  <!-- BARRA DE NAVEGAÇÃO INFERIOR (SEM BACKDROP-BLUR PARA ELIMINAR ENGASGOS NO ANDROID) -->
+  <nav class="fixed bottom-0 inset-x-0 md:bottom-3 md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-2xl z-40 bg-white border-t md:border border-gray-200 md:rounded-2xl shadow-[0_-2px_10px_rgba(0,0,0,0.06)] md:shadow-xl safe-bottom gpu-layer">
     <div class="w-full flex items-center justify-around h-16 px-1 sm:px-3">
-      <button onclick="setFilter('all')" id="nav-all" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-blue-700 active:scale-90 transition">
+      <button onclick="setFilter('all')" id="nav-all" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-blue-700 active:scale-90 transition-transform">
         <i class="fa-solid fa-house text-base sm:text-lg"></i>
         <span class="text-[10px] sm:text-[11px] font-extrabold truncate">Início</span>
       </button>
 
-      <button onclick="setFilter('venda')" id="nav-venda" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition">
+      <button onclick="setFilter('venda')" id="nav-venda" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
         <i class="fa-solid fa-bag-shopping text-base sm:text-lg"></i>
         <span class="text-[10px] sm:text-[11px] font-bold truncate">Vendas</span>
       </button>
 
-      <button onclick="setFilter('conserto')" id="nav-conserto" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition">
+      <button onclick="setFilter('conserto')" id="nav-conserto" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
         <i class="fa-solid fa-screwdriver-wrench text-base sm:text-lg"></i>
         <span class="text-[10px] sm:text-[11px] font-bold truncate">Consertos</span>
       </button>
 
-      <button onclick="setFilter('saved')" id="nav-saved" class="relative flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition">
+      <button onclick="setFilter('saved')" id="nav-saved" class="relative flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
         <div class="relative">
           <i id="nav-saved-icon" class="fa-regular fa-bookmark text-base sm:text-lg"></i>
           <span id="savedBadgeCount" class="hidden absolute -top-1.5 -right-2.5 bg-amber-500 text-slate-950 text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center">0</span>
@@ -166,7 +194,7 @@
         <span class="text-[10px] sm:text-[11px] font-bold truncate">Salvos</span>
       </button>
 
-      <button onclick="triggerAppInstall()" id="nav-install" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-amber-600 hover:text-amber-700 active:scale-90 transition">
+      <button onclick="triggerAppInstall()" id="nav-install" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-amber-600 hover:text-amber-700 active:scale-90 transition-transform">
         <i class="fa-solid fa-mobile-screen-button text-base sm:text-lg"></i>
         <span class="text-[10px] sm:text-[11px] font-extrabold truncate">Instalar</span>
       </button>
@@ -175,8 +203,8 @@
 
   <!-- LIGHTBOX DE FOTOS EM TELA CHEIA -->
   <div id="photoLightboxModal" class="fixed inset-0 z-50 bg-black hidden flex-col justify-between safe-top safe-bottom">
-    <div class="max-w-3xl w-full mx-auto p-3.5 sm:p-4 flex items-center justify-between text-white bg-gradient-to-b from-black/85 to-transparent">
-      <button onclick="closePhotoLightbox()" class="px-3 py-1.5 rounded-full bg-white/15 backdrop-blur flex items-center gap-1.5 text-white text-xs font-bold flex-shrink-0">
+    <div class="max-w-3xl w-full mx-auto p-3.5 sm:p-4 flex items-center justify-between text-white bg-black/85">
+      <button onclick="closePhotoLightbox()" class="px-3 py-1.5 rounded-full bg-white/15 flex items-center gap-1.5 text-white text-xs font-bold flex-shrink-0">
         <i class="fa-solid fa-arrow-left"></i>
         <span>Voltar</span>
       </button>
@@ -184,7 +212,7 @@
         <p id="lightboxTitle" class="text-xs sm:text-sm font-bold truncate"></p>
         <p id="lightboxCounter" class="text-[11px] text-amber-400 font-semibold"></p>
       </div>
-      <button onclick="closePhotoLightbox()" class="w-9 h-9 rounded-full bg-white/15 backdrop-blur flex items-center justify-center text-white flex-shrink-0">
+      <button onclick="closePhotoLightbox()" class="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center text-white flex-shrink-0">
         <i class="fa-solid fa-xmark text-lg"></i>
       </button>
     </div>
@@ -193,16 +221,16 @@
       <!-- Fotos em tela cheia -->
     </div>
 
-    <div id="lightboxFooter" class="max-w-2xl w-full mx-auto p-4 bg-gradient-to-t from-black/90 to-transparent flex gap-2.5">
+    <div id="lightboxFooter" class="max-w-2xl w-full mx-auto p-4 bg-black/90 flex gap-2.5">
       <!-- Botões de contato direto no lightbox -->
     </div>
   </div>
 
   <!-- VISUALIZADOR EM TELA CHEIA PARA VÍDEOS 24H -->
   <div id="storyViewerModal" class="fixed inset-0 z-50 bg-black hidden flex-col justify-between safe-top safe-bottom">
-    <div class="max-w-2xl w-full mx-auto relative z-20 p-3.5 sm:p-4 bg-gradient-to-b from-black/85 to-transparent flex items-center justify-between text-white gap-2">
+    <div class="max-w-2xl w-full mx-auto relative z-20 p-3.5 sm:p-4 bg-black/85 flex items-center justify-between text-white gap-2">
       <div class="flex items-center gap-2 min-w-0">
-        <button onclick="closeStoryViewer()" class="px-3 py-1.5 rounded-full bg-white/15 backdrop-blur flex items-center gap-1.5 text-white text-xs font-bold flex-shrink-0">
+        <button onclick="closeStoryViewer()" class="px-3 py-1.5 rounded-full bg-white/15 flex items-center gap-1.5 text-white text-xs font-bold flex-shrink-0">
           <i class="fa-solid fa-arrow-left"></i>
           <span>Voltar</span>
         </button>
@@ -211,11 +239,11 @@
         </span>
       </div>
       <div class="flex items-center gap-2 flex-shrink-0">
-        <button onclick="toggleViewerAudio()" id="viewerAudioBtn" title="Alternar Áudio" class="px-3 h-9 rounded-full bg-white/20 backdrop-blur flex items-center justify-center gap-1.5 text-white text-xs font-bold">
+        <button onclick="toggleViewerAudio()" id="viewerAudioBtn" title="Alternar Áudio" class="px-3 h-9 rounded-full bg-white/20 flex items-center justify-center gap-1.5 text-white text-xs font-bold">
           <i id="viewerAudioIcon" class="fa-solid fa-volume-high text-amber-400"></i>
           <span id="viewerAudioLabel" class="hidden sm:inline">Som Ativo</span>
         </button>
-        <button onclick="closeStoryViewer()" class="w-9 h-9 rounded-full bg-white/15 backdrop-blur flex items-center justify-center text-white">
+        <button onclick="closeStoryViewer()" class="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center text-white">
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
@@ -225,7 +253,7 @@
       <!-- Slides de vídeo em tela cheia -->
     </div>
 
-    <div id="viewerFooter" class="max-w-2xl w-full mx-auto relative z-20 p-4 bg-gradient-to-t from-black/90 via-black/60 to-transparent text-white space-y-2.5">
+    <div id="viewerFooter" class="max-w-2xl w-full mx-auto relative z-20 p-4 bg-black/90 text-white space-y-2.5">
       <div class="flex items-center justify-between gap-2">
         <p id="viewerTitle" class="font-bold text-sm"></p>
         <span id="viewerTimer" class="text-[11px] text-amber-300 font-semibold whitespace-nowrap"></span>
@@ -234,24 +262,25 @@
     </div>
   </div>
 
-  <!-- MODAL INSTRUÇÕES DE INSTALAÇÃO NO IPHONE / SAFARI -->
-  <div id="iosInstallModal" class="fixed inset-0 z-50 bg-black/60 hidden items-end sm:items-center justify-center p-4 backdrop-blur-xs">
+  <!-- MODAL INSTRUÇÕES DE INSTALAÇÃO INTELIGENTE (ANDROID + IPHONE) -->
+  <div id="installGuideModal" class="fixed inset-0 z-50 bg-black/65 hidden items-end sm:items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2.5">
           <img src="./icon-512.png" alt="TERÊ SHOP" class="w-11 h-11 rounded-2xl object-contain bg-[#031238] p-1 border border-amber-400/30" />
           <div>
             <h3 class="font-extrabold text-sm text-slate-900">Instalar App TERÊ SHOP</h3>
-            <p class="text-[11px] text-gray-500">Acesso direto pela tela inicial</p>
+            <p id="installPlatformSubtitle" class="text-[11px] text-gray-500">Acesso direto pela tela inicial</p>
           </div>
         </div>
-        <button onclick="closeModal('iosInstallModal')" class="text-gray-400 hover:text-gray-700 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+        <button onclick="closeModal('installGuideModal')" class="text-gray-400 hover:text-gray-700 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
 
-      <div class="bg-slate-50 rounded-2xl p-3.5 space-y-2.5 text-xs text-slate-700 border border-slate-200">
+      <!-- Passos para iPhone / iPad (iOS) -->
+      <div id="iosInstallSteps" class="hidden bg-slate-50 rounded-2xl p-3.5 space-y-2.5 text-xs text-slate-700 border border-slate-200">
         <p class="flex items-center gap-2.5">
           <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center flex-shrink-0">1</span>
-          <span>Toque no botão <b>Compartilhar</b> <i class="fa-solid fa-arrow-up-from-bracket text-blue-600"></i> na barra do navegador.</span>
+          <span>Toque no botão <b>Compartilhar</b> <i class="fa-solid fa-arrow-up-from-bracket text-blue-600"></i> na barra do Safari.</span>
         </p>
         <p class="flex items-center gap-2.5">
           <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center flex-shrink-0">2</span>
@@ -263,18 +292,34 @@
         </p>
       </div>
 
-      <button onclick="closeModal('iosInstallModal')" class="w-full bg-[#081c45] text-white font-bold py-3 rounded-xl text-xs">
+      <!-- Passos para Android (Chrome / Samsung / Edge) -->
+      <div id="androidInstallSteps" class="hidden bg-slate-50 rounded-2xl p-3.5 space-y-2.5 text-xs text-slate-700 border border-slate-200">
+        <p class="flex items-center gap-2.5">
+          <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 font-bold flex items-center justify-center flex-shrink-0">1</span>
+          <span>Toque no menu de <b>3 pontinhos (⋮)</b> no canto superior direito do Chrome.</span>
+        </p>
+        <p class="flex items-center gap-2.5">
+          <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 font-bold flex items-center justify-center flex-shrink-0">2</span>
+          <span>Toque em <b>"Instalar aplicativo"</b> ou <b>"Adicionar à tela inicial"</b>.</span>
+        </p>
+        <p class="flex items-center gap-2.5">
+          <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 font-bold flex items-center justify-center flex-shrink-0">3</span>
+          <span>Confirme em <b>Instalar</b> — o ícone da TERÊ SHOP aparecerá junto aos seus apps!</span>
+        </p>
+      </div>
+
+      <button onclick="closeModal('installGuideModal')" class="w-full bg-[#081c45] text-white font-bold py-3 rounded-xl text-xs">
         Voltar ao App
       </button>
     </div>
   </div>
 
   <!-- TOAST DE NOTIFICAÇÃO -->
-  <div id="toast" class="fixed bottom-20 md:bottom-24 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 text-center max-w-[90vw]">
+  <div id="toast" class="fixed bottom-20 md:bottom-24 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-200 text-center max-w-[90vw]">
   </div>
 
   <!-- MODAL LOGIN DO ADMINISTRADOR -->
-  <div id="loginModal" class="fixed inset-0 z-50 bg-black/60 hidden items-center justify-center p-4 backdrop-blur-xs">
+  <div id="loginModal" class="fixed inset-0 z-50 bg-black/65 hidden items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl">
       <div class="flex justify-between items-center mb-3">
         <div class="flex items-center gap-2">
@@ -307,7 +352,7 @@
   </div>
 
   <!-- MODAL PAINEL ADMINISTRATIVO RESPONSIVO -->
-  <div id="adminModal" class="fixed inset-0 z-50 bg-black/60 hidden items-end sm:items-center justify-center">
+  <div id="adminModal" class="fixed inset-0 z-50 bg-black/65 hidden items-end sm:items-center justify-center">
     <div class="bg-white w-full max-w-xl rounded-t-3xl sm:rounded-3xl max-h-[92vh] flex flex-col shadow-2xl">
       
       <div class="px-4 py-3.5 border-b border-gray-200 flex items-center justify-between gap-2">
@@ -442,7 +487,7 @@
         <!-- ABA 2: PUBLICAR VÍDEO CURTO 24H -->
         <form id="newVideoForm" onsubmit="handleSaveVideoStory(event)" class="space-y-4 hidden">
           <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-900 space-y-1">
-            <p><i class="fa-solid fa-film mr-1"></i> Toque no botão abaixo para abrir a <b>Fototeca / Galeria</b> do iPhone ou Android e selecionar um vídeo curto (<b>até 15s e até 7,5 MB</b>).</p>
+            <p><i class="fa-solid fa-film mr-1"></i> Toque no botão abaixo para abrir a <b>Fototeca / Galeria</b> do Android ou iPhone e selecionar um vídeo curto (<b>até 15s e até 7,5 MB</b>).</p>
           </div>
 
           <div>
@@ -457,7 +502,7 @@
 
           <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
             <div>
-              <label class="block text-xs font-bold text-gray-700 mb-1.5">Opção A: Selecionar Vídeo da Fototeca / Galeria *</label>
+              <label class="block text-xs font-bold text-gray-700 mb-1.5">Opção A: Selecionar Vídeo da Galeria / Câmera *</label>
               
               <label for="videoFileInput" class="flex flex-col items-center justify-center gap-1.5 w-full py-4 px-4 rounded-xl border-2 border-dashed border-amber-400 bg-amber-50 text-amber-950 text-xs font-extrabold cursor-pointer active:scale-[0.98] transition text-center">
                 <i class="fa-solid fa-video text-xl text-amber-600"></i>
@@ -640,6 +685,23 @@
       if (adminBtn) adminBtn.style.display = "none";
     }
 
+    const ua = navigator.userAgent || "";
+    const isIOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    const isInAppBrowser = /Instagram|FBAN|FBAV|WhatsApp/i.test(ua);
+
+    if (isInAppBrowser) {
+      const banner = document.getElementById("inAppBrowserBanner");
+      const textEl = document.getElementById("inAppBrowserText");
+      if (banner && textEl) {
+        if (isIOS) {
+          textEl.innerHTML = `<i class="fa-solid fa-compass mr-1"></i> Para instalar o App no iPhone, toque no ícone do <b>Safari</b> <i class="fa-regular fa-compass"></i> no canto inferior direito.`;
+        } else {
+          textEl.innerHTML = `<i class="fa-solid fa-up-right-from-square mr-1"></i> Para instalar o App, toque nos <b>3 pontinhos (⋮)</b> e escolha <b>Abrir no Chrome</b>.`;
+        }
+        banner.classList.remove("hidden");
+      }
+    }
+
     let deferredInstallPrompt = null;
     window.addEventListener("beforeinstallprompt", (e) => {
       e.preventDefault();
@@ -648,9 +710,10 @@
 
     window.triggerAppInstall = async function() {
       if (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true) {
-        showToast("O App TERÊ SHOP já está instalado no seu celular!");
+        showToast("O App TERÊ SHOP já está instalado no seu aparelho!");
         return;
       }
+
       if (deferredInstallPrompt) {
         deferredInstallPrompt.prompt();
         const choice = await deferredInstallPrompt.userChoice;
@@ -658,9 +721,25 @@
           showToast("Instalando App TERÊ SHOP...");
         }
         deferredInstallPrompt = null;
-      } else {
-        document.getElementById("iosInstallModal").classList.replace("hidden", "flex");
+        return;
       }
+
+      const modal = document.getElementById("installGuideModal");
+      const iosSteps = document.getElementById("iosInstallSteps");
+      const androidSteps = document.getElementById("androidInstallSteps");
+      const subtitle = document.getElementById("installPlatformSubtitle");
+
+      if (isIOS) {
+        iosSteps.classList.remove("hidden");
+        androidSteps.classList.add("hidden");
+        subtitle.textContent = "Instalação rápida no iPhone / iPad";
+      } else {
+        androidSteps.classList.remove("hidden");
+        iosSteps.classList.add("hidden");
+        subtitle.textContent = "Instalação rápida no Android / Chrome";
+      }
+
+      modal.classList.replace("hidden", "flex");
     };
 
     const DEFAULT_CONFIG = {
@@ -699,6 +778,28 @@
         videoEl.muted = false;
         videoEl.volume = 1.0;
       }
+    }
+
+    // CONTROLE DE PERFORMANCE DE VÍDEOS NO ANDROID (PAUSA VÍDEOS FORA DA TELA DURANTE ROLAGEM)
+    let miniVideoObserver = null;
+    function setupMiniVideoVisibilityControl() {
+      if (miniVideoObserver) miniVideoObserver.disconnect();
+      if (!("IntersectionObserver" in window)) return;
+
+      miniVideoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const vidEl = entry.target;
+          if (entry.isIntersecting) {
+            vidEl.play().catch(() => {});
+          } else {
+            vidEl.pause();
+          }
+        });
+      }, { threshold: 0.25 });
+
+      document.querySelectorAll("#storiesCarousel video").forEach(v => {
+        miniVideoObserver.observe(v);
+      });
     }
 
     const configRef = ref(db, "config");
@@ -821,16 +922,16 @@
       carousel.innerHTML = activeVideos.map((vid, idx) => `
         <div class="snap-start flex-shrink-0 w-[36vw] min-w-[130px] max-w-[158px] rounded-2xl story-ring shadow-xs relative group">
           <div class="bg-slate-950 rounded-[14px] overflow-hidden relative aspect-[9/15]">
-            <video id="mini-vid-${vid.id}" src="${vid.videoData}" autoplay loop muted playsinline webkit-playsinline preload="auto"
+            <video id="mini-vid-${vid.id}" src="${vid.videoData}" loop muted playsinline webkit-playsinline preload="metadata"
               onclick="openStoryViewer(${idx})"
               class="w-full h-full object-contain bg-black cursor-pointer"></video>
 
-            <span class="absolute top-2 left-2 max-w-[65%] truncate bg-amber-500 text-slate-950 text-[9px] font-black px-2 py-0.5 rounded-full shadow-xs pointer-events-none">
+            <span class="absolute top-2 left-2 max-w-[65%] truncate bg-amber-500 text-slate-950 text-[9px] font-black px-2 py-0.5 rounded-full pointer-events-none">
               ${vid.badge || "24h"}
             </span>
 
             <button onclick="toggleMiniVideoAudio(event, '${vid.id}')" title="Ativar/Desativar Som"
-              class="z-10 absolute top-2 right-2 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/75 text-white flex items-center justify-center text-xs backdrop-blur-xs border border-white/20 active:scale-90 transition">
+              class="z-10 absolute top-2 right-2 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/80 text-white flex items-center justify-center text-xs border border-white/20 active:scale-90 transition-transform">
               <i id="mini-audio-icon-${vid.id}" class="fa-solid fa-volume-xmark"></i>
             </button>
 
@@ -840,7 +941,7 @@
                 <i class="fa-solid fa-trash"></i>
               </button>` : ""}
 
-            <div onclick="openStoryViewer(${idx})" class="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-black/95 via-black/55 to-transparent text-white cursor-pointer">
+            <div onclick="openStoryViewer(${idx})" class="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-black/95 via-black/60 to-transparent text-white cursor-pointer">
               <p class="text-[11px] font-bold leading-tight line-clamp-2">${vid.title}</p>
               <p class="text-[9px] text-amber-300 mt-0.5 font-semibold">${getRemainingHoursText(vid.timestamp)}</p>
             </div>
@@ -852,9 +953,10 @@
         const vEl = document.getElementById(`mini-vid-${vid.id}`);
         if (vEl) {
           applyVideoAudioState(vEl, true);
-          vEl.play().catch(() => {});
         }
       });
+
+      setupMiniVideoVisibilityControl();
     }
 
     window.toggleMiniVideoAudio = function(event, vidId) {
@@ -892,6 +994,7 @@
     window.openStoryViewer = function(startIndex) {
       document.querySelectorAll("#storiesCarousel video").forEach(v => {
         applyVideoAudioState(v, true);
+        v.pause();
         const icon = document.getElementById(v.id.replace("mini-vid-", "mini-audio-icon-"));
         if (icon) icon.className = "fa-solid fa-volume-xmark";
       });
@@ -904,7 +1007,7 @@
 
       track.innerHTML = activeVideos.map((vid, idx) => `
         <div class="carousel-slide w-full h-full flex items-center justify-center bg-black relative">
-          <video id="full-vid-${idx}" src="${vid.videoData}" loop playsinline webkit-playsinline preload="auto"
+          <video id="full-vid-${idx}" src="${vid.videoData}" loop playsinline webkit-playsinline preload="metadata"
             onclick="toggleViewerAudio()"
             class="max-h-full max-w-full w-full h-full object-contain"></video>
         </div>
@@ -927,11 +1030,16 @@
       updateViewerMetadataOnly(startIndex);
     };
 
+    let viewerScrollRaf = null;
     window.handleViewerScroll = function() {
-      const track = document.getElementById("viewerTrack");
-      if (!track || track.clientWidth === 0) return;
-      const idx = Math.round(track.scrollLeft / track.clientWidth);
-      updateViewerOverlay(idx);
+      if (viewerScrollRaf) return;
+      viewerScrollRaf = requestAnimationFrame(() => {
+        viewerScrollRaf = null;
+        const track = document.getElementById("viewerTrack");
+        if (!track || track.clientWidth === 0) return;
+        const idx = Math.round(track.scrollLeft / track.clientWidth);
+        updateViewerOverlay(idx);
+      });
     };
 
     function updateViewerMetadataOnly(idx) {
@@ -1006,6 +1114,7 @@
       });
       modal.classList.add("hidden");
       modal.classList.remove("flex");
+      setupMiniVideoVisibilityControl();
     };
 
     window.openStoryContact = function(idx) {
@@ -1058,7 +1167,7 @@
       const track = document.getElementById("lightboxTrack");
       track.innerHTML = post.images.map(img => `
         <div class="carousel-slide w-full h-full flex items-center justify-center bg-black p-2">
-          <img src="${img}" class="max-h-full max-w-full object-contain" />
+          <img src="${img}" decoding="async" class="max-h-full max-w-full object-contain" />
         </div>
       `).join("");
 
@@ -1082,10 +1191,16 @@
       track.scrollLeft = startIdx * track.clientWidth;
     };
 
+    let lightboxRaf = null;
     window.handleLightboxScroll = function() {
-      const track = document.getElementById("lightboxTrack");
-      const idx = Math.round(track.scrollLeft / track.clientWidth);
-      document.getElementById("lightboxCounter").textContent = `${idx + 1} de ${activeLightboxTotal}`;
+      if (lightboxRaf) return;
+      lightboxRaf = requestAnimationFrame(() => {
+        lightboxRaf = null;
+        const track = document.getElementById("lightboxTrack");
+        if (!track || !track.clientWidth) return;
+        const idx = Math.round(track.scrollLeft / track.clientWidth);
+        document.getElementById("lightboxCounter").textContent = `${idx + 1} de ${activeLightboxTotal}`;
+      });
     };
 
     window.closePhotoLightbox = function() {
@@ -1113,7 +1228,7 @@
         return;
       }
 
-      container.innerHTML = filtered.map(post => {
+      container.innerHTML = filtered.map((post, postIndex) => {
         const isSaved = savedIds.includes(post.id);
         const images = post.images || [];
         const badgeClass = post.type === "venda"
@@ -1125,11 +1240,12 @@
 
         const hasPostInsta = Boolean(post.instagram && post.instagram.trim());
         const hasPostWhats = Boolean(post.whatsapp && post.whatsapp.trim());
+        const imgLoadingAttr = postIndex < 2 ? "eager" : "lazy";
 
-        const avatarHtml = `<img src="./icon-512.png" alt="TERÊ SHOP" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-contain bg-[#031238] p-0.5 border border-amber-400/50 flex-shrink-0" />`;
+        const avatarHtml = `<img src="./icon-512.png" alt="TERÊ SHOP" decoding="async" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-contain bg-[#031238] p-0.5 border border-amber-400/50 flex-shrink-0" />`;
 
         return `
-          <article class="pb-5 sm:pb-6 bg-white">
+          <article class="feed-article pb-5 sm:pb-6 bg-white">
             <div class="px-3.5 sm:px-5 py-3 flex items-center justify-between gap-2">
               <div class="flex items-center gap-2.5 min-w-0">
                 ${avatarHtml}
@@ -1150,19 +1266,19 @@
               </div>
             </div>
 
-            <div class="relative bg-slate-900/95 border-y border-gray-100">
+            <div class="relative bg-slate-900 border-y border-gray-100">
               <div id="track-${post.id}" onscroll="updateCarouselIndicator('${post.id}', ${images.length})"
                 class="carousel-track flex overflow-x-auto no-scrollbar min-h-[260px] sm:min-h-[340px] max-h-[480px] sm:max-h-[560px]">
                 ${images.map((img, idx) => `
                   <div onclick="openPhotoLightbox('${post.id}', ${idx})" class="carousel-slide relative w-full flex items-center justify-center bg-slate-950 cursor-zoom-in">
-                    <img src="${img}" alt="${safeTitle} - Foto ${idx + 1}" loading="lazy"
+                    <img src="${img}" alt="${safeTitle} - Foto ${idx + 1}" loading="${idx === 0 ? imgLoadingAttr : 'lazy'}" decoding="async"
                       class="w-full max-h-[480px] sm:max-h-[560px] object-contain mx-auto" />
                   </div>
                 `).join("")}
               </div>
 
               ${images.length > 1 ? `
-                <div id="counter-${post.id}" class="absolute top-3 right-3 bg-black/75 text-white text-[11px] font-bold px-2.5 py-1 rounded-full backdrop-blur-xs pointer-events-none">
+                <div id="counter-${post.id}" class="absolute top-3 right-3 bg-black/80 text-white text-[11px] font-bold px-2.5 py-1 rounded-full pointer-events-none">
                   1/${images.length}
                 </div>
               ` : ""}
@@ -1171,7 +1287,7 @@
             ${images.length > 1 ? `
               <div id="dots-${post.id}" class="flex justify-center gap-1.5 pt-2.5">
                 ${images.map((_, i) => `
-                  <span class="w-1.5 h-1.5 rounded-full transition-all ${i === 0 ? "bg-blue-600 w-3.5" : "bg-gray-300"}"></span>
+                  <span class="w-1.5 h-1.5 rounded-full ${i === 0 ? "bg-blue-600 w-3.5" : "bg-gray-300"}"></span>
                 `).join("")}
               </div>
             ` : ""}
@@ -1180,26 +1296,26 @@
               <div class="flex items-center gap-2 mb-3">
                 ${hasPostInsta ? `
                   <button onclick="openPostInstagram('${post.id}')"
-                    class="flex-1 min-w-0 bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-bold text-xs py-2.5 px-2.5 sm:px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.97] transition">
+                    class="flex-1 min-w-0 bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-bold text-xs py-2.5 px-2.5 sm:px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.97] transition-transform">
                     <i class="fa-brands fa-instagram text-base flex-shrink-0"></i>
                     <span class="truncate">Instagram</span>
                   </button>` : ""}
 
                 ${hasPostWhats ? `
                   <button onclick="openPostWhatsapp('${post.id}')"
-                    class="flex-1 min-w-0 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs py-2.5 px-2.5 sm:px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.97] transition">
+                    class="flex-1 min-w-0 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs py-2.5 px-2.5 sm:px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.97] transition-transform">
                     <i class="fa-brands fa-whatsapp text-base flex-shrink-0"></i>
                     <span class="truncate">WhatsApp</span>
                   </button>` : ""}
 
                 <button onclick="sharePost('${safeTitle}')" title="Partilhar anúncio"
-                  class="p-2.5 rounded-xl border border-gray-200 text-slate-700 hover:bg-gray-50 active:scale-95 transition flex-shrink-0 ${(!hasPostInsta && !hasPostWhats) ? 'flex-1 justify-center flex items-center gap-1.5 text-xs font-bold' : ''}">
+                  class="p-2.5 rounded-xl border border-gray-200 text-slate-700 hover:bg-gray-50 active:scale-95 transition-transform flex-shrink-0 ${(!hasPostInsta && !hasPostWhats) ? 'flex-1 justify-center flex items-center gap-1.5 text-xs font-bold' : ''}">
                   <i class="fa-regular fa-paper-plane text-base"></i>
                   ${(!hasPostInsta && !hasPostWhats) ? '<span>Compartilhar</span>' : ''}
                 </button>
 
                 <button onclick="toggleSave('${post.id}')" title="Guardar nos favoritos"
-                  class="p-2.5 rounded-xl border border-gray-200 ${isSaved ? "text-blue-700 bg-blue-50 border-blue-200" : "text-slate-700"} hover:bg-gray-50 active:scale-95 transition flex-shrink-0">
+                  class="p-2.5 rounded-xl border border-gray-200 ${isSaved ? "text-blue-700 bg-blue-50 border-blue-200" : "text-slate-700"} hover:bg-gray-50 active:scale-95 transition-transform flex-shrink-0">
                   <i class="${isSaved ? "fa-solid" : "fa-regular"} fa-bookmark text-base"></i>
                 </button>
               </div>
@@ -1217,20 +1333,26 @@
       }).join("");
     }
 
+    const carouselRafMap = {};
     window.updateCarouselIndicator = function(postId, total) {
-      const track = document.getElementById(`track-${postId}`);
-      const index = Math.round(track.scrollLeft / track.clientWidth);
-      const counter = document.getElementById(`counter-${postId}`);
-      if (counter) counter.textContent = `${index + 1}/${total}`;
+      if (carouselRafMap[postId]) return;
+      carouselRafMap[postId] = requestAnimationFrame(() => {
+        carouselRafMap[postId] = null;
+        const track = document.getElementById(`track-${postId}`);
+        if (!track || !track.clientWidth) return;
+        const index = Math.round(track.scrollLeft / track.clientWidth);
+        const counter = document.getElementById(`counter-${postId}`);
+        if (counter) counter.textContent = `${index + 1}/${total}`;
 
-      const dotsContainer = document.getElementById(`dots-${postId}`);
-      if (dotsContainer) {
-        Array.from(dotsContainer.children).forEach((dot, i) => {
-          dot.className = i === index
-            ? "w-3.5 h-1.5 rounded-full bg-blue-600 transition-all"
-            : "w-1.5 h-1.5 rounded-full bg-gray-300 transition-all";
-        });
-      }
+        const dotsContainer = document.getElementById(`dots-${postId}`);
+        if (dotsContainer) {
+          Array.from(dotsContainer.children).forEach((dot, i) => {
+            dot.className = i === index
+              ? "w-3.5 h-1.5 rounded-full bg-blue-600"
+              : "w-1.5 h-1.5 rounded-full bg-gray-300";
+          });
+        }
+      });
     };
 
     window.openPostInstagram = function(postId) {
@@ -1438,7 +1560,7 @@
       }
 
       selectedRawVideoFile = file;
-      statusEl.textContent = `✓ Selecionado: ${file.name || "Vídeo da Fototeca"} (${sizeMB} MB)`;
+      statusEl.textContent = `✓ Selecionado: ${file.name || "Vídeo da Galeria"} (${sizeMB} MB)`;
 
       if (loadedVideoObjectUrl) URL.revokeObjectURL(loadedVideoObjectUrl);
       loadedVideoObjectUrl = URL.createObjectURL(file);
@@ -1557,7 +1679,7 @@
           if (file.size <= MAX_DIRECT_FILE_BYTES) {
             return resolve(await fileToBase64Direct(file));
           }
-          return reject(new Error("No iPhone, recorte o vídeo para até 15s (máx. 7 MB) no próprio app Fotos antes de selecionar."));
+          return reject(new Error("Recorte o vídeo para até 15s (máx. 7 MB) na galeria do aparelho antes de selecionar."));
         }
 
         let finished = false;
@@ -1706,7 +1828,7 @@
       const directUrl = document.getElementById("videoDirectUrlInput").value.trim();
 
       if (!selectedRawVideoFile && !directUrl) {
-        showToast("Toque no botão dourado para escolher um vídeo da Fototeca.");
+        showToast("Toque no botão dourado para escolher um vídeo da Galeria.");
         return;
       }
 
