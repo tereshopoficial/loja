@@ -1,16 +1,24 @@
 {
-  "name": "Vitrine Digital - Catálogo e Serviços",
-  "short_name": "Vitrine",
+  "name": "TERÊ SHOP • Teresina-PI",
+  "short_name": "TERÊ SHOP",
+  "description": "Vendas e assistência técnica especializada em Teresina-PI.",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
   "orientation": "portrait",
+  "background_color": "#031238",
+  "theme_color": "#031238",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/3081/3081559.png",
+      "src": "./icon-512.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
