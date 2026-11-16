@@ -4,18 +4,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>TERÊ SHOP • Teresina-PI</title>
+  <meta name="description" content="Vitrine oficial TERÊ SHOP — Vendas e consertos especializados em Teresina-PI." />
+
+  <!-- Prévia Oficial de Compartilhamento (WhatsApp, Instagram, Facebook) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="TERÊ SHOP • Teresina-PI" />
+  <meta property="og:description" content="Confira nossas ofertas, aparelhos e serviços técnicos em Teresina-PI." />
+  <meta property="og:url" content="https://tereshopoficial.github.io/loja/?vitrine=1" />
+  <meta property="og:image" content="https://tereshopoficial.github.io/loja/icon-512.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://tereshopoficial.github.io/loja/icon-512.png" />
+
+  <!-- Configuração PWA e Ícone Oficial iOS / Android -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#031238" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="TERÊ SHOP" />
-  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" />
+  <link rel="apple-touch-icon" href="./icon-512.png" />
+  <link rel="icon" type="image/png" href="./icon-512.png" />
+
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     html, body {
       overscroll-behavior-y: none;
       -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden;
     }
     input, textarea, select, label {
       user-select: auto;
@@ -51,47 +66,46 @@
     }
   </style>
 </head>
-<body class="bg-slate-100 text-gray-900 font-sans antialiased pb-24">
+<body class="bg-slate-200/70 text-gray-900 font-sans antialiased pb-24 md:pb-28">
 
   <!-- SPLASH SCREEN NATIVA DE ABERTURA -->
   <div id="splashScreen" class="fixed inset-0 z-50 bg-gradient-to-b from-[#031238] via-[#08246b] to-[#031238] flex flex-col items-center justify-center text-white splash-animate pointer-events-none">
-    <div class="w-24 h-24 rounded-3xl bg-white/10 backdrop-blur-md border border-amber-400/40 flex items-center justify-center shadow-2xl mb-4 overflow-hidden p-2">
-      <img id="splashLogoImg" src="" alt="" class="hidden w-full h-full object-contain" />
-      <span id="splashFallbackText" class="font-black text-2xl text-amber-400 tracking-tighter">TS</span>
+    <div class="w-28 h-28 rounded-3xl bg-white/10 backdrop-blur-md border border-amber-400/40 flex items-center justify-center shadow-2xl mb-4 overflow-hidden p-2">
+      <img id="splashLogoImg" src="./icon-512.png" alt="TERÊ SHOP" class="w-full h-full object-contain" />
     </div>
     <h2 class="font-black text-2xl tracking-tight text-white">TERÊ SHOP</h2>
     <p class="text-[11px] font-bold tracking-[0.25em] text-amber-400 uppercase mt-1">Teresina - PI</p>
   </div>
 
-  <!-- CABEÇALHO / CAPA SUPERIOR PANORÂMICA COM BOTÕES FLUTUANTES TRANSLÚCIDOS -->
+  <!-- CABEÇALHO / CAPA SUPERIOR RESPONSIVA COM BOTÕES FLUTUANTES TRANSLÚCIDOS -->
   <header class="sticky top-0 z-40 bg-[#031238] shadow-md">
-    <div class="max-w-lg mx-auto relative overflow-hidden">
+    <div class="w-full max-w-2xl mx-auto relative overflow-hidden">
       
       <!-- Botões Flutuantes Semitransparentes (Glassmorphism) sobre a Capa -->
-      <div class="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-3 pt-2.5 safe-top pointer-events-none">
+      <div class="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-3 sm:px-4 pt-2.5 safe-top pointer-events-none">
         <button onclick="shareApp()" title="Compartilhar App"
-          class="pointer-events-auto w-9 h-9 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/45 backdrop-blur-md border border-white/25 text-white shadow-sm active:scale-90 transition">
-          <i class="fa-solid fa-share-nodes text-sm"></i>
+          class="pointer-events-auto w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-black/35 hover:bg-black/50 backdrop-blur-md border border-white/25 text-white shadow-sm active:scale-90 transition">
+          <i class="fa-solid fa-share-nodes text-sm sm:text-base"></i>
         </button>
 
         <button onclick="openAdminGate()" id="adminToggleBtn" title="Acesso Administrativo"
-          class="pointer-events-auto w-9 h-9 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/45 backdrop-blur-md border border-white/25 text-white/90 shadow-sm active:scale-90 transition">
-          <i class="fa-solid fa-shield-halved text-sm"></i>
+          class="pointer-events-auto w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-black/35 hover:bg-black/50 backdrop-blur-md border border-white/25 text-white/95 shadow-sm active:scale-90 transition">
+          <i class="fa-solid fa-shield-halved text-sm sm:text-base"></i>
         </button>
       </div>
 
-      <!-- MODO 1: CAPA PANORÂMICA / SLOGAN EM ALTA DEFINIÇÃO (LARGURA TOTAL SEM CORTES) -->
+      <!-- MODO 1: CAPA PANORÂMICA / SLOGAN EM ALTA DEFINIÇÃO (ADAPTÁVEL A MOBILE E DESKTOP) -->
       <div id="headerLogoWrapper" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="hidden w-full bg-[#031238] cursor-pointer">
-        <img id="headerLogoImg" src="" alt="TERÊ SHOP • Teresina-PI" class="w-full h-auto max-h-[210px] object-contain block mx-auto" />
+        <img id="headerLogoImg" src="" alt="TERÊ SHOP • Teresina-PI" class="w-full h-auto max-h-[195px] sm:max-h-[245px] object-contain block mx-auto" />
       </div>
 
       <!-- MODO 2: TÍTULO ESCRITO ESTILIZADO (CASO NÃO HAJA CAPA ATIVA) -->
       <div id="headerTitleWrapper" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-        class="w-full min-h-[76px] pt-2 pb-2.5 px-14 flex flex-col items-center justify-center text-center bg-gradient-to-r from-[#031238] via-[#0a2d82] to-[#031238] safe-top cursor-pointer">
-        <h1 id="headerCompanyName" class="font-black text-xl tracking-tight leading-none text-white drop-shadow-xs">
+        class="w-full min-h-[74px] sm:min-h-[84px] pt-2 pb-2.5 px-14 flex flex-col items-center justify-center text-center bg-gradient-to-r from-[#031238] via-[#0a2d82] to-[#031238] safe-top cursor-pointer">
+        <h1 id="headerCompanyName" class="font-black text-xl sm:text-2xl tracking-tight leading-none text-white drop-shadow-xs">
           TERÊ SHOP
         </h1>
-        <span class="text-[10px] font-bold tracking-[0.22em] text-amber-400 uppercase mt-1">
+        <span class="text-[10px] sm:text-[11px] font-bold tracking-[0.22em] text-amber-400 uppercase mt-1">
           Teresina - PI
         </span>
       </div>
@@ -99,102 +113,107 @@
     </div>
   </header>
 
-  <!-- CARROSSEL HORIZONTAL DE VÍDEOS CURTOS 24H -->
-  <section id="storiesSection" class="max-w-lg mx-auto bg-white border-b border-gray-200 hidden">
-    <div class="px-4 pt-3 pb-1 flex items-center justify-between">
-      <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-        <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-        Destaques Rápidos • 24h
-      </span>
-      <span class="text-[10px] text-gray-400">Toque no ícone de som <i class="fa-solid fa-volume-high ml-0.5"></i></span>
-    </div>
-    <div id="storiesCarousel" class="flex gap-3 overflow-x-auto no-scrollbar px-4 py-3 snap-x snap-mandatory">
-      <!-- Cards de vídeos 24h renderizados dinamicamente -->
-    </div>
-  </section>
+  <!-- CONTENTOR PRINCIPAL FLUIDO (MOBILE + TABLET + DESKTOP) -->
+  <div class="w-full max-w-2xl mx-auto md:my-3 md:rounded-2xl md:overflow-hidden md:shadow-md md:border md:border-gray-200/80 bg-white">
 
-  <!-- FEED PRINCIPAL -->
-  <main id="feedContainer" class="max-w-lg mx-auto divide-y divide-gray-200 bg-white shadow-sm min-h-screen">
-    <div class="py-24 px-6 text-center text-gray-400">
-      <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-blue-600"></i>
-      <p class="text-xs font-medium">Carregando vitrine TERÊ SHOP...</p>
-    </div>
-  </main>
+    <!-- CARROSSEL HORIZONTAL DE VÍDEOS CURTOS 24H -->
+    <section id="storiesSection" class="w-full bg-white border-b border-gray-200 hidden">
+      <div class="px-3.5 sm:px-5 pt-3 pb-1 flex items-center justify-between gap-2">
+        <span class="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse flex-shrink-0"></span>
+          <span>Destaques Rápidos • 24h</span>
+        </span>
+        <span class="text-[10px] sm:text-[11px] text-gray-400 whitespace-nowrap">Som <i class="fa-solid fa-volume-high ml-0.5"></i></span>
+      </div>
+      <div id="storiesCarousel" class="flex gap-2.5 sm:gap-3.5 overflow-x-auto no-scrollbar px-3.5 sm:px-5 py-3 snap-x snap-mandatory">
+        <!-- Cards de vídeos 24h renderizados dinamicamente -->
+      </div>
+    </section>
 
-  <!-- BARRA DE NAVEGAÇÃO INFERIOR FIXA (ESTILO APP NATIVO) -->
-  <nav class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-[0_-2px_12px_rgba(0,0,0,0.04)] safe-bottom">
-    <div class="max-w-lg mx-auto flex items-center justify-around h-16 px-1">
-      <button onclick="setFilter('all')" id="nav-all" class="flex-1 flex flex-col items-center justify-center gap-1 text-blue-700 active:scale-90 transition">
-        <i class="fa-solid fa-house text-lg"></i>
-        <span class="text-[10px] font-extrabold">Início</span>
+    <!-- FEED PRINCIPAL -->
+    <main id="feedContainer" class="w-full divide-y divide-gray-200 bg-white min-h-[75vh]">
+      <div class="py-24 px-6 text-center text-gray-400">
+        <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-blue-600"></i>
+        <p class="text-xs font-medium">Carregando vitrine TERÊ SHOP...</p>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- BARRA DE NAVEGAÇÃO INFERIOR ADAPTÁVEL (FIXA NO MOBILE / DOCK FLUTUANTE NO DESKTOP) -->
+  <nav class="fixed bottom-0 inset-x-0 md:bottom-3 md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-2xl z-40 bg-white/95 backdrop-blur-md border-t md:border border-gray-200 md:rounded-2xl shadow-[0_-2px_12px_rgba(0,0,0,0.05)] md:shadow-xl safe-bottom">
+    <div class="w-full flex items-center justify-around h-16 px-1 sm:px-3">
+      <button onclick="setFilter('all')" id="nav-all" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-blue-700 active:scale-90 transition">
+        <i class="fa-solid fa-house text-base sm:text-lg"></i>
+        <span class="text-[10px] sm:text-[11px] font-extrabold truncate">Início</span>
       </button>
 
-      <button onclick="setFilter('venda')" id="nav-venda" class="flex-1 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition">
-        <i class="fa-solid fa-bag-shopping text-lg"></i>
-        <span class="text-[10px] font-bold">Vendas</span>
+      <button onclick="setFilter('venda')" id="nav-venda" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition">
+        <i class="fa-solid fa-bag-shopping text-base sm:text-lg"></i>
+        <span class="text-[10px] sm:text-[11px] font-bold truncate">Vendas</span>
       </button>
 
-      <button onclick="setFilter('conserto')" id="nav-conserto" class="flex-1 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition">
-        <i class="fa-solid fa-screwdriver-wrench text-lg"></i>
-        <span class="text-[10px] font-bold">Consertos</span>
+      <button onclick="setFilter('conserto')" id="nav-conserto" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition">
+        <i class="fa-solid fa-screwdriver-wrench text-base sm:text-lg"></i>
+        <span class="text-[10px] sm:text-[11px] font-bold truncate">Consertos</span>
       </button>
 
-      <button onclick="setFilter('saved')" id="nav-saved" class="relative flex-1 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition">
+      <button onclick="setFilter('saved')" id="nav-saved" class="relative flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition">
         <div class="relative">
-          <i id="nav-saved-icon" class="fa-regular fa-bookmark text-lg"></i>
+          <i id="nav-saved-icon" class="fa-regular fa-bookmark text-base sm:text-lg"></i>
           <span id="savedBadgeCount" class="hidden absolute -top-1.5 -right-2.5 bg-amber-500 text-slate-950 text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center">0</span>
         </div>
-        <span class="text-[10px] font-bold">Salvos</span>
+        <span class="text-[10px] sm:text-[11px] font-bold truncate">Salvos</span>
       </button>
 
-      <button onclick="triggerAppInstall()" id="nav-install" class="flex-1 flex flex-col items-center justify-center gap-1 text-amber-600 hover:text-amber-700 active:scale-90 transition">
-        <i class="fa-solid fa-mobile-screen-button text-lg"></i>
-        <span class="text-[10px] font-extrabold">Instalar</span>
+      <button onclick="triggerAppInstall()" id="nav-install" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-amber-600 hover:text-amber-700 active:scale-90 transition">
+        <i class="fa-solid fa-mobile-screen-button text-base sm:text-lg"></i>
+        <span class="text-[10px] sm:text-[11px] font-extrabold truncate">Instalar</span>
       </button>
     </div>
   </nav>
 
   <!-- LIGHTBOX DE FOTOS EM TELA CHEIA -->
   <div id="photoLightboxModal" class="fixed inset-0 z-50 bg-black hidden flex-col justify-between safe-top safe-bottom">
-    <div class="p-4 flex items-center justify-between text-white bg-gradient-to-b from-black/80 to-transparent">
-      <button onclick="closePhotoLightbox()" class="px-3 py-1.5 rounded-full bg-white/15 backdrop-blur flex items-center gap-1.5 text-white text-xs font-bold">
+    <div class="max-w-3xl w-full mx-auto p-3.5 sm:p-4 flex items-center justify-between text-white bg-gradient-to-b from-black/85 to-transparent">
+      <button onclick="closePhotoLightbox()" class="px-3 py-1.5 rounded-full bg-white/15 backdrop-blur flex items-center gap-1.5 text-white text-xs font-bold flex-shrink-0">
         <i class="fa-solid fa-arrow-left"></i>
         <span>Voltar</span>
       </button>
-      <div class="text-center px-2">
-        <p id="lightboxTitle" class="text-xs font-bold line-clamp-1"></p>
+      <div class="text-center px-2 min-w-0">
+        <p id="lightboxTitle" class="text-xs sm:text-sm font-bold truncate"></p>
         <p id="lightboxCounter" class="text-[11px] text-amber-400 font-semibold"></p>
       </div>
-      <button onclick="closePhotoLightbox()" class="w-9 h-9 rounded-full bg-white/15 backdrop-blur flex items-center justify-center text-white">
+      <button onclick="closePhotoLightbox()" class="w-9 h-9 rounded-full bg-white/15 backdrop-blur flex items-center justify-center text-white flex-shrink-0">
         <i class="fa-solid fa-xmark text-lg"></i>
       </button>
     </div>
 
-    <div id="lightboxTrack" onscroll="handleLightboxScroll()" class="carousel-track flex-1 flex overflow-x-auto no-scrollbar items-center">
+    <div id="lightboxTrack" onscroll="handleLightboxScroll()" class="carousel-track flex-1 flex overflow-x-auto no-scrollbar items-center max-w-4xl w-full mx-auto">
       <!-- Fotos em tela cheia -->
     </div>
 
-    <div id="lightboxFooter" class="p-4 bg-gradient-to-t from-black/90 to-transparent flex gap-2">
+    <div id="lightboxFooter" class="max-w-2xl w-full mx-auto p-4 bg-gradient-to-t from-black/90 to-transparent flex gap-2.5">
       <!-- Botões de contato direto no lightbox -->
     </div>
   </div>
 
   <!-- VISUALIZADOR EM TELA CHEIA PARA VÍDEOS 24H -->
   <div id="storyViewerModal" class="fixed inset-0 z-50 bg-black hidden flex-col justify-between safe-top safe-bottom">
-    <div class="relative z-20 p-4 bg-gradient-to-b from-black/80 to-transparent flex items-center justify-between text-white">
-      <div class="flex items-center gap-2">
-        <button onclick="closeStoryViewer()" class="px-3 py-1.5 rounded-full bg-white/15 backdrop-blur flex items-center gap-1.5 text-white text-xs font-bold">
+    <div class="max-w-2xl w-full mx-auto relative z-20 p-3.5 sm:p-4 bg-gradient-to-b from-black/85 to-transparent flex items-center justify-between text-white gap-2">
+      <div class="flex items-center gap-2 min-w-0">
+        <button onclick="closeStoryViewer()" class="px-3 py-1.5 rounded-full bg-white/15 backdrop-blur flex items-center gap-1.5 text-white text-xs font-bold flex-shrink-0">
           <i class="fa-solid fa-arrow-left"></i>
           <span>Voltar</span>
         </button>
-        <span id="viewerBadge" class="text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full bg-amber-500 text-slate-950">
+        <span id="viewerBadge" class="text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full bg-amber-500 text-slate-950 truncate">
           Oferta 24h
         </span>
       </div>
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 flex-shrink-0">
         <button onclick="toggleViewerAudio()" id="viewerAudioBtn" title="Alternar Áudio" class="px-3 h-9 rounded-full bg-white/20 backdrop-blur flex items-center justify-center gap-1.5 text-white text-xs font-bold">
           <i id="viewerAudioIcon" class="fa-solid fa-volume-high text-amber-400"></i>
-          <span id="viewerAudioLabel">Som Ativo</span>
+          <span id="viewerAudioLabel" class="hidden sm:inline">Som Ativo</span>
         </button>
         <button onclick="closeStoryViewer()" class="w-9 h-9 rounded-full bg-white/15 backdrop-blur flex items-center justify-center text-white">
           <i class="fa-solid fa-xmark text-lg"></i>
@@ -202,11 +221,11 @@
       </div>
     </div>
 
-    <div id="viewerTrack" onscroll="handleViewerScroll()" class="carousel-track flex-1 flex overflow-x-auto no-scrollbar items-center">
+    <div id="viewerTrack" onscroll="handleViewerScroll()" class="carousel-track flex-1 flex overflow-x-auto no-scrollbar items-center max-w-2xl w-full mx-auto">
       <!-- Slides de vídeo em tela cheia -->
     </div>
 
-    <div id="viewerFooter" class="relative z-20 p-4 bg-gradient-to-t from-black/90 via-black/60 to-transparent text-white space-y-2.5">
+    <div id="viewerFooter" class="max-w-2xl w-full mx-auto relative z-20 p-4 bg-gradient-to-t from-black/90 via-black/60 to-transparent text-white space-y-2.5">
       <div class="flex items-center justify-between gap-2">
         <p id="viewerTitle" class="font-bold text-sm"></p>
         <span id="viewerTimer" class="text-[11px] text-amber-300 font-semibold whitespace-nowrap"></span>
@@ -220,7 +239,7 @@
     <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2.5">
-          <div class="w-10 h-10 rounded-2xl bg-[#081c45] text-amber-400 flex items-center justify-center font-black">TS</div>
+          <img src="./icon-512.png" alt="TERÊ SHOP" class="w-11 h-11 rounded-2xl object-contain bg-[#031238] p-1 border border-amber-400/30" />
           <div>
             <h3 class="font-extrabold text-sm text-slate-900">Instalar App TERÊ SHOP</h3>
             <p class="text-[11px] text-gray-500">Acesso direto pela tela inicial</p>
@@ -251,7 +270,7 @@
   </div>
 
   <!-- TOAST DE NOTIFICAÇÃO -->
-  <div id="toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 text-center max-w-[90vw]">
+  <div id="toast" class="fixed bottom-20 md:bottom-24 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 text-center max-w-[90vw]">
   </div>
 
   <!-- MODAL LOGIN DO ADMINISTRADOR -->
@@ -287,49 +306,49 @@
     </div>
   </div>
 
-  <!-- MODAL PAINEL ADMINISTRATIVO -->
+  <!-- MODAL PAINEL ADMINISTRATIVO RESPONSIVO -->
   <div id="adminModal" class="fixed inset-0 z-50 bg-black/60 hidden items-end sm:items-center justify-center">
-    <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl max-h-[92vh] flex flex-col shadow-2xl">
+    <div class="bg-white w-full max-w-xl rounded-t-3xl sm:rounded-3xl max-h-[92vh] flex flex-col shadow-2xl">
       
-      <div class="px-4 py-3.5 border-b border-gray-200 flex items-center justify-between">
-        <button type="button" onclick="cancelAndReturnFromAdmin()" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold flex items-center gap-1.5 transition">
+      <div class="px-4 py-3.5 border-b border-gray-200 flex items-center justify-between gap-2">
+        <button type="button" onclick="cancelAndReturnFromAdmin()" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold flex items-center gap-1.5 transition flex-shrink-0">
           <i class="fa-solid fa-arrow-left"></i>
           <span>Voltar</span>
         </button>
 
-        <div class="flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-          <h2 class="font-bold text-sm text-slate-900">Gestão TERÊ SHOP</h2>
+        <div class="flex items-center gap-1.5 min-w-0">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0"></span>
+          <h2 class="font-bold text-sm text-slate-900 truncate">Gestão TERÊ SHOP</h2>
         </div>
 
-        <button type="button" onclick="logoutAdmin()" class="px-2.5 py-1.5 rounded-xl bg-red-50 text-red-600 text-xs font-bold hover:bg-red-100 transition">
+        <button type="button" onclick="logoutAdmin()" class="px-2.5 py-1.5 rounded-xl bg-red-50 text-red-600 text-xs font-bold hover:bg-red-100 transition flex-shrink-0">
           Sair ADM
         </button>
       </div>
 
       <!-- Navegação Interna do Admin (3 Abas) -->
-      <div class="flex border-b border-gray-200 text-[11px] font-bold bg-gray-50">
-        <button type="button" onclick="switchAdminTab('newPost')" id="admTab-newPost" class="flex-1 py-3 border-b-2 border-blue-700 text-blue-700">
-          + Novo Banner/Post
+      <div class="flex border-b border-gray-200 text-[11px] sm:text-xs font-bold bg-gray-50">
+        <button type="button" onclick="switchAdminTab('newPost')" id="admTab-newPost" class="flex-1 py-3 border-b-2 border-blue-700 text-blue-700 truncate px-1">
+          + Novo Post
         </button>
-        <button type="button" onclick="switchAdminTab('newVideo')" id="admTab-newVideo" class="flex-1 py-3 border-b-2 border-transparent text-gray-500">
+        <button type="button" onclick="switchAdminTab('newVideo')" id="admTab-newVideo" class="flex-1 py-3 border-b-2 border-transparent text-gray-500 truncate px-1">
           + Vídeo 24h
         </button>
-        <button type="button" onclick="switchAdminTab('settings')" id="admTab-settings" class="flex-1 py-3 border-b-2 border-transparent text-gray-500">
+        <button type="button" onclick="switchAdminTab('settings')" id="admTab-settings" class="flex-1 py-3 border-b-2 border-transparent text-gray-500 truncate px-1">
           Capa & Ajustes
         </button>
       </div>
 
       <!-- Conteúdo Scrollável Admin -->
-      <div class="p-5 overflow-y-auto space-y-4">
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-4">
 
         <!-- ABA 1: CRIAR OU EDITAR POST / BANNER -->
         <form id="newPostForm" onsubmit="handleSavePost(event)" class="space-y-4">
           <input type="hidden" id="editingPostId" value="" />
 
-          <div id="editingBannerAlert" class="hidden bg-amber-50 border border-amber-200 text-amber-800 px-3 py-2.5 rounded-xl text-xs flex items-center justify-between">
+          <div id="editingBannerAlert" class="hidden bg-amber-50 border border-amber-200 text-amber-800 px-3 py-2.5 rounded-xl text-xs flex items-center justify-between gap-2">
             <span><i class="fa-solid fa-pen mr-1"></i> Editando anúncio existente</span>
-            <button type="button" onclick="resetPostForm()" class="px-2.5 py-1 bg-amber-200/70 rounded-lg font-bold text-amber-950">Cancelar edição</button>
+            <button type="button" onclick="resetPostForm()" class="px-2.5 py-1 bg-amber-200/70 rounded-lg font-bold text-amber-950 whitespace-nowrap">Cancelar edição</button>
           </div>
 
           <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
@@ -440,7 +459,7 @@
             <div>
               <label class="block text-xs font-bold text-gray-700 mb-1.5">Opção A: Selecionar Vídeo da Fototeca / Galeria *</label>
               
-              <label for="videoFileInput" class="flex flex-col items-center justify-center gap-1.5 w-full py-4 px-4 rounded-xl border-2 border-dashed border-amber-400 bg-amber-50 text-amber-950 text-xs font-extrabold cursor-pointer active:scale-[0.98] transition">
+              <label for="videoFileInput" class="flex flex-col items-center justify-center gap-1.5 w-full py-4 px-4 rounded-xl border-2 border-dashed border-amber-400 bg-amber-50 text-amber-950 text-xs font-extrabold cursor-pointer active:scale-[0.98] transition text-center">
                 <i class="fa-solid fa-video text-xl text-amber-600"></i>
                 <span>Toque aqui para escolher Vídeo (Galeria / Câmera)</span>
                 <span class="text-[10px] font-normal text-amber-800">MP4 ou MOV • Máx. 15 segundos</span>
@@ -738,15 +757,6 @@
       const titleWrapper = document.getElementById("headerTitleWrapper");
       const logoImg = document.getElementById("headerLogoImg");
 
-      const splashImg = document.getElementById("splashLogoImg");
-      const splashFallback = document.getElementById("splashFallbackText");
-
-      if (config.logoData) {
-        splashImg.src = config.logoData;
-        splashImg.classList.remove("hidden");
-        splashFallback.classList.add("hidden");
-      }
-
       if (config.headerMode === "logo" && config.logoData) {
         logoImg.src = config.logoData;
         logoWrapper.classList.remove("hidden");
@@ -809,18 +819,18 @@
 
       section.classList.remove("hidden");
       carousel.innerHTML = activeVideos.map((vid, idx) => `
-        <div class="snap-start flex-shrink-0 w-36 rounded-2xl story-ring shadow-xs relative group">
+        <div class="snap-start flex-shrink-0 w-[36vw] min-w-[130px] max-w-[158px] rounded-2xl story-ring shadow-xs relative group">
           <div class="bg-slate-950 rounded-[14px] overflow-hidden relative aspect-[9/15]">
             <video id="mini-vid-${vid.id}" src="${vid.videoData}" autoplay loop muted playsinline webkit-playsinline preload="auto"
               onclick="openStoryViewer(${idx})"
               class="w-full h-full object-contain bg-black cursor-pointer"></video>
 
-            <span class="absolute top-2 left-2 bg-amber-500 text-slate-950 text-[9px] font-black px-2 py-0.5 rounded-full shadow-xs pointer-events-none">
+            <span class="absolute top-2 left-2 max-w-[65%] truncate bg-amber-500 text-slate-950 text-[9px] font-black px-2 py-0.5 rounded-full shadow-xs pointer-events-none">
               ${vid.badge || "24h"}
             </span>
 
             <button onclick="toggleMiniVideoAudio(event, '${vid.id}')" title="Ativar/Desativar Som"
-              class="z-10 absolute top-2 right-2 w-8 h-8 rounded-full bg-black/75 text-white flex items-center justify-center text-xs backdrop-blur-xs border border-white/20 active:scale-90 transition">
+              class="z-10 absolute top-2 right-2 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/75 text-white flex items-center justify-center text-xs backdrop-blur-xs border border-white/20 active:scale-90 transition">
               <i id="mini-audio-icon-${vid.id}" class="fa-solid fa-volume-xmark"></i>
             </button>
 
@@ -830,7 +840,7 @@
                 <i class="fa-solid fa-trash"></i>
               </button>` : ""}
 
-            <div onclick="openStoryViewer(${idx})" class="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-black/90 via-black/50 to-transparent text-white cursor-pointer">
+            <div onclick="openStoryViewer(${idx})" class="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-black/95 via-black/55 to-transparent text-white cursor-pointer">
               <p class="text-[11px] font-bold leading-tight line-clamp-2">${vid.title}</p>
               <p class="text-[9px] text-amber-300 mt-0.5 font-semibold">${getRemainingHoursText(vid.timestamp)}</p>
             </div>
@@ -1028,7 +1038,7 @@
       });
       const savedIcon = document.getElementById("nav-saved-icon");
       if (savedIcon) {
-        savedIcon.className = filter === "saved" ? "fa-solid fa-bookmark text-lg" : "fa-regular fa-bookmark text-lg";
+        savedIcon.className = filter === "saved" ? "fa-solid fa-bookmark text-base sm:text-lg" : "fa-regular fa-bookmark text-base sm:text-lg";
       }
       window.scrollTo({ top: 0, behavior: "smooth" });
       renderFeed();
@@ -1116,22 +1126,20 @@
         const hasPostInsta = Boolean(post.instagram && post.instagram.trim());
         const hasPostWhats = Boolean(post.whatsapp && post.whatsapp.trim());
 
-        const avatarHtml = config.logoData
-          ? `<img src="${config.logoData}" class="w-9 h-9 rounded-full object-cover bg-[#031238] border border-blue-200" />`
-          : `<div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#081c45] to-blue-600 text-amber-400 flex items-center justify-center text-xs font-black border border-amber-400/40">TS</div>`;
+        const avatarHtml = `<img src="./icon-512.png" alt="TERÊ SHOP" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-contain bg-[#031238] p-0.5 border border-amber-400/50 flex-shrink-0" />`;
 
         return `
-          <article class="pb-5 bg-white">
-            <div class="px-4 py-3 flex items-center justify-between">
-              <div class="flex items-center gap-2.5">
+          <article class="pb-5 sm:pb-6 bg-white">
+            <div class="px-3.5 sm:px-5 py-3 flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2.5 min-w-0">
                 ${avatarHtml}
-                <div>
-                  <p class="text-xs font-extrabold text-slate-900 leading-tight">${config.companyName || "TERÊ SHOP"}</p>
-                  <p class="text-[11px] text-gray-500 font-medium">${serviceModeLabel}</p>
+                <div class="min-w-0">
+                  <p class="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight truncate">${config.companyName || "TERÊ SHOP"}</p>
+                  <p class="text-[11px] text-gray-500 font-medium truncate">${serviceModeLabel}</p>
                 </div>
               </div>
-              <div class="flex items-center gap-2">
-                <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full tracking-wide ${badgeClass}">${badgeLabel}</span>
+              <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+                <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full tracking-wide whitespace-nowrap ${badgeClass}">${badgeLabel}</span>
                 ${isAdminLogged && !isSharedVitrineMode ? `
                   <button onclick="startEditPost('${post.id}')" title="Editar anúncio" class="text-blue-600 hover:text-blue-800 p-1.5 bg-blue-50 rounded-lg">
                     <i class="fa-solid fa-pen text-xs"></i>
@@ -1144,11 +1152,11 @@
 
             <div class="relative bg-slate-900/95 border-y border-gray-100">
               <div id="track-${post.id}" onscroll="updateCarouselIndicator('${post.id}', ${images.length})"
-                class="carousel-track flex overflow-x-auto no-scrollbar min-h-[280px] max-h-[460px]">
+                class="carousel-track flex overflow-x-auto no-scrollbar min-h-[260px] sm:min-h-[340px] max-h-[480px] sm:max-h-[560px]">
                 ${images.map((img, idx) => `
                   <div onclick="openPhotoLightbox('${post.id}', ${idx})" class="carousel-slide relative w-full flex items-center justify-center bg-slate-950 cursor-zoom-in">
                     <img src="${img}" alt="${safeTitle} - Foto ${idx + 1}" loading="lazy"
-                      class="w-full max-h-[460px] object-contain mx-auto" />
+                      class="w-full max-h-[480px] sm:max-h-[560px] object-contain mx-auto" />
                   </div>
                 `).join("")}
               </div>
@@ -1168,20 +1176,20 @@
               </div>
             ` : ""}
 
-            <div class="px-4 pt-3">
+            <div class="px-3.5 sm:px-5 pt-3">
               <div class="flex items-center gap-2 mb-3">
                 ${hasPostInsta ? `
                   <button onclick="openPostInstagram('${post.id}')"
-                    class="flex-1 bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-bold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.97] transition">
-                    <i class="fa-brands fa-instagram text-base"></i>
-                    <span>Instagram</span>
+                    class="flex-1 min-w-0 bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-bold text-xs py-2.5 px-2.5 sm:px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.97] transition">
+                    <i class="fa-brands fa-instagram text-base flex-shrink-0"></i>
+                    <span class="truncate">Instagram</span>
                   </button>` : ""}
 
                 ${hasPostWhats ? `
                   <button onclick="openPostWhatsapp('${post.id}')"
-                    class="flex-1 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.97] transition">
-                    <i class="fa-brands fa-whatsapp text-base"></i>
-                    <span>WhatsApp</span>
+                    class="flex-1 min-w-0 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs py-2.5 px-2.5 sm:px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.97] transition">
+                    <i class="fa-brands fa-whatsapp text-base flex-shrink-0"></i>
+                    <span class="truncate">WhatsApp</span>
                   </button>` : ""}
 
                 <button onclick="sharePost('${safeTitle}')" title="Partilhar anúncio"
@@ -1197,11 +1205,11 @@
               </div>
 
               <div class="space-y-1">
-                <div class="flex items-baseline justify-between gap-2">
-                  <h2 class="font-extrabold text-sm text-slate-900">${post.title}</h2>
-                  ${post.price ? `<span class="font-black text-sm text-emerald-700 whitespace-nowrap">${post.price}</span>` : ""}
+                <div class="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-1">
+                  <h2 class="font-extrabold text-sm sm:text-base text-slate-900">${post.title}</h2>
+                  ${post.price ? `<span class="font-black text-sm sm:text-base text-emerald-700 whitespace-nowrap">${post.price}</span>` : ""}
                 </div>
-                <p class="text-xs text-gray-600 leading-relaxed whitespace-pre-line">${post.description}</p>
+                <p class="text-xs sm:text-[13px] text-gray-600 leading-relaxed whitespace-pre-line">${post.description}</p>
               </div>
             </div>
           </article>
@@ -1267,8 +1275,8 @@
     window.shareApp = function() {
       const publicUrl = getPublicShareUrl();
       const shareData = {
-        title: config.companyName || "TERÊ SHOP",
-        text: `Baixe e acesse o App ${config.companyName || "TERÊ SHOP"}:`,
+        title: `${config.companyName || "TERÊ SHOP"} • Teresina-PI`,
+        text: `Acesse o App oficial ${config.companyName || "TERÊ SHOP"} (Vendas e Consertos em Teresina-PI):`,
         url: publicUrl
       };
       if (navigator.share) {
@@ -1316,7 +1324,7 @@
       const pass = document.getElementById("adminPasswordInput").value;
       if (pass === config.adminPass) {
         isAdminLogged = true;
-        document.getElementById("adminToggleBtn").innerHTML = `<i class="fa-solid fa-gear text-sm text-amber-400"></i>`;
+        document.getElementById("adminToggleBtn").innerHTML = `<i class="fa-solid fa-gear text-sm sm:text-base text-amber-400"></i>`;
         closeModal("loginModal");
         openAdminPanel();
         renderStoriesCarousel();
@@ -1329,7 +1337,7 @@
 
     window.logoutAdmin = function() {
       isAdminLogged = false;
-      document.getElementById("adminToggleBtn").innerHTML = `<i class="fa-solid fa-shield-halved text-sm"></i>`;
+      document.getElementById("adminToggleBtn").innerHTML = `<i class="fa-solid fa-shield-halved text-sm sm:text-base"></i>`;
       resetPostForm();
       resetVideoForm();
       closeModal("adminModal");
@@ -1378,8 +1386,8 @@
       ["newPost", "newVideo", "settings"].forEach(t => {
         const btn = document.getElementById(`admTab-${t}`);
         btn.className = t === tab
-          ? "flex-1 py-3 border-b-2 border-blue-700 text-blue-700"
-          : "flex-1 py-3 border-b-2 border-transparent text-gray-500";
+          ? "flex-1 py-3 border-b-2 border-blue-700 text-blue-700 truncate px-1"
+          : "flex-1 py-3 border-b-2 border-transparent text-gray-500 truncate px-1";
       });
     };
 
@@ -1772,7 +1780,7 @@
               <p class="font-bold truncate">${v.title}</p>
               <p class="text-[10px] text-amber-600">${getRemainingHoursText(v.timestamp)}</p>
             </div>
-            <button type="button" onclick="deleteVideoStory(null, '${v.id}')" class="text-red-600 hover:bg-red-50 p-2 rounded-lg">
+            <button type="button" onclick="deleteVideoStory(null, '${v.id}')" class="text-red-600 hover:bg-red-50 p-2 rounded-lg flex-shrink-0">
               <i class="fa-solid fa-trash"></i>
             </button>
           </div>
@@ -1780,7 +1788,6 @@
       `;
     }
 
-    // UPLOAD DA CAPA PANORÂMICA / SLOGAN EM ALTA DEFINIÇÃO (ATÉ 1600px)
     window.handleLogoUpload = function(event) {
       const file = event.target.files[0];
       if (!file) return;
