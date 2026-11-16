@@ -2,13 +2,25 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>TERÊ SHOP • Teresina-PI</title>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#081c45" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="TERÊ SHOP" />
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
+    html, body {
+      overscroll-behavior-y: none;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    input, textarea, select {
+      user-select: text;
+    }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     .carousel-track {
@@ -23,25 +35,49 @@
       background: linear-gradient(135deg, #0055ff 0%, #f59e0b 50%, #ec4899 100%);
       padding: 2.5px;
     }
+    .safe-top {
+      padding-top: env(safe-area-inset-top);
+    }
+    .safe-bottom {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    @keyframes fadeOutSplash {
+      0% { opacity: 1; }
+      75% { opacity: 1; }
+      100% { opacity: 0; visibility: hidden; }
+    }
+    .splash-animate {
+      animation: fadeOutSplash 1.4s ease-out forwards;
+    }
   </style>
 </head>
-<body class="bg-slate-100 text-gray-900 font-sans antialiased pb-20">
+<body class="bg-slate-100 text-gray-900 font-sans antialiased pb-24">
 
-  <!-- CABEÇALHO FIXO COM TÍTULO/SLOGAN CENTRALIZADO -->
-  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-gray-200 shadow-xs">
-    <div class="max-w-lg mx-auto px-3 min-h-[60px] py-1.5 grid grid-cols-5 items-center">
+  <!-- SPLASH SCREEN NATIVA DE ABERTURA -->
+  <div id="splashScreen" class="fixed inset-0 z-50 bg-gradient-to-b from-[#081c45] via-[#0b2a66] to-[#081c45] flex flex-col items-center justify-center text-white splash-animate pointer-events-none">
+    <div class="w-20 h-20 rounded-3xl bg-white/10 backdrop-blur-md border border-amber-400/40 flex items-center justify-center shadow-2xl mb-4 overflow-hidden p-2">
+      <img id="splashLogoImg" src="" alt="" class="hidden w-full h-full object-contain" />
+      <span id="splashFallbackText" class="font-black text-2xl text-amber-400 tracking-tighter">TS</span>
+    </div>
+    <h2 class="font-black text-2xl tracking-tight text-white">TERÊ SHOP</h2>
+    <p class="text-[11px] font-bold tracking-[0.25em] text-amber-400 uppercase mt-1">Teresina - PI</p>
+  </div>
+
+  <!-- CABEÇALHO FIXO ESTILO APP NATIVO -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-200/80 shadow-2xs safe-top">
+    <div class="max-w-lg mx-auto px-3 min-h-[58px] py-1.5 grid grid-cols-5 items-center">
       
       <!-- Esquerda: Botão Compartilhar Vitrine -->
       <div class="col-span-1 flex items-center justify-start">
-        <button onclick="shareApp()" title="Compartilhar Vitrine" class="p-2 text-slate-700 hover:text-blue-700 transition rounded-full hover:bg-slate-100">
-          <i class="fa-solid fa-share-nodes text-lg"></i>
+        <button onclick="shareApp()" title="Compartilhar App" class="w-9 h-9 flex items-center justify-center text-slate-700 active:scale-90 transition rounded-full bg-slate-100/80 hover:bg-slate-200/70">
+          <i class="fa-solid fa-share-nodes text-base"></i>
         </button>
       </div>
 
       <!-- Centro: Logotipo/Slogan em Alta Definição ou Título Fixo TERÊ SHOP -->
-      <div class="col-span-3 flex flex-col items-center justify-center text-center overflow-hidden">
+      <div onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="col-span-3 flex flex-col items-center justify-center text-center overflow-hidden cursor-pointer">
         <div id="headerLogoWrapper" class="hidden items-center justify-center">
-          <img id="headerLogoImg" src="" alt="TERÊ SHOP" class="max-h-14 w-auto object-contain drop-shadow-xs" />
+          <img id="headerLogoImg" src="" alt="TERÊ SHOP" class="max-h-12 w-auto object-contain" />
         </div>
 
         <div id="headerTitleWrapper" class="flex flex-col items-center justify-center">
@@ -56,27 +92,11 @@
 
       <!-- Direita: Acesso ADM (Ocultado automaticamente no modo compartilhamento ?vitrine=1) -->
       <div class="col-span-1 flex items-center justify-end">
-        <button onclick="openAdminGate()" id="adminToggleBtn" title="Acesso Administrativo" class="p-2 text-slate-400 hover:text-slate-900 transition rounded-full hover:bg-slate-100">
+        <button onclick="openAdminGate()" id="adminToggleBtn" title="Acesso Administrativo" class="w-9 h-9 flex items-center justify-center text-slate-400 hover:text-slate-900 active:scale-90 transition rounded-full hover:bg-slate-100">
           <i class="fa-solid fa-shield-halved text-base"></i>
         </button>
       </div>
     </div>
-
-    <!-- ABAS DE FILTRO (TODOS | VENDAS | CONSERTOS | SALVOS) -->
-    <nav class="max-w-lg mx-auto flex border-t border-gray-100 text-xs font-bold bg-white">
-      <button onclick="setFilter('all')" id="tab-all" class="flex-1 py-2.5 text-center border-b-2 border-blue-700 text-blue-700 transition">
-        Todos
-      </button>
-      <button onclick="setFilter('venda')" id="tab-venda" class="flex-1 py-2.5 text-center border-b-2 border-transparent text-gray-500 hover:text-gray-800 transition">
-        Vendas
-      </button>
-      <button onclick="setFilter('conserto')" id="tab-conserto" class="flex-1 py-2.5 text-center border-b-2 border-transparent text-gray-500 hover:text-gray-800 transition">
-        Consertos
-      </button>
-      <button onclick="setFilter('saved')" id="tab-saved" class="flex-1 py-2.5 text-center border-b-2 border-transparent text-gray-500 hover:text-gray-800 transition">
-        <i class="fa-regular fa-bookmark mr-1"></i>Salvos
-      </button>
-    </nav>
   </header>
 
   <!-- CARROSSEL HORIZONTAL DE VÍDEOS CURTOS 24H -->
@@ -86,7 +106,7 @@
         <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
         Destaques Rápidos • 24h
       </span>
-      <span class="text-[10px] text-gray-400">Deslize <i class="fa-solid fa-arrow-right-long ml-0.5"></i></span>
+      <span class="text-[10px] text-gray-400">Toque no ícone de som <i class="fa-solid fa-volume-high ml-0.5"></i></span>
     </div>
     <div id="storiesCarousel" class="flex gap-3 overflow-x-auto no-scrollbar px-4 py-3 snap-x snap-mandatory">
       <!-- Cards de vídeos 24h renderizados dinamicamente -->
@@ -101,8 +121,62 @@
     </div>
   </main>
 
+  <!-- BARRA DE NAVEGAÇÃO INFERIOR FIXA (ESTILO APP NATIVO) -->
+  <nav class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-[0_-2px_12px_rgba(0,0,0,0.04)] safe-bottom">
+    <div class="max-w-lg mx-auto flex items-center justify-around h-16 px-1">
+      <button onclick="setFilter('all')" id="nav-all" class="flex-1 flex flex-col items-center justify-center gap-1 text-blue-700 active:scale-90 transition">
+        <i class="fa-solid fa-house text-lg"></i>
+        <span class="text-[10px] font-extrabold">Início</span>
+      </button>
+
+      <button onclick="setFilter('venda')" id="nav-venda" class="flex-1 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition">
+        <i class="fa-solid fa-bag-shopping text-lg"></i>
+        <span class="text-[10px] font-bold">Vendas</span>
+      </button>
+
+      <button onclick="setFilter('conserto')" id="nav-conserto" class="flex-1 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition">
+        <i class="fa-solid fa-screwdriver-wrench text-lg"></i>
+        <span class="text-[10px] font-bold">Consertos</span>
+      </button>
+
+      <button onclick="setFilter('saved')" id="nav-saved" class="relative flex-1 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition">
+        <div class="relative">
+          <i id="nav-saved-icon" class="fa-regular fa-bookmark text-lg"></i>
+          <span id="savedBadgeCount" class="hidden absolute -top-1.5 -right-2.5 bg-amber-500 text-slate-950 text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center">0</span>
+        </div>
+        <span class="text-[10px] font-bold">Salvos</span>
+      </button>
+
+      <button onclick="triggerAppInstall()" id="nav-install" class="flex-1 flex flex-col items-center justify-center gap-1 text-amber-600 hover:text-amber-700 active:scale-90 transition">
+        <i class="fa-solid fa-mobile-screen-button text-lg"></i>
+        <span class="text-[10px] font-extrabold">Instalar</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- LIGHTBOX DE FOTOS EM TELA CHEIA -->
+  <div id="photoLightboxModal" class="fixed inset-0 z-50 bg-black hidden flex-col justify-between safe-top safe-bottom">
+    <div class="p-4 flex items-center justify-between text-white bg-gradient-to-b from-black/80 to-transparent">
+      <div>
+        <p id="lightboxTitle" class="text-xs font-bold line-clamp-1"></p>
+        <p id="lightboxCounter" class="text-[11px] text-amber-400 font-semibold"></p>
+      </div>
+      <button onclick="closePhotoLightbox()" class="w-9 h-9 rounded-full bg-white/15 backdrop-blur flex items-center justify-center text-white">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+    </div>
+
+    <div id="lightboxTrack" onscroll="handleLightboxScroll()" class="carousel-track flex-1 flex overflow-x-auto no-scrollbar items-center">
+      <!-- Fotos em tela cheia -->
+    </div>
+
+    <div id="lightboxFooter" class="p-4 bg-gradient-to-t from-black/90 to-transparent flex gap-2">
+      <!-- Botões de contato direto no lightbox -->
+    </div>
+  </div>
+
   <!-- VISUALIZADOR EM TELA CHEIA PARA VÍDEOS 24H -->
-  <div id="storyViewerModal" class="fixed inset-0 z-50 bg-black hidden flex-col justify-between">
+  <div id="storyViewerModal" class="fixed inset-0 z-50 bg-black hidden flex-col justify-between safe-top safe-bottom">
     <div class="relative z-20 p-4 bg-gradient-to-b from-black/80 to-transparent flex items-center justify-between text-white">
       <div class="flex items-center gap-2.5">
         <span id="viewerBadge" class="text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full bg-amber-500 text-slate-950">
@@ -111,8 +185,9 @@
         <span id="viewerTimer" class="text-xs text-gray-200 font-medium"></span>
       </div>
       <div class="flex items-center gap-2">
-        <button onclick="toggleViewerAudio()" id="viewerAudioBtn" title="Alternar Áudio" class="w-9 h-9 rounded-full bg-white/15 backdrop-blur flex items-center justify-center text-white">
-          <i class="fa-solid fa-volume-xmark"></i>
+        <button onclick="toggleViewerAudio()" id="viewerAudioBtn" title="Alternar Áudio" class="px-3 h-9 rounded-full bg-white/20 backdrop-blur flex items-center justify-center gap-1.5 text-white text-xs font-bold">
+          <i id="viewerAudioIcon" class="fa-solid fa-volume-high text-amber-400"></i>
+          <span id="viewerAudioLabel">Som Ativo</span>
         </button>
         <button onclick="closeStoryViewer()" class="w-9 h-9 rounded-full bg-white/15 backdrop-blur flex items-center justify-center text-white">
           <i class="fa-solid fa-xmark text-lg"></i>
@@ -130,13 +205,48 @@
     </div>
   </div>
 
+  <!-- MODAL INSTRUÇÕES DE INSTALAÇÃO NO IPHONE / SAFARI -->
+  <div id="iosInstallModal" class="fixed inset-0 z-50 bg-black/60 hidden items-end sm:items-center justify-center p-4 backdrop-blur-xs">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-[#081c45] text-amber-400 flex items-center justify-center font-black">TS</div>
+          <div>
+            <h3 class="font-extrabold text-sm text-slate-900">Instalar App TERÊ SHOP</h3>
+            <p class="text-[11px] text-gray-500">Acesso direto pela tela inicial</p>
+          </div>
+        </div>
+        <button onclick="closeModal('iosInstallModal')" class="text-gray-400 hover:text-gray-700 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div class="bg-slate-50 rounded-2xl p-3.5 space-y-2.5 text-xs text-slate-700 border border-slate-200">
+        <p class="flex items-center gap-2.5">
+          <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center flex-shrink-0">1</span>
+          <span>Toque no botão <b>Compartilhar</b> <i class="fa-solid fa-arrow-up-from-bracket text-blue-600"></i> na barra do navegador.</span>
+        </p>
+        <p class="flex items-center gap-2.5">
+          <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center flex-shrink-0">2</span>
+          <span>Role para baixo e escolha <b>"Adicionar à Tela de Início"</b> <i class="fa-regular fa-square-plus text-slate-800"></i>.</span>
+        </p>
+        <p class="flex items-center gap-2.5">
+          <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center flex-shrink-0">3</span>
+          <span>Confirme em <b>Adicionar</b> para abrir como aplicativo em tela cheia!</span>
+        </p>
+      </div>
+
+      <button onclick="closeModal('iosInstallModal')" class="w-full bg-[#081c45] text-white font-bold py-3 rounded-xl text-xs">
+        Entendi
+      </button>
+    </div>
+  </div>
+
   <!-- TOAST DE NOTIFICAÇÃO -->
-  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 text-center max-w-[90vw]">
+  <div id="toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 text-center max-w-[90vw]">
   </div>
 
   <!-- MODAL LOGIN DO ADMINISTRADOR -->
   <div id="loginModal" class="fixed inset-0 z-50 bg-black/60 hidden items-center justify-center p-4 backdrop-blur-xs">
-    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl">
       <div class="flex justify-between items-center mb-3">
         <div class="flex items-center gap-2">
           <span class="w-8 h-8 rounded-full bg-blue-50 text-blue-700 flex items-center justify-center">
@@ -166,7 +276,7 @@
 
   <!-- MODAL PAINEL ADMINISTRATIVO -->
   <div id="adminModal" class="fixed inset-0 z-50 bg-black/60 hidden items-end sm:items-center justify-center">
-    <div class="bg-white w-full max-w-lg rounded-t-2xl sm:rounded-2xl max-h-[92vh] flex flex-col shadow-2xl">
+    <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl max-h-[92vh] flex flex-col shadow-2xl">
       <div class="px-5 py-4 border-b border-gray-200 flex items-center justify-between">
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
@@ -284,11 +394,10 @@
           </button>
         </form>
 
-        <!-- ABA 2: PUBLICAR VÍDEO CURTO 24H (SISTEMA CONSOLIDADO) -->
+        <!-- ABA 2: PUBLICAR VÍDEO CURTO 24H -->
         <form id="newVideoForm" onsubmit="handleSaveVideoStory(event)" class="space-y-4 hidden">
           <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-900 space-y-1">
-            <p><i class="fa-solid fa-mobile-screen-button mr-1"></i> Suba um vídeo curto da galeria (<b>até 15s e até 7,5 MB</b>) ou cole um link direto de vídeo <code>.mp4</code>.</p>
-            <p class="text-[10px] text-amber-700">Dica: Se o vídeo do celular for maior que 7,5 MB, grave em HD/720p (15s) ou recorte na galeria antes de enviar.</p>
+            <p><i class="fa-solid fa-volume-high mr-1"></i> Suba um vídeo curto da galeria (<b>até 15s e até 7,5 MB</b>) com áudio original preservado ou cole um link direto <code>.mp4</code>.</p>
           </div>
 
           <div>
@@ -316,7 +425,6 @@
             </div>
           </div>
 
-          <!-- PRÉ-VISUALIZAÇÃO E RECORTE DE TRECHO (ATÉ 15s) -->
           <div id="videoTrimmerBox" class="hidden p-3.5 rounded-xl bg-slate-900 text-white space-y-3">
             <div class="flex items-center justify-between text-xs">
               <span class="font-bold text-amber-400"><i class="fa-solid fa-scissors mr-1"></i> Enquadrar Trecho (Máx. 15s)</span>
@@ -324,7 +432,7 @@
             </div>
 
             <div class="relative bg-black rounded-lg overflow-hidden flex items-center justify-center max-h-56">
-              <video id="trimPreviewVideo" playsinline webkit-playsinline muted class="max-h-56 w-auto object-contain"></video>
+              <video id="trimPreviewVideo" playsinline webkit-playsinline class="max-h-56 w-auto object-contain"></video>
             </div>
 
             <div id="trimSlidersContainer" class="grid grid-cols-2 gap-3 text-xs">
@@ -342,7 +450,7 @@
 
             <div class="flex items-center justify-between pt-1">
               <button type="button" onclick="previewTrimmedSegment()" class="text-xs bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-lg font-semibold">
-                <i class="fa-solid fa-play mr-1"></i> Testar Trecho
+                <i class="fa-solid fa-play mr-1"></i> Testar Trecho com Som
               </button>
               <label class="flex items-center gap-1.5 text-xs cursor-pointer">
                 <input type="checkbox" id="includeVideoAudio" checked class="accent-amber-500" />
@@ -367,7 +475,6 @@
             Publicar Vídeo 24h
           </button>
 
-          <!-- Lista de Vídeos 24h Ativos para Exclusão Manual -->
           <div id="adminActiveVideosList" class="pt-3 border-t border-gray-200 space-y-2"></div>
         </form>
 
@@ -427,7 +534,16 @@
     </div>
   </div>
 
-  <!-- FIREBASE REALTIME DATABASE INTEGRATION -->
+  <!-- REGISTRO DO SERVICE WORKER PARA INSTALAÇÃO PWA -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(() => {});
+      });
+    }
+  </script>
+
+  <!-- FIREBASE REALTIME DATABASE + APP LOGIC -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getDatabase, ref, set, push, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
@@ -459,6 +575,30 @@
       if (adminBtn) adminBtn.style.display = "none";
     }
 
+    // CAPTURAR EVENTO DE INSTALAÇÃO NATIVA DO APP
+    let deferredInstallPrompt = null;
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+    });
+
+    window.triggerAppInstall = async function() {
+      if (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true) {
+        showToast("O App TERÊ SHOP já está instalado no seu celular!");
+        return;
+      }
+      if (deferredInstallPrompt) {
+        deferredInstallPrompt.prompt();
+        const choice = await deferredInstallPrompt.userChoice;
+        if (choice.outcome === "accepted") {
+          showToast("Instalando App TERÊ SHOP...");
+        }
+        deferredInstallPrompt = null;
+      } else {
+        document.getElementById("iosInstallModal").classList.replace("hidden", "flex");
+      }
+    };
+
     const DEFAULT_CONFIG = {
       companyName: "TERÊ SHOP",
       headerMode: "title",
@@ -474,7 +614,7 @@
     let isAdminLogged = false;
     let pendingPostImages = [];
     let pendingLogoData = "";
-    let viewerMuted = true;
+    let viewerMuted = false; // Inicia com áudio liberado ao clicar no story
 
     let selectedRawVideoFile = null;
     let loadedVideoObjectUrl = "";
@@ -482,6 +622,21 @@
     let trimStartSec = 0;
     let trimEndSec = 15;
     let trimCheckInterval = null;
+
+    // FUNÇÃO AUXILIAR PARA DESBLOQUEAR E ATIVAR ÁUDIO COM 100% DE COMPATIBILIDADE (iOS + ANDROID)
+    function applyVideoAudioState(videoEl, shouldMute) {
+      if (!videoEl) return;
+      if (shouldMute) {
+        videoEl.muted = true;
+        videoEl.defaultMuted = true;
+        videoEl.setAttribute("muted", "");
+      } else {
+        videoEl.removeAttribute("muted");
+        videoEl.defaultMuted = false;
+        videoEl.muted = false;
+        videoEl.volume = 1.0;
+      }
+    }
 
     const configRef = ref(db, "config");
     onValue(configRef, (snapshot) => {
@@ -539,6 +694,15 @@
       const titleWrapper = document.getElementById("headerTitleWrapper");
       const logoImg = document.getElementById("headerLogoImg");
 
+      const splashImg = document.getElementById("splashLogoImg");
+      const splashFallback = document.getElementById("splashFallbackText");
+
+      if (config.logoData) {
+        splashImg.src = config.logoData;
+        splashImg.classList.remove("hidden");
+        splashFallback.classList.add("hidden");
+      }
+
       if (config.headerMode === "logo" && config.logoData) {
         logoImg.src = config.logoData;
         logoWrapper.classList.remove("hidden");
@@ -548,6 +712,17 @@
         logoWrapper.classList.add("hidden");
         logoWrapper.classList.remove("flex");
         titleWrapper.classList.remove("hidden");
+      }
+    }
+
+    function updateSavedBadge() {
+      const badge = document.getElementById("savedBadgeCount");
+      if (!badge) return;
+      if (savedIds.length > 0) {
+        badge.textContent = savedIds.length;
+        badge.classList.remove("hidden");
+      } else {
+        badge.classList.add("hidden");
       }
     }
 
@@ -579,6 +754,7 @@
       return `Expira em ${hours}h`;
     }
 
+    // CARROSSEL DE VÍDEOS 24H COM CONTROLE DE SOM CORRIGIDO
     function renderStoriesCarousel() {
       const section = document.getElementById("storiesSection");
       const carousel = document.getElementById("storiesCarousel");
@@ -592,7 +768,7 @@
       carousel.innerHTML = activeVideos.map((vid, idx) => `
         <div class="snap-start flex-shrink-0 w-36 rounded-2xl story-ring shadow-xs relative group">
           <div class="bg-slate-950 rounded-[14px] overflow-hidden relative aspect-[9/15]">
-            <video id="mini-vid-${vid.id}" src="${vid.videoData}" autoplay loop muted playsinline webkit-playsinline preload="metadata"
+            <video id="mini-vid-${vid.id}" src="${vid.videoData}" autoplay loop muted playsinline webkit-playsinline preload="auto"
               onclick="openStoryViewer(${idx})"
               class="w-full h-full object-contain bg-black cursor-pointer"></video>
 
@@ -601,13 +777,13 @@
             </span>
 
             <button onclick="toggleMiniVideoAudio(event, '${vid.id}')" title="Ativar/Desativar Som"
-              class="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/65 text-white flex items-center justify-center text-xs backdrop-blur-xs hover:bg-black transition">
+              class="z-10 absolute top-2 right-2 w-8 h-8 rounded-full bg-black/75 text-white flex items-center justify-center text-xs backdrop-blur-xs border border-white/20 active:scale-90 transition">
               <i id="mini-audio-icon-${vid.id}" class="fa-solid fa-volume-xmark"></i>
             </button>
 
             ${isAdminLogged && !isSharedVitrineMode ? `
               <button onclick="deleteVideoStory(event, '${vid.id}')" title="Excluir vídeo 24h"
-                class="absolute top-10 right-2 w-7 h-7 rounded-full bg-red-600 text-white flex items-center justify-center text-xs shadow-md">
+                class="z-10 absolute top-11 right-2 w-7 h-7 rounded-full bg-red-600 text-white flex items-center justify-center text-xs shadow-md">
                 <i class="fa-solid fa-trash"></i>
               </button>` : ""}
 
@@ -622,8 +798,7 @@
       activeVideos.forEach(vid => {
         const vEl = document.getElementById(`mini-vid-${vid.id}`);
         if (vEl) {
-          vEl.defaultMuted = true;
-          vEl.muted = true;
+          applyVideoAudioState(vEl, true);
           vEl.play().catch(() => {});
         }
       });
@@ -635,32 +810,51 @@
       const iconEl = document.getElementById(`mini-audio-icon-${vidId}`);
       if (!videoEl) return;
 
+      const willEnableSound = videoEl.muted;
+
+      // Silenciar todos os outros mini-vídeos
       document.querySelectorAll("#storiesCarousel video").forEach(v => {
         if (v.id !== `mini-vid-${vidId}`) {
-          v.muted = true;
+          applyVideoAudioState(v, true);
           const otherIcon = document.getElementById(v.id.replace("mini-vid-", "mini-audio-icon-"));
           if (otherIcon) otherIcon.className = "fa-solid fa-volume-xmark";
         }
       });
 
-      videoEl.muted = !videoEl.muted;
-      if (!videoEl.muted) {
-        videoEl.play().catch(() => {
+      if (willEnableSound) {
+        applyVideoAudioState(videoEl, false);
+        videoEl.play().then(() => {
+          iconEl.className = "fa-solid fa-volume-high text-amber-400";
+          showToast("Som ativado");
+        }).catch(() => {
+          applyVideoAudioState(videoEl, true);
+          iconEl.className = "fa-solid fa-volume-xmark";
           showToast("Toque no vídeo para abrir com som.");
         });
+      } else {
+        applyVideoAudioState(videoEl, true);
+        iconEl.className = "fa-solid fa-volume-xmark";
       }
-      iconEl.className = videoEl.muted ? "fa-solid fa-volume-xmark" : "fa-solid fa-volume-high text-amber-400";
     };
 
+    // VISUALIZADOR EM TELA CHEIA COM DESBLOQUEIO SÍNCRONO DE ÁUDIO NO CLIQUE
     window.openStoryViewer = function(startIndex) {
-      document.querySelectorAll("#storiesCarousel video").forEach(v => v.muted = true);
+      // Silenciar todos os mini-vídeos do carrossel antes de abrir tela cheia
+      document.querySelectorAll("#storiesCarousel video").forEach(v => {
+        applyVideoAudioState(v, true);
+        const icon = document.getElementById(v.id.replace("mini-vid-", "mini-audio-icon-"));
+        if (icon) icon.className = "fa-solid fa-volume-xmark";
+      });
+
+      viewerMuted = false;
+      updateViewerAudioButtonUI();
 
       const modal = document.getElementById("storyViewerModal");
       const track = document.getElementById("viewerTrack");
 
       track.innerHTML = activeVideos.map((vid, idx) => `
         <div class="carousel-slide w-full h-full flex items-center justify-center bg-black relative">
-          <video id="full-vid-${idx}" src="${vid.videoData}" loop playsinline webkit-playsinline ${viewerMuted ? "muted" : ""}
+          <video id="full-vid-${idx}" src="${vid.videoData}" loop playsinline webkit-playsinline preload="auto"
             onclick="toggleViewerAudio()"
             class="max-h-full max-w-full w-full h-full object-contain"></video>
         </div>
@@ -669,33 +863,32 @@
       modal.classList.remove("hidden");
       modal.classList.add("flex");
 
-      setTimeout(() => {
-        track.scrollTo({ left: startIndex * track.clientWidth, behavior: "instant" });
-        updateViewerOverlay(startIndex);
-      }, 30);
+      // Posicionar e iniciar reprodução com som imediatamente dentro do evento de toque do usuário
+      track.scrollLeft = startIndex * track.clientWidth;
+      const targetVid = document.getElementById(`full-vid-${startIndex}`);
+      if (targetVid) {
+        applyVideoAudioState(targetVid, false);
+        targetVid.play().catch(() => {
+          // Fallback caso o navegador bloqueie áudio automático
+          viewerMuted = true;
+          updateViewerAudioButtonUI();
+          applyVideoAudioState(targetVid, true);
+          targetVid.play().catch(() => {});
+        });
+      }
+      updateViewerMetadataOnly(startIndex);
     };
 
     window.handleViewerScroll = function() {
       const track = document.getElementById("viewerTrack");
+      if (!track || track.clientWidth === 0) return;
       const idx = Math.round(track.scrollLeft / track.clientWidth);
       updateViewerOverlay(idx);
     };
 
-    function updateViewerOverlay(idx) {
+    function updateViewerMetadataOnly(idx) {
       const vid = activeVideos[idx];
       if (!vid) return;
-
-      activeVideos.forEach((_, i) => {
-        const vEl = document.getElementById(`full-vid-${i}`);
-        if (!vEl) return;
-        if (i === idx) {
-          vEl.muted = viewerMuted;
-          vEl.play().catch(() => {});
-        } else {
-          vEl.pause();
-        }
-      });
-
       document.getElementById("viewerBadge").textContent = vid.badge || "Destaque 24h";
       document.getElementById("viewerTimer").textContent = getRemainingHoursText(vid.timestamp);
       document.getElementById("viewerTitle").textContent = vid.title;
@@ -713,25 +906,56 @@
       }
     }
 
+    function updateViewerOverlay(idx) {
+      const vid = activeVideos[idx];
+      if (!vid) return;
+
+      activeVideos.forEach((_, i) => {
+        const vEl = document.getElementById(`full-vid-${i}`);
+        if (!vEl) return;
+        if (i === idx) {
+          applyVideoAudioState(vEl, viewerMuted);
+          vEl.play().catch(() => {});
+        } else {
+          vEl.pause();
+        }
+      });
+
+      updateViewerMetadataOnly(idx);
+    }
+
+    function updateViewerAudioButtonUI() {
+      const icon = document.getElementById("viewerAudioIcon");
+      const label = document.getElementById("viewerAudioLabel");
+      if (!icon || !label) return;
+      if (viewerMuted) {
+        icon.className = "fa-solid fa-volume-xmark text-white";
+        label.textContent = "Sem Som";
+      } else {
+        icon.className = "fa-solid fa-volume-high text-amber-400";
+        label.textContent = "Som Ativo";
+      }
+    }
+
     window.toggleViewerAudio = function() {
       viewerMuted = !viewerMuted;
-      const btn = document.getElementById("viewerAudioBtn");
-      btn.innerHTML = viewerMuted
-        ? `<i class="fa-solid fa-volume-xmark"></i>`
-        : `<i class="fa-solid fa-volume-high text-amber-400"></i>`;
+      updateViewerAudioButtonUI();
 
       const track = document.getElementById("viewerTrack");
       const idx = Math.round(track.scrollLeft / track.clientWidth);
       const currentVid = document.getElementById(`full-vid-${idx}`);
       if (currentVid) {
-        currentVid.muted = viewerMuted;
+        applyVideoAudioState(currentVid, viewerMuted);
         if (!viewerMuted) currentVid.play().catch(() => {});
       }
     };
 
     window.closeStoryViewer = function() {
       const modal = document.getElementById("storyViewerModal");
-      document.querySelectorAll("#viewerTrack video").forEach(v => v.pause());
+      document.querySelectorAll("#viewerTrack video").forEach(v => {
+        applyVideoAudioState(v, true);
+        v.pause();
+      });
       modal.classList.add("hidden");
       modal.classList.remove("flex");
     };
@@ -751,22 +975,81 @@
       }
     };
 
+    // NAVEGAÇÃO INFERIOR ESTILO APP NATIVO
     window.setFilter = function(filter) {
       currentFilter = filter;
       ["all", "venda", "conserto", "saved"].forEach(tab => {
-        const el = document.getElementById(`tab-${tab}`);
+        const el = document.getElementById(`nav-${tab}`);
+        if (!el) return;
         if (tab === filter) {
-          el.classList.add("border-blue-700", "text-blue-700");
-          el.classList.remove("border-transparent", "text-gray-500");
+          el.classList.add("text-blue-700");
+          el.classList.remove("text-gray-400");
         } else {
-          el.classList.remove("border-blue-700", "text-blue-700");
-          el.classList.add("border-transparent", "text-gray-500");
+          el.classList.remove("text-blue-700");
+          el.classList.add("text-gray-400");
         }
       });
+      const savedIcon = document.getElementById("nav-saved-icon");
+      if (savedIcon) {
+        savedIcon.className = filter === "saved" ? "fa-solid fa-bookmark text-lg" : "fa-regular fa-bookmark text-lg";
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
       renderFeed();
     };
 
+    // LIGHTBOX DE FOTOS EM TELA CHEIA
+    let activeLightboxTotal = 0;
+
+    window.openPhotoLightbox = function(postId, startIdx) {
+      const post = posts.find(p => p.id === postId);
+      if (!post || !post.images || post.images.length === 0) return;
+
+      activeLightboxTotal = post.images.length;
+
+      document.getElementById("lightboxTitle").textContent = post.title;
+      document.getElementById("lightboxCounter").textContent = `${startIdx + 1} de ${activeLightboxTotal}`;
+
+      const track = document.getElementById("lightboxTrack");
+      track.innerHTML = post.images.map(img => `
+        <div class="carousel-slide w-full h-full flex items-center justify-center bg-black p-2">
+          <img src="${img}" class="max-h-full max-w-full object-contain" />
+        </div>
+      `).join("");
+
+      const hasInsta = Boolean(post.instagram && post.instagram.trim());
+      const hasWhats = Boolean(post.whatsapp && post.whatsapp.trim());
+      document.getElementById("lightboxFooter").innerHTML = `
+        ${hasInsta ? `
+          <button onclick="openPostInstagram('${post.id}')" class="flex-1 bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-bold text-xs py-3 rounded-xl flex items-center justify-center gap-1.5">
+            <i class="fa-brands fa-instagram text-base"></i><span>Instagram</span>
+          </button>` : ""}
+        ${hasWhats ? `
+          <button onclick="openPostWhatsapp('${post.id}')" class="flex-1 bg-[#25D366] text-white font-bold text-xs py-3 rounded-xl flex items-center justify-center gap-1.5">
+            <i class="fa-brands fa-whatsapp text-base"></i><span>WhatsApp</span>
+          </button>` : ""}
+      `;
+
+      const modal = document.getElementById("photoLightboxModal");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+
+      track.scrollLeft = startIdx * track.clientWidth;
+    };
+
+    window.handleLightboxScroll = function() {
+      const track = document.getElementById("lightboxTrack");
+      const idx = Math.round(track.scrollLeft / track.clientWidth);
+      document.getElementById("lightboxCounter").textContent = `${idx + 1} de ${activeLightboxTotal}`;
+    };
+
+    window.closePhotoLightbox = function() {
+      const modal = document.getElementById("photoLightboxModal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    };
+
     function renderFeed() {
+      updateSavedBadge();
       const container = document.getElementById("feedContainer");
       let filtered = posts;
 
@@ -779,7 +1062,7 @@
           <div class="py-24 px-6 text-center text-gray-400">
             <i class="fa-regular fa-images text-4xl mb-3 text-slate-300"></i>
             <p class="text-sm font-semibold text-slate-600">Nenhuma publicação encontrada.</p>
-            <p class="text-xs mt-1">Explore outras abas ou aguarde novas ofertas da TERÊ SHOP.</p>
+            <p class="text-xs mt-1">Explore outras abas na barra inferior ou aguarde novas ofertas.</p>
           </div>`;
         return;
       }
@@ -827,7 +1110,7 @@
               <div id="track-${post.id}" onscroll="updateCarouselIndicator('${post.id}', ${images.length})"
                 class="carousel-track flex overflow-x-auto no-scrollbar min-h-[280px] max-h-[460px]">
                 ${images.map((img, idx) => `
-                  <div class="carousel-slide relative w-full flex items-center justify-center bg-slate-950">
+                  <div onclick="openPhotoLightbox('${post.id}', ${idx})" class="carousel-slide relative w-full flex items-center justify-center bg-slate-950 cursor-zoom-in">
                     <img src="${img}" alt="${safeTitle} - Foto ${idx + 1}" loading="lazy"
                       class="w-full max-h-[460px] object-contain mx-auto" />
                   </div>
@@ -835,7 +1118,7 @@
               </div>
 
               ${images.length > 1 ? `
-                <div id="counter-${post.id}" class="absolute top-3 right-3 bg-black/75 text-white text-[11px] font-bold px-2.5 py-1 rounded-full backdrop-blur-xs">
+                <div id="counter-${post.id}" class="absolute top-3 right-3 bg-black/75 text-white text-[11px] font-bold px-2.5 py-1 rounded-full backdrop-blur-xs pointer-events-none">
                   1/${images.length}
                 </div>
               ` : ""}
@@ -853,26 +1136,26 @@
               <div class="flex items-center gap-2 mb-3">
                 ${hasPostInsta ? `
                   <button onclick="openPostInstagram('${post.id}')"
-                    class="flex-1 bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-bold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.98] transition">
+                    class="flex-1 bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-bold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.97] transition">
                     <i class="fa-brands fa-instagram text-base"></i>
                     <span>Instagram</span>
                   </button>` : ""}
 
                 ${hasPostWhats ? `
                   <button onclick="openPostWhatsapp('${post.id}')"
-                    class="flex-1 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.98] transition">
+                    class="flex-1 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.97] transition">
                     <i class="fa-brands fa-whatsapp text-base"></i>
                     <span>WhatsApp</span>
                   </button>` : ""}
 
                 <button onclick="sharePost('${safeTitle}')" title="Partilhar anúncio"
-                  class="p-2.5 rounded-xl border border-gray-200 text-slate-700 hover:bg-gray-50 transition flex-shrink-0 ${(!hasPostInsta && !hasPostWhats) ? 'flex-1 justify-center flex items-center gap-1.5 text-xs font-bold' : ''}">
+                  class="p-2.5 rounded-xl border border-gray-200 text-slate-700 hover:bg-gray-50 active:scale-95 transition flex-shrink-0 ${(!hasPostInsta && !hasPostWhats) ? 'flex-1 justify-center flex items-center gap-1.5 text-xs font-bold' : ''}">
                   <i class="fa-regular fa-paper-plane text-base"></i>
                   ${(!hasPostInsta && !hasPostWhats) ? '<span>Compartilhar</span>' : ''}
                 </button>
 
                 <button onclick="toggleSave('${post.id}')" title="Guardar nos favoritos"
-                  class="p-2.5 rounded-xl border border-gray-200 ${isSaved ? "text-blue-700 bg-blue-50 border-blue-200" : "text-slate-700"} hover:bg-gray-50 transition flex-shrink-0">
+                  class="p-2.5 rounded-xl border border-gray-200 ${isSaved ? "text-blue-700 bg-blue-50 border-blue-200" : "text-slate-700"} hover:bg-gray-50 active:scale-95 transition flex-shrink-0">
                   <i class="${isSaved ? "fa-solid" : "fa-regular"} fa-bookmark text-base"></i>
                 </button>
               </div>
@@ -911,7 +1194,7 @@
       if (!post || !post.instagram) return;
       const url = resolveInstagramUrl(post.instagram);
       const category = post.type === "venda" ? "VENDA" : "CONSERTO";
-      const msg = `Olá! Vi o anúncio de ${category}: "${post.title}" (${post.serviceMode || "Atendimento"}) na vitrine ${config.companyName} e gostaria de mais informações.`;
+      const msg = `Olá! Vi o anúncio de ${category}: "${post.title}" (${post.serviceMode || "Atendimento"}) no App ${config.companyName} e gostaria de mais informações.`;
 
       if (navigator.clipboard) navigator.clipboard.writeText(msg).catch(() => {});
       showToast("Mensagem copiada! Cole no Direct do Instagram.");
@@ -922,7 +1205,7 @@
       const post = posts.find(p => p.id === postId);
       if (!post || !post.whatsapp) return;
       const category = post.type === "venda" ? "VENDA" : "CONSERTO";
-      const msg = `Olá! Vi o anúncio de ${category}: "${post.title}" (${post.serviceMode || "Atendimento"}) na vitrine ${config.companyName} e gostaria de mais informações.`;
+      const msg = `Olá! Vi o anúncio de ${category}: "${post.title}" (${post.serviceMode || "Atendimento"}) no App ${config.companyName} e gostaria de mais informações.`;
       const url = resolveWhatsappUrl(post.whatsapp, msg);
       window.open(url, "_blank");
     };
@@ -949,20 +1232,20 @@
       const publicUrl = getPublicShareUrl();
       const shareData = {
         title: config.companyName || "TERÊ SHOP",
-        text: `Confira os produtos e serviços de ${config.companyName || "TERÊ SHOP"}:`,
+        text: `Baixe e acesse o App ${config.companyName || "TERÊ SHOP"}:`,
         url: publicUrl
       };
       if (navigator.share) {
         navigator.share(shareData).catch(() => {});
       } else {
         navigator.clipboard.writeText(publicUrl);
-        showToast("Link da vitrine pública copiado!");
+        showToast("Link do App copiado!");
       }
     };
 
     window.sharePost = function(title) {
       const publicUrl = getPublicShareUrl();
-      const text = `Confira este item em ${config.companyName || "TERÊ SHOP"}: ${title} - ${publicUrl}`;
+      const text = `Confira este item no App ${config.companyName || "TERÊ SHOP"}: ${title} - ${publicUrl}`;
       if (navigator.share) {
         navigator.share({ title, text, url: publicUrl }).catch(() => {});
       } else {
@@ -1056,7 +1339,7 @@
     };
 
     // =========================================================================
-    // SISTEMA CONSOLIDADO DE VÍDEOS CURTOS 24H (GALERIA + LINK + RECORTE 15S)
+    // SISTEMA CORRIGIDO DE VÍDEOS 24H COM ROTEAMENTO DE ÁUDIO WEB AUDIO API
     // =========================================================================
     window.handleDirectVideoUrlInput = function() {
       const urlVal = document.getElementById("videoDirectUrlInput").value.trim();
@@ -1111,7 +1394,7 @@
         startInput.value = 0;
 
         const initialEnd = Math.min(videoTotalDuration, MAX_VIDEO_SECONDS);
-        endInput.max = totalOrMax(videoTotalDuration);
+        endInput.max = Math.max(1, videoTotalDuration).toFixed(1);
         endInput.value = initialEnd.toFixed(1);
 
         trimStartSec = 0;
@@ -1124,10 +1407,6 @@
         statusEl.textContent = `Vídeo carregado (${sizeMB} MB) — pronto para envio.`;
       };
     };
-
-    function totalOrMax(dur) {
-      return Math.max(1, dur).toFixed(1);
-    }
 
     window.updateTrimControls = function(changedHandle) {
       const startInput = document.getElementById("trimStartRange");
@@ -1167,10 +1446,12 @@
       if (!videoEl || (!loadedVideoObjectUrl && !videoEl.src)) return;
       if (trimCheckInterval) clearInterval(trimCheckInterval);
 
-      videoEl.muted = false;
+      const wantAudio = document.getElementById("includeVideoAudio").checked;
+      applyVideoAudioState(videoEl, !wantAudio);
+
       if (loadedVideoObjectUrl) videoEl.currentTime = trimStartSec;
       videoEl.play().catch(() => {
-        videoEl.muted = true;
+        applyVideoAudioState(videoEl, true);
         videoEl.play();
       });
 
@@ -1198,6 +1479,7 @@
       return new Promise(async (resolve, reject) => {
         const isUnmodifiedTrim = startSec <= 0.1 && (videoTotalDuration <= MAX_VIDEO_SECONDS + 0.5 || videoTotalDuration === 0);
 
+        // Envio direto preserva 100% do codec MP4/MOV e da faixa de áudio original (compatível com iOS e Android)
         if (isUnmodifiedTrim && file.size <= MAX_DIRECT_FILE_BYTES) {
           try {
             return resolve(await fileToBase64Direct(file));
@@ -1212,10 +1494,11 @@
           if (file.size <= MAX_DIRECT_FILE_BYTES) {
             return resolve(await fileToBase64Direct(file));
           }
-          return reject(new Error("No iPhone/Safari, recorte o vídeo para até 15s (máx. 7 MB) na própria galeria antes de enviar."));
+          return reject(new Error("No iPhone/Safari, recorte o vídeo para até 15s (máx. 7 MB) na galeria antes de enviar."));
         }
 
         let finished = false;
+        let audioCtx = null;
         const tempVideo = document.createElement("video");
         tempVideo.style.position = "fixed";
         tempVideo.style.left = "-9999px";
@@ -1223,10 +1506,13 @@
         tempVideo.style.height = "1px";
         tempVideo.src = videoUrl;
         tempVideo.playsInline = true;
-        tempVideo.muted = !keepAudio;
+        applyVideoAudioState(tempVideo, false); // Necessário não estar mudo para extrair trilha de áudio
         document.body.appendChild(tempVideo);
 
         const cleanup = () => {
+          if (audioCtx && audioCtx.state !== "closed") {
+            audioCtx.close().catch(() => {});
+          }
           if (tempVideo.parentNode) tempVideo.parentNode.removeChild(tempVideo);
         };
 
@@ -1250,20 +1536,28 @@
           const ctx = canvas.getContext("2d");
 
           const canvasStream = canvas.captureStream(20);
-          let combinedStream = canvasStream;
+          const tracks = [...canvasStream.getVideoTracks()];
 
+          // Capturar faixa de áudio via Web Audio API (garante gravação de som sem eco)
           if (keepAudio) {
             try {
-              const rawStream = tempVideo.captureStream ? tempVideo.captureStream() : (tempVideo.mozCaptureStream ? tempVideo.mozCaptureStream() : null);
-              if (rawStream && rawStream.getAudioTracks().length > 0) {
-                combinedStream = new MediaStream([
-                  ...canvasStream.getVideoTracks(),
-                  ...rawStream.getAudioTracks()
-                ]);
+              const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+              if (AudioContextClass) {
+                audioCtx = new AudioContextClass();
+                const sourceNode = audioCtx.createMediaElementSource(tempVideo);
+                const destNode = audioCtx.createMediaStreamDestination();
+                sourceNode.connect(destNode);
+                destNode.stream.getAudioTracks().forEach(t => tracks.push(t));
               }
-            } catch (_) {}
+            } catch (_) {
+              try {
+                const rawStream = tempVideo.captureStream ? tempVideo.captureStream() : null;
+                if (rawStream) rawStream.getAudioTracks().forEach(t => tracks.push(t));
+              } catch (__) {}
+            }
           }
 
+          const combinedStream = new MediaStream(tracks);
           const mimeOptions = ["video/mp4", "video/webm;codecs=vp8,opus", "video/webm"];
           const supportedMime = mimeOptions.find(m => MediaRecorder.isTypeSupported(m)) || "";
 
@@ -1296,6 +1590,9 @@
           const beginCapture = () => {
             if (recordingStarted || finished) return;
             recordingStarted = true;
+            if (audioCtx && audioCtx.state === "suspended") {
+              audioCtx.resume().catch(() => {});
+            }
             recorder.start(250);
             tempVideo.play().catch(async () => {
               if (!finished) {
@@ -1353,7 +1650,7 @@
 
       const btn = document.getElementById("publishVideoBtn");
       btn.disabled = true;
-      btn.textContent = "Preparando vídeo...";
+      btn.textContent = "Preparando vídeo com áudio...";
 
       try {
         let finalVideoSource = directUrl;
@@ -1436,7 +1733,6 @@
       `;
     }
 
-    // UPLOAD DO SLOGAN / LOGOTIPO EM ALTA DEFINIÇÃO
     window.handleLogoUpload = function(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -1477,7 +1773,6 @@
       if (titleRadio) titleRadio.checked = true;
     };
 
-    // PROCESSAR ATÉ 10 IMAGENS DO ANÚNCIO EM ALTA DEFINIÇÃO (SEM CORTES)
     window.previewSelectedImages = async function(event) {
       const files = Array.from(event.target.files).slice(0, 10);
       if (event.target.files.length > 10) {
@@ -1528,7 +1823,6 @@
       });
     }
 
-    // CRIAR OU ATUALIZAR ANÚNCIO
     window.startEditPost = function(postId) {
       const post = posts.find(p => p.id === postId);
       if (!post) return;
