@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>TERÊ SHOP • Teresina-PI</title>
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#081c45" />
+  <meta name="theme-color" content="#031238" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="TERÊ SHOP" />
@@ -54,8 +54,8 @@
 <body class="bg-slate-100 text-gray-900 font-sans antialiased pb-24">
 
   <!-- SPLASH SCREEN NATIVA DE ABERTURA -->
-  <div id="splashScreen" class="fixed inset-0 z-50 bg-gradient-to-b from-[#081c45] via-[#0b2a66] to-[#081c45] flex flex-col items-center justify-center text-white splash-animate pointer-events-none">
-    <div class="w-20 h-20 rounded-3xl bg-white/10 backdrop-blur-md border border-amber-400/40 flex items-center justify-center shadow-2xl mb-4 overflow-hidden p-2">
+  <div id="splashScreen" class="fixed inset-0 z-50 bg-gradient-to-b from-[#031238] via-[#08246b] to-[#031238] flex flex-col items-center justify-center text-white splash-animate pointer-events-none">
+    <div class="w-24 h-24 rounded-3xl bg-white/10 backdrop-blur-md border border-amber-400/40 flex items-center justify-center shadow-2xl mb-4 overflow-hidden p-2">
       <img id="splashLogoImg" src="" alt="" class="hidden w-full h-full object-contain" />
       <span id="splashFallbackText" class="font-black text-2xl text-amber-400 tracking-tighter">TS</span>
     </div>
@@ -63,39 +63,39 @@
     <p class="text-[11px] font-bold tracking-[0.25em] text-amber-400 uppercase mt-1">Teresina - PI</p>
   </div>
 
-  <!-- CABEÇALHO FIXO ESTILO APP NATIVO -->
-  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-200/80 shadow-2xs safe-top">
-    <div class="max-w-lg mx-auto px-3 min-h-[58px] py-1.5 grid grid-cols-5 items-center">
+  <!-- CABEÇALHO / CAPA SUPERIOR PANORÂMICA COM BOTÕES FLUTUANTES TRANSLÚCIDOS -->
+  <header class="sticky top-0 z-40 bg-[#031238] shadow-md">
+    <div class="max-w-lg mx-auto relative overflow-hidden">
       
-      <!-- Esquerda: Botão Compartilhar Vitrine -->
-      <div class="col-span-1 flex items-center justify-start">
-        <button onclick="shareApp()" title="Compartilhar App" class="w-9 h-9 flex items-center justify-center text-slate-700 active:scale-90 transition rounded-full bg-slate-100/80 hover:bg-slate-200/70">
-          <i class="fa-solid fa-share-nodes text-base"></i>
+      <!-- Botões Flutuantes Semitransparentes (Glassmorphism) sobre a Capa -->
+      <div class="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-3 pt-2.5 safe-top pointer-events-none">
+        <button onclick="shareApp()" title="Compartilhar App"
+          class="pointer-events-auto w-9 h-9 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/45 backdrop-blur-md border border-white/25 text-white shadow-sm active:scale-90 transition">
+          <i class="fa-solid fa-share-nodes text-sm"></i>
+        </button>
+
+        <button onclick="openAdminGate()" id="adminToggleBtn" title="Acesso Administrativo"
+          class="pointer-events-auto w-9 h-9 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/45 backdrop-blur-md border border-white/25 text-white/90 shadow-sm active:scale-90 transition">
+          <i class="fa-solid fa-shield-halved text-sm"></i>
         </button>
       </div>
 
-      <!-- Centro: Logotipo/Slogan em Alta Definição ou Título Fixo TERÊ SHOP -->
-      <div onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="col-span-3 flex flex-col items-center justify-center text-center overflow-hidden cursor-pointer">
-        <div id="headerLogoWrapper" class="hidden items-center justify-center">
-          <img id="headerLogoImg" src="" alt="TERÊ SHOP" class="max-h-12 w-auto object-contain" />
-        </div>
-
-        <div id="headerTitleWrapper" class="flex flex-col items-center justify-center">
-          <h1 id="headerCompanyName" class="font-black text-xl tracking-tight leading-none bg-gradient-to-r from-[#081c45] via-[#0055ff] to-[#081c45] bg-clip-text text-transparent">
-            TERÊ SHOP
-          </h1>
-          <span class="text-[10px] font-bold tracking-widest text-amber-600 uppercase mt-0.5">
-            Teresina - PI
-          </span>
-        </div>
+      <!-- MODO 1: CAPA PANORÂMICA / SLOGAN EM ALTA DEFINIÇÃO (LARGURA TOTAL SEM CORTES) -->
+      <div id="headerLogoWrapper" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="hidden w-full bg-[#031238] cursor-pointer">
+        <img id="headerLogoImg" src="" alt="TERÊ SHOP • Teresina-PI" class="w-full h-auto max-h-[210px] object-contain block mx-auto" />
       </div>
 
-      <!-- Direita: Acesso ADM (Ocultado automaticamente no modo compartilhamento ?vitrine=1) -->
-      <div class="col-span-1 flex items-center justify-end">
-        <button onclick="openAdminGate()" id="adminToggleBtn" title="Acesso Administrativo" class="w-9 h-9 flex items-center justify-center text-slate-400 hover:text-slate-900 active:scale-90 transition rounded-full hover:bg-slate-100">
-          <i class="fa-solid fa-shield-halved text-base"></i>
-        </button>
+      <!-- MODO 2: TÍTULO ESCRITO ESTILIZADO (CASO NÃO HAJA CAPA ATIVA) -->
+      <div id="headerTitleWrapper" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+        class="w-full min-h-[76px] pt-2 pb-2.5 px-14 flex flex-col items-center justify-center text-center bg-gradient-to-r from-[#031238] via-[#0a2d82] to-[#031238] safe-top cursor-pointer">
+        <h1 id="headerCompanyName" class="font-black text-xl tracking-tight leading-none text-white drop-shadow-xs">
+          TERÊ SHOP
+        </h1>
+        <span class="text-[10px] font-bold tracking-[0.22em] text-amber-400 uppercase mt-1">
+          Teresina - PI
+        </span>
       </div>
+
     </div>
   </header>
 
@@ -266,7 +266,7 @@
         </div>
         <button onclick="closeModal('loginModal')" class="text-gray-400 hover:text-gray-700 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
-      <p class="text-xs text-gray-500 mb-4">Insira a senha de administrador para gerir anúncios, vídeos 24h e configurações.</p>
+      <p class="text-xs text-gray-500 mb-4">Insira a senha de administrador para gerir anúncios, vídeos 24h e capa do app.</p>
       
       <form onsubmit="event.preventDefault(); verifyAdminLogin();" class="space-y-3">
         <div class="relative">
@@ -291,7 +291,6 @@
   <div id="adminModal" class="fixed inset-0 z-50 bg-black/60 hidden items-end sm:items-center justify-center">
     <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl max-h-[92vh] flex flex-col shadow-2xl">
       
-      <!-- Cabeçalho com Botão de Retornar Explícito -->
       <div class="px-4 py-3.5 border-b border-gray-200 flex items-center justify-between">
         <button type="button" onclick="cancelAndReturnFromAdmin()" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold flex items-center gap-1.5 transition">
           <i class="fa-solid fa-arrow-left"></i>
@@ -317,7 +316,7 @@
           + Vídeo 24h
         </button>
         <button type="button" onclick="switchAdminTab('settings')" id="admTab-settings" class="flex-1 py-3 border-b-2 border-transparent text-gray-500">
-          Configurações
+          Capa & Ajustes
         </button>
       </div>
 
@@ -421,7 +420,7 @@
           </div>
         </form>
 
-        <!-- ABA 2: PUBLICAR VÍDEO CURTO 24H (OTIMIZADO PARA IPHONE / iOS E ANDROID) -->
+        <!-- ABA 2: PUBLICAR VÍDEO CURTO 24H -->
         <form id="newVideoForm" onsubmit="handleSaveVideoStory(event)" class="space-y-4 hidden">
           <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-900 space-y-1">
             <p><i class="fa-solid fa-film mr-1"></i> Toque no botão abaixo para abrir a <b>Fototeca / Galeria</b> do iPhone ou Android e selecionar um vídeo curto (<b>até 15s e até 7,5 MB</b>).</p>
@@ -441,13 +440,11 @@
             <div>
               <label class="block text-xs font-bold text-gray-700 mb-1.5">Opção A: Selecionar Vídeo da Fototeca / Galeria *</label>
               
-              <!-- Botão Label tátil de área total para iOS Safari / PWA -->
               <label for="videoFileInput" class="flex flex-col items-center justify-center gap-1.5 w-full py-4 px-4 rounded-xl border-2 border-dashed border-amber-400 bg-amber-50 text-amber-950 text-xs font-extrabold cursor-pointer active:scale-[0.98] transition">
                 <i class="fa-solid fa-video text-xl text-amber-600"></i>
                 <span>Toque aqui para escolher Vídeo (Galeria / Câmera)</span>
                 <span class="text-[10px] font-normal text-amber-800">MP4 ou MOV • Máx. 15 segundos</span>
               </label>
-              <!-- accept="video/*" exclusivo garante que o iOS abra a Fototeca corretamente -->
               <input type="file" id="videoFileInput" accept="video/*" onchange="handleVideoFileLoaded(event)" class="sr-only" />
 
               <p id="videoFileStatus" class="text-[11px] text-blue-700 font-bold mt-2"></p>
@@ -518,42 +515,43 @@
           <div id="adminActiveVideosList" class="pt-3 border-t border-gray-200 space-y-2"></div>
         </form>
 
-        <!-- ABA 3: CONFIGURAÇÕES DA EMPRESA E SLOGAN -->
+        <!-- ABA 3: CAPA PANORÂMICA DO TOPO & CONFIGURAÇÕES -->
         <form id="settingsForm" onsubmit="handleSaveSettings(event)" class="space-y-4 hidden">
           
           <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
-            <label class="block text-xs font-bold text-slate-800">Exibição no Topo da Plataforma</label>
+            <label class="block text-xs font-bold text-slate-800">Capa Superior / Slogan da Plataforma</label>
             <div class="grid grid-cols-2 gap-2">
               <label class="cursor-pointer">
-                <input type="radio" name="headerMode" value="title" checked class="peer sr-only" />
-                <div class="text-center py-2 rounded-lg border border-gray-300 bg-white text-xs font-semibold peer-checked:bg-[#081c45] peer-checked:text-white transition">
+                <input type="radio" name="headerMode" value="logo" checked class="peer sr-only" />
+                <div class="text-center py-2.5 rounded-lg border border-gray-300 bg-white text-xs font-semibold peer-checked:bg-[#081c45] peer-checked:text-white transition">
+                  Capa Panorâmica (HD)
+                </div>
+              </label>
+              <label class="cursor-pointer">
+                <input type="radio" name="headerMode" value="title" class="peer sr-only" />
+                <div class="text-center py-2.5 rounded-lg border border-gray-300 bg-white text-xs font-semibold peer-checked:bg-[#081c45] peer-checked:text-white transition">
                   Título Escrito
                 </div>
               </label>
-              <label class="cursor-pointer">
-                <input type="radio" name="headerMode" value="logo" class="peer sr-only" />
-                <div class="text-center py-2 rounded-lg border border-gray-300 bg-white text-xs font-semibold peer-checked:bg-[#081c45] peer-checked:text-white transition">
-                  Imagem Slogan (HD)
-                </div>
-              </label>
             </div>
 
             <div>
-              <label class="block text-[11px] font-bold text-gray-600 mb-1">Título Escrito (Padrão: TERÊ SHOP)</label>
-              <input type="text" id="cfgCompanyName" required value="TERÊ SHOP" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm bg-white" />
-            </div>
-
-            <div>
-              <label class="block text-[11px] font-bold text-gray-600 mb-1">Substituir Imagem do Slogan / Logo (Alta Definição)</label>
-              <label for="cfgLogoInput" class="flex items-center justify-center gap-2 w-full py-2.5 px-3 rounded-xl border border-amber-300 bg-amber-50 text-amber-900 text-xs font-bold cursor-pointer">
-                <i class="fa-solid fa-image"></i>
-                <span>Escolher Imagem do Logo / Slogan</span>
+              <label class="block text-[11px] font-bold text-gray-600 mb-1">Imagem da Capa / Slogan Panorâmico (Alta Definição)</label>
+              <label for="cfgLogoInput" class="flex items-center justify-center gap-2 w-full py-3 px-3 rounded-xl border-2 border-dashed border-amber-400 bg-amber-50 text-amber-950 text-xs font-bold cursor-pointer active:scale-[0.99] transition">
+                <i class="fa-solid fa-panorama text-base text-amber-600"></i>
+                <span>Escolher Capa Panorâmica (Alta Definição)</span>
               </label>
               <input type="file" id="cfgLogoInput" accept="image/*" onchange="handleLogoUpload(event)" class="sr-only" />
-              <div id="cfgLogoPreviewBox" class="mt-2 hidden items-center gap-3 bg-white p-2 rounded-lg border border-gray-200">
-                <img id="cfgLogoPreviewImg" src="" class="h-12 w-auto object-contain" />
-                <button type="button" onclick="removeLogoImage()" class="text-xs text-red-600 font-semibold hover:underline">Remover imagem</button>
+              
+              <div id="cfgLogoPreviewBox" class="mt-2.5 hidden flex-col gap-2 bg-[#031238] p-2 rounded-xl border border-blue-900">
+                <img id="cfgLogoPreviewImg" src="" class="w-full h-auto max-h-28 object-contain rounded-lg" />
+                <button type="button" onclick="removeLogoImage()" class="text-xs text-red-400 font-semibold hover:underline self-end">Remover capa</button>
               </div>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold text-gray-600 mb-1">Nome / Título Alternativo</label>
+              <input type="text" id="cfgCompanyName" required value="TERÊ SHOP" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm bg-white" />
             </div>
           </div>
 
@@ -570,7 +568,7 @@
 
           <div class="space-y-2 pt-1">
             <button type="submit" id="saveCfgBtn" class="w-full bg-[#081c45] text-white font-semibold py-3 rounded-xl text-sm hover:bg-blue-900 transition">
-              Salvar Configurações na Nuvem
+              Salvar Capa e Configurações
             </button>
             <button type="button" onclick="cancelAndReturnFromAdmin()" class="w-full bg-gray-100 text-gray-700 font-bold py-2.5 rounded-xl text-xs hover:bg-gray-200 transition">
               Cancelar e Voltar ao Feed
@@ -752,11 +750,11 @@
       if (config.headerMode === "logo" && config.logoData) {
         logoImg.src = config.logoData;
         logoWrapper.classList.remove("hidden");
-        logoWrapper.classList.add("flex");
+        logoWrapper.classList.add("block");
         titleWrapper.classList.add("hidden");
       } else {
         logoWrapper.classList.add("hidden");
-        logoWrapper.classList.remove("flex");
+        logoWrapper.classList.remove("block");
         titleWrapper.classList.remove("hidden");
       }
     }
@@ -1119,7 +1117,7 @@
         const hasPostWhats = Boolean(post.whatsapp && post.whatsapp.trim());
 
         const avatarHtml = config.logoData
-          ? `<img src="${config.logoData}" class="w-9 h-9 rounded-full object-contain bg-slate-900 p-0.5 border border-blue-200" />`
+          ? `<img src="${config.logoData}" class="w-9 h-9 rounded-full object-cover bg-[#031238] border border-blue-200" />`
           : `<div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#081c45] to-blue-600 text-amber-400 flex items-center justify-center text-xs font-black border border-amber-400/40">TS</div>`;
 
         return `
@@ -1318,7 +1316,7 @@
       const pass = document.getElementById("adminPasswordInput").value;
       if (pass === config.adminPass) {
         isAdminLogged = true;
-        document.getElementById("adminToggleBtn").innerHTML = `<i class="fa-solid fa-gear text-base text-blue-700"></i>`;
+        document.getElementById("adminToggleBtn").innerHTML = `<i class="fa-solid fa-gear text-sm text-amber-400"></i>`;
         closeModal("loginModal");
         openAdminPanel();
         renderStoriesCarousel();
@@ -1331,7 +1329,7 @@
 
     window.logoutAdmin = function() {
       isAdminLogged = false;
-      document.getElementById("adminToggleBtn").innerHTML = `<i class="fa-solid fa-shield-halved text-base"></i>`;
+      document.getElementById("adminToggleBtn").innerHTML = `<i class="fa-solid fa-shield-halved text-sm"></i>`;
       resetPostForm();
       resetVideoForm();
       closeModal("adminModal");
@@ -1351,7 +1349,7 @@
       document.getElementById("cfgCompanyName").value = config.companyName || "TERÊ SHOP";
       document.getElementById("cfgPassword").value = config.adminPass || "admin123";
 
-      const modeRadio = document.querySelector(`input[name="headerMode"][value="${config.headerMode || "title"}"]`);
+      const modeRadio = document.querySelector(`input[name="headerMode"][value="${config.headerMode || "logo"}"]`);
       if (modeRadio) modeRadio.checked = true;
 
       if (config.logoData) {
@@ -1782,6 +1780,7 @@
       `;
     }
 
+    // UPLOAD DA CAPA PANORÂMICA / SLOGAN EM ALTA DEFINIÇÃO (ATÉ 1600px)
     window.handleLogoUpload = function(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -1790,24 +1789,24 @@
         const img = new Image();
         img.onload = () => {
           const canvas = document.createElement("canvas");
-          const maxH = 320;
+          const maxW = 1600;
           let width = img.width;
           let height = img.height;
-          if (height > maxH) {
-            width = Math.round((width * maxH) / height);
-            height = maxH;
+          if (width > maxW) {
+            height = Math.round((height * maxW) / width);
+            width = maxW;
           }
           canvas.width = width;
           canvas.height = height;
           const ctx = canvas.getContext("2d");
           ctx.drawImage(img, 0, 0, width, height);
-          pendingLogoData = canvas.toDataURL("image/png");
+          pendingLogoData = canvas.toDataURL("image/jpeg", 0.90);
 
           document.getElementById("cfgLogoPreviewImg").src = pendingLogoData;
           document.getElementById("cfgLogoPreviewBox").classList.replace("hidden", "flex");
           const logoRadio = document.querySelector('input[name="headerMode"][value="logo"]');
           if (logoRadio) logoRadio.checked = true;
-          showToast("Imagem do slogan carregada! Clique em Salvar.");
+          showToast("Capa panorâmica carregada em HD! Clique em Salvar.");
         };
         img.src = e.target.result;
       };
@@ -1983,12 +1982,12 @@
         };
         await set(ref(db, "config"), updatedConfig);
         closeModal("adminModal");
-        showToast("Configurações guardadas na nuvem!");
+        showToast("Capa e configurações guardadas na nuvem!");
       } catch (err) {
         showToast("Erro ao guardar configurações.");
       } finally {
         btn.disabled = false;
-        btn.textContent = "Salvar Configurações na Nuvem";
+        btn.textContent = "Salvar Capa e Configurações";
       }
     };
 
