@@ -131,11 +131,11 @@
         </span>
       </div>
 
-      <!-- BARRA DE PESQUISA INTELIGENTE (ESTILO MERCADO LIVRE / AMAZON) -->
+      <!-- BARRA DE PESQUISA INTELIGENTE -->
       <div class="px-3 sm:px-4 pb-2.5 pt-1 bg-[#031238]">
         <div class="relative flex items-center">
           <i class="fa-solid fa-magnifying-glass absolute left-3.5 text-gray-400 text-xs sm:text-sm pointer-events-none"></i>
-          <input type="search" id="searchInput" oninput="handleSearchInput()" placeholder="Buscar produtos, veículos, construção ou serviços..."
+          <input type="search" id="searchInput" oninput="handleSearchInput()" placeholder="Buscar produtos, carros, motos, construção ou serviços..."
             class="w-full bg-white text-slate-900 placeholder-gray-400 text-xs sm:text-sm font-medium rounded-full pl-9 pr-9 py-2 shadow-inner focus:outline-none focus:ring-2 focus:ring-amber-400" />
           <button type="button" id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-3 text-gray-400 hover:text-gray-700 p-1">
             <i class="fa-solid fa-circle-xmark text-sm"></i>
@@ -149,7 +149,7 @@
   <!-- CONTENTOR PRINCIPAL FLUIDO -->
   <div class="w-full max-w-2xl mx-auto md:my-3 md:rounded-2xl md:overflow-hidden md:shadow-md md:border md:border-gray-200/80 bg-white">
 
-    <!-- CARROSSEL DE DEPARTAMENTOS / NICHOS OFICIAIS -->
+    <!-- CARROSSEL DE 7 DEPARTAMENTOS UNIFICADOS -->
     <section class="w-full bg-white border-b border-gray-200 py-3">
       <div class="px-3.5 sm:px-5 pb-2 flex items-center justify-between">
         <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-700">
@@ -160,11 +160,11 @@
         </button>
       </div>
       <div id="departmentsCarousel" class="stories-scroll flex gap-2.5 sm:gap-3 overflow-x-auto no-scrollbar px-3.5 sm:px-5 pb-1">
-        <!-- Ícones dos 9 Departamentos renderizados via JS -->
+        <!-- Ícones dos 7 Departamentos renderizados via JS -->
       </div>
     </section>
 
-    <!-- BANNERS PROMOCIONAIS ROTATIVOS EDITÁVEIS (CAMPANHAS & FEIRÕES) -->
+    <!-- CARROSSEL DINÂMICO DE BANNERS DO TOPO (AUTO-SLIDE 4s + ARRASTE COM DEDO SEM BOTÕES) -->
     <section id="promoBannersSection" class="w-full bg-slate-950 border-b border-gray-200 hidden relative">
       <div id="promoBannersTrack" onscroll="handleBannerScroll()" class="carousel-track flex overflow-x-auto no-scrollbar">
         <!-- Banners clicáveis renderizados dinamicamente -->
@@ -204,7 +204,7 @@
 
   </div>
 
-  <!-- BARRA DE NAVEGAÇÃO INFERIOR ADAPTÁVEL -->
+  <!-- BARRA DE NAVEGAÇÃO INFERIOR COM 5 BOTÕES (SEM BOTÃO VEÍCULOS) -->
   <nav class="fixed bottom-0 inset-x-0 md:bottom-3 md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-2xl z-40 bg-white border-t md:border border-gray-200 md:rounded-2xl shadow-[0_-2px_10px_rgba(0,0,0,0.06)] md:shadow-xl safe-bottom gpu-layer">
     <div class="w-full flex items-center justify-around h-16 px-1 sm:px-3">
       <button onclick="setIntentFilter('all')" id="nav-all" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-blue-700 active:scale-90 transition-transform">
@@ -215,11 +215,6 @@
       <button onclick="setIntentFilter('produtos')" id="nav-produtos" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
         <i class="fa-solid fa-bag-shopping text-base sm:text-lg"></i>
         <span class="text-[10px] sm:text-[11px] font-bold truncate">Produtos</span>
-      </button>
-
-      <button onclick="setIntentFilter('veiculos')" id="nav-veiculos" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
-        <i class="fa-solid fa-car text-base sm:text-lg"></i>
-        <span class="text-[10px] sm:text-[11px] font-bold truncate">Veículos</span>
       </button>
 
       <button onclick="setIntentFilter('servicos')" id="nav-servicos" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
@@ -381,7 +376,7 @@
     </div>
   </div>
 
-  <!-- MODAL PAINEL ADMINISTRATIVO EXPANDIDO (5 ABAS: POST, DESTAQUE 24H, ESTÚDIO CARDS, BANNERS, AJUSTES) -->
+  <!-- MODAL PAINEL ADMINISTRATIVO EXPANDIDO -->
   <div id="adminModal" class="fixed inset-0 z-50 bg-black/65 hidden items-end sm:items-center justify-center">
     <div class="bg-white w-full max-w-2xl rounded-t-3xl sm:rounded-3xl max-h-[93vh] flex flex-col shadow-2xl">
       
@@ -401,7 +396,7 @@
         </button>
       </div>
 
-      <!-- Navegação Interna do Admin (5 Abas Scrolláveis) -->
+      <!-- Navegação Interna do Admin -->
       <div class="flex overflow-x-auto no-scrollbar border-b border-gray-200 text-[11px] font-bold bg-gray-50">
         <button type="button" onclick="switchAdminTab('newPost')" id="admTab-newPost" class="px-3.5 py-3 border-b-2 border-blue-700 text-blue-700 whitespace-nowrap">
           + Novo Anúncio
@@ -423,7 +418,7 @@
       <!-- Conteúdo Scrollável Admin -->
       <div class="p-4 sm:p-6 overflow-y-auto space-y-4">
 
-        <!-- ABA 1: CRIAR OU EDITAR ANÚNCIO MULTI-NICHO -->
+        <!-- ABA 1: CRIAR OU EDITAR ANÚNCIO (COM SUB-OPÇÕES DE SERVIÇOS AUTOMOTIVOS E MOTOS) -->
         <form id="newPostForm" onsubmit="handleSavePost(event)" class="space-y-4">
           <input type="hidden" id="editingPostId" value="" />
 
@@ -434,16 +429,16 @@
 
           <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
             <div>
-              <label class="block text-xs font-bold text-gray-700 mb-1">Departamento / Nicho Oficial *</label>
+              <label class="block text-xs font-bold text-gray-700 mb-1">Categoria / Nicho de Divulgação *</label>
               <select id="postDepartment" required class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-xs sm:text-sm font-bold bg-white text-slate-900 focus:outline-none focus:border-blue-600">
                 <option value="eletronicos">📱 Eletrônicos (Celulares, Notebooks, Games)</option>
                 <option value="eletrodomesticos">❄️ Eletrodomésticos (Geladeira, Ar, TV, Linha Branca)</option>
                 <option value="casa">🛋️ Casa & Decoração (Móveis, Utilidades, Enxoval)</option>
                 <option value="construcao">🧱 Construção & Ferramentas (Materiais, Elétrica, Hidráulica)</option>
-                <option value="venda_carros">🚗 Carros • Vendas (Novos, Seminovos, Repasses)</option>
-                <option value="servicos_carros">🔧 Carros • Serviços (Mecânica, Estética, Pneus, Som)</option>
-                <option value="venda_motos">🏍️ Motos • Vendas (Novas, Seminovas, Consórcios)</option>
-                <option value="servicos_motos">🛠️ Motos • Serviços (Oficina, Peças, Revisões)</option>
+                <option value="venda_carros">🚗 Carros • Venda de Veículo (Novos, Seminovos, Repasses)</option>
+                <option value="servicos_carros">🔧 Carros • Serviços Automotivos (Mecânica, Estética, Pneus, Som)</option>
+                <option value="venda_motos">🏍️ Motos • Venda de Moto (Novas, Seminovas, Consórcios)</option>
+                <option value="servicos_motos">🛠️ Motos • Serviços e Oficina (Revisão, Peças, Acessórios)</option>
                 <option value="servicos_gerais">🛡️ Serviços Gerais (Manutenção, Seguros, Fretes, Técnicos)</option>
               </select>
             </div>
@@ -480,13 +475,13 @@
 
           <div>
             <label class="block text-xs font-bold text-gray-700 mb-1">Título do Produto, Veículo ou Serviço *</label>
-            <input type="text" id="postTitle" required placeholder="Ex: Honda Civic EXL 2021, Cimento CP-II ou Seguro Auto"
+            <input type="text" id="postTitle" required placeholder="Ex: Honda Civic EXL 2021, Revisão Completa ou Cimento CP-II"
               class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-600" />
           </div>
 
           <div>
             <label class="block text-xs font-bold text-gray-700 mb-1">Valor, Parcela ou Condição (Opcional)</label>
-            <input type="text" id="postPrice" placeholder="Ex: R$ 89.900,00 | 12x sem juros | Cotação Grátis"
+            <input type="text" id="postPrice" placeholder="Ex: R$ 89.900,00 | 12x sem juros | Orçamento Grátis"
               class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-600" />
           </div>
 
@@ -579,12 +574,10 @@
             </div>
           </div>
 
-          <!-- Prévia ao Vivo do Canvas -->
           <div class="bg-slate-900 p-3 rounded-2xl flex flex-col items-center">
             <canvas id="studioCanvas" width="1080" height="1080" class="w-full max-w-[300px] aspect-square rounded-xl shadow-lg bg-[#031238]"></canvas>
           </div>
 
-          <!-- Ações Rápidas com o Card Criado -->
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <button type="button" onclick="useStudioCardInPost()" class="bg-[#081c45] text-white font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5">
               <i class="fa-solid fa-plus"></i>
@@ -734,7 +727,7 @@
         <!-- ABA 4: BANNERS PROMOCIONAIS ROTATIVOS DO TOPO -->
         <form id="bannersForm" onsubmit="handleSavePromoBanner(event)" class="space-y-4 hidden">
           <div class="p-3 rounded-xl bg-blue-50 border border-blue-200 text-[11px] text-blue-950">
-            <b>Banners de Destaque no Topo:</b> Publique banners horizontais (`1600x550` recomendado) para campanhas, feirões ou parceiros patrocinados. Ao clicar no banner, o cliente filtra o departamento escolhido.
+            <b>Banners Rotativos no Topo:</b> Os banners alternam automaticamente a cada <b>4 segundos</b> e podem ser deslizados com o dedo. Ao clicar no banner, o cliente filtra o departamento vinculado.
           </div>
 
           <div>
@@ -751,22 +744,20 @@
 
           <div>
             <label class="block text-xs font-bold text-gray-700 mb-1">Título da Campanha *</label>
-            <input type="text" id="bannerTitle" required placeholder="Ex: Feirão de Motos e Carros Teresina"
+            <input type="text" id="bannerTitle" required placeholder="Ex: Feirão de Carros e Motos Teresina"
               class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm" />
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1">Ação ao Clicar no Banner</label>
+            <label class="block text-xs font-bold text-gray-700 mb-1">Departamento ao Clicar no Banner</label>
             <select id="bannerTargetDept" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-xs font-bold bg-white">
               <option value="all">Mostrar Todas as Ofertas</option>
-              <option value="construcao">Filtrar: Construção & Ferramentas</option>
-              <option value="casa">Filtrar: Casa & Decoração</option>
               <option value="eletronicos">Filtrar: Eletrônicos</option>
               <option value="eletrodomesticos">Filtrar: Eletrodomésticos</option>
-              <option value="venda_carros">Filtrar: Carros • Vendas</option>
-              <option value="servicos_carros">Filtrar: Carros • Serviços</option>
-              <option value="venda_motos">Filtrar: Motos • Vendas</option>
-              <option value="servicos_motos">Filtrar: Motos • Serviços</option>
+              <option value="casa">Filtrar: Casa & Decoração</option>
+              <option value="construcao">Filtrar: Construção & Ferramentas</option>
+              <option value="carros">Filtrar: Carros (Vendas & Serviços)</option>
+              <option value="motos">Filtrar: Motos (Vendas & Serviços)</option>
               <option value="servicos_gerais">Filtrar: Serviços Gerais & Seguros</option>
             </select>
           </div>
@@ -871,29 +862,45 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // CATÁLOGO OFICIAL DOS 9 DEPARTAMENTOS DO MARKETPLACE TERÊ SHOP
+    // 7 DEPARTAMENTOS PRINCIPAIS NA VITRINE (CARROS E MOTOS UNIFICADOS PARA FACILITAR PESQUISA)
     const DEPARTMENTS = [
-      { id: "eletronicos", name: "Eletrônicos", short: "Eletrônicos", icon: "fa-mobile-screen", group: "produtos", badgeClass: "bg-indigo-100 text-indigo-800" },
-      { id: "eletrodomesticos", name: "Eletrodomésticos", short: "Eletro", icon: "fa-blender-phone", group: "produtos", badgeClass: "bg-cyan-100 text-cyan-800" },
-      { id: "casa", name: "Casa & Decoração", short: "Casa", icon: "fa-couch", group: "produtos", badgeClass: "bg-amber-100 text-amber-900" },
-      { id: "construcao", name: "Construção", short: "Construção", icon: "fa-helmet-safety", group: "produtos", badgeClass: "bg-orange-100 text-orange-800" },
-      { id: "venda_carros", name: "Venda Carros", short: "Carros", icon: "fa-car-side", group: "veiculos", badgeClass: "bg-emerald-100 text-emerald-800" },
-      { id: "servicos_carros", name: "Serv. Carros", short: "Serv. Carro", icon: "fa-car-burst", group: "servicos", badgeClass: "bg-slate-200 text-slate-800" },
-      { id: "venda_motos", name: "Venda Motos", short: "Motos", icon: "fa-motorcycle", group: "veiculos", badgeClass: "bg-teal-100 text-teal-800" },
-      { id: "servicos_motos", name: "Serv. Motos", short: "Serv. Moto", icon: "fa-screwdriver-wrench", group: "servicos", badgeClass: "bg-sky-100 text-sky-800" },
-      { id: "servicos_gerais", name: "Serviços & Seguros", short: "Serviços", icon: "fa-shield-heart", group: "servicos", badgeClass: "bg-purple-100 text-purple-800" }
+      { id: "eletronicos", name: "Eletrônicos", short: "Eletrônicos", icon: "fa-mobile-screen" },
+      { id: "eletrodomesticos", name: "Eletrodomésticos", short: "Eletro", icon: "fa-blender-phone" },
+      { id: "casa", name: "Casa & Decoração", short: "Casa", icon: "fa-couch" },
+      { id: "construcao", name: "Construção", short: "Construção", icon: "fa-helmet-safety" },
+      { id: "carros", name: "Carros", short: "Carros", icon: "fa-car-side" },
+      { id: "motos", name: "Motos", short: "Motos", icon: "fa-motorcycle" },
+      { id: "servicos_gerais", name: "Serviços & Seguros", short: "Serviços", icon: "fa-shield-heart" }
     ];
 
-    function getDeptInfo(post) {
-      if (post.department) {
-        const found = DEPARTMENTS.find(d => d.id === post.department);
-        if (found) return found;
+    // Mapeia o código detalhado do anúncio para o Departamento unificado, Selo e Grupo (Produtos vs Serviços)
+    function getPostClassification(post) {
+      const code = post.department || "";
+      switch (code) {
+        case "eletronicos":
+          return { deptId: "eletronicos", deptName: "Eletrônicos", badge: "ELETRÔNICOS", badgeClass: "bg-indigo-100 text-indigo-800", icon: "fa-mobile-screen", intentGroup: "produtos" };
+        case "eletrodomesticos":
+          return { deptId: "eletrodomesticos", deptName: "Eletrodomésticos", badge: "ELETRO", badgeClass: "bg-cyan-100 text-cyan-800", icon: "fa-blender-phone", intentGroup: "produtos" };
+        case "casa":
+          return { deptId: "casa", deptName: "Casa & Decoração", badge: "CASA", badgeClass: "bg-amber-100 text-amber-900", icon: "fa-couch", intentGroup: "produtos" };
+        case "construcao":
+          return { deptId: "construcao", deptName: "Construção", badge: "CONSTRUÇÃO", badgeClass: "bg-orange-100 text-orange-800", icon: "fa-helmet-safety", intentGroup: "produtos" };
+        case "venda_carros":
+          return { deptId: "carros", deptName: "Carros", badge: "VENDA CARRO", badgeClass: "bg-emerald-100 text-emerald-800", icon: "fa-car-side", intentGroup: "produtos" };
+        case "servicos_carros":
+          return { deptId: "carros", deptName: "Carros", badge: "SERV. CARRO", badgeClass: "bg-slate-200 text-slate-800", icon: "fa-car-burst", intentGroup: "servicos" };
+        case "venda_motos":
+          return { deptId: "motos", deptName: "Motos", badge: "VENDA MOTO", badgeClass: "bg-teal-100 text-teal-800", icon: "fa-motorcycle", intentGroup: "produtos" };
+        case "servicos_motos":
+          return { deptId: "motos", deptName: "Motos", badge: "SERV. MOTO", badgeClass: "bg-sky-100 text-sky-800", icon: "fa-screwdriver-wrench", intentGroup: "servicos" };
+        case "servicos_gerais":
+          return { deptId: "servicos_gerais", deptName: "Serviços & Seguros", badge: "SERVIÇOS", badgeClass: "bg-purple-100 text-purple-800", icon: "fa-shield-heart", intentGroup: "servicos" };
+        default:
+          if (post.type === "conserto") {
+            return { deptId: "servicos_gerais", deptName: "Serviços & Seguros", badge: "CONSERTO", badgeClass: "bg-blue-100 text-blue-800", icon: "fa-screwdriver-wrench", intentGroup: "servicos" };
+          }
+          return { deptId: "eletronicos", deptName: "Eletrônicos", badge: "VENDA", badgeClass: "bg-emerald-100 text-emerald-800", icon: "fa-tag", intentGroup: "produtos" };
       }
-      // Compatibilidade automática com anúncios antigos ("venda" / "conserto")
-      if (post.type === "conserto") {
-        return { id: "servicos_gerais", name: "Assistência & Serviços", short: "Serviços", icon: "fa-screwdriver-wrench", group: "servicos", badgeClass: "bg-blue-100 text-blue-800" };
-      }
-      return { id: "eletronicos", name: "Oferta & Venda", short: "Oferta", icon: "fa-tag", group: "produtos", badgeClass: "bg-emerald-100 text-emerald-800" };
     }
 
     const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
@@ -979,9 +986,9 @@
     let promoBanners = [];
     let savedIds = JSON.parse(localStorage.getItem("tereshop_saved")) || [];
 
-    // Estados de Filtro do Marketplace
-    let currentIntentFilter = "all"; // all, produtos, veiculos, servicos, saved
-    let currentDepartmentFilter = "all"; // all ou id do departamento
+    // Estados de Filtro
+    let currentIntentFilter = "all"; // all, produtos, servicos, saved
+    let currentDepartmentFilter = "all";
     let currentSearchQuery = "";
 
     let isAdminLogged = false;
@@ -989,6 +996,10 @@
     let pendingBannerImage = "";
     let pendingLogoData = "";
     let viewerMuted = false;
+
+    // Estado do Carrossel Automático de Banners (4 segundos)
+    let bannerAutoPlayTimer = null;
+    let isUserTouchingBanner = false;
 
     // Estado do Publicador Misto 24h
     let selectedStoryMediaType = "";
@@ -1000,7 +1011,6 @@
     let trimEndSec = 15;
     let trimCheckInterval = null;
 
-    // Estado do Estúdio de Cards
     let studioUploadedImg = null;
 
     function renderDepartmentsCarousel() {
@@ -1016,7 +1026,7 @@
         const isSelected = currentDepartmentFilter === dept.id;
         return `
           <button type="button" onclick="setDepartmentFilter('${dept.id}')"
-            class="flex-shrink-0 flex flex-col items-center gap-1.5 w-[72px] sm:w-[80px] group active:scale-95 transition-transform">
+            class="flex-shrink-0 flex flex-col items-center gap-1.5 w-[74px] sm:w-[84px] group active:scale-95 transition-transform">
             <div class="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl flex items-center justify-center text-base sm:text-lg shadow-xs border transition
               ${isSelected
                 ? "bg-[#031238] text-amber-400 border-amber-400 ring-2 ring-amber-400/40"
@@ -1043,7 +1053,7 @@
       currentDepartmentFilter = "all";
       renderDepartmentsCarousel();
 
-      ["all", "produtos", "veiculos", "servicos", "saved"].forEach(tab => {
+      ["all", "produtos", "servicos", "saved"].forEach(tab => {
         const el = document.getElementById(`nav-${tab}`);
         if (!el) return;
         if (tab === intent) {
@@ -1214,6 +1224,27 @@
       }
     }
 
+    // =========================================================================
+    // CARROSSEL DINÂMICO DE BANNERS DO TOPO (AUTO-SLIDE 4s + TOQUE SEM BOTÕES)
+    // =========================================================================
+    function startBannerAutoPlay() {
+      if (bannerAutoPlayTimer) clearInterval(bannerAutoPlayTimer);
+      if (promoBanners.length <= 1) return;
+
+      bannerAutoPlayTimer = setInterval(() => {
+        if (isUserTouchingBanner) return;
+        const track = document.getElementById("promoBannersTrack");
+        if (!track || !track.clientWidth) return;
+
+        const currentIndex = Math.round(track.scrollLeft / track.clientWidth);
+        const nextIndex = (currentIndex + 1) % promoBanners.length;
+        track.scrollTo({
+          left: nextIndex * track.clientWidth,
+          behavior: "smooth"
+        });
+      }, 4000);
+    }
+
     function renderPromoBanners() {
       const section = document.getElementById("promoBannersSection");
       const track = document.getElementById("promoBannersTrack");
@@ -1222,14 +1253,15 @@
 
       if (promoBanners.length === 0) {
         section.classList.add("hidden");
+        if (bannerAutoPlayTimer) clearInterval(bannerAutoPlayTimer);
         return;
       }
 
       section.classList.remove("hidden");
       track.innerHTML = promoBanners.map(b => `
         <div onclick="handleBannerClick('${b.targetDept || "all"}')" class="carousel-slide w-full relative cursor-pointer bg-[#031238]">
-          <img src="${b.imageData}" alt="${b.title}" decoding="async" class="w-full h-auto max-h-[190px] sm:max-h-[240px] object-contain mx-auto block" />
-          <div class="absolute bottom-2 left-3 bg-black/75 text-white text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full">
+          <img src="${b.imageData}" alt="${b.title}" decoding="async" class="w-full h-auto max-h-[190px] sm:max-h-[240px] object-contain mx-auto block select-none" />
+          <div class="absolute bottom-2.5 left-3 bg-black/75 text-white text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full pointer-events-none">
             ${b.title} <i class="fa-solid fa-chevron-right text-[9px] ml-1 text-amber-400"></i>
           </div>
         </div>
@@ -1237,20 +1269,34 @@
 
       if (promoBanners.length > 1) {
         dots.innerHTML = promoBanners.map((_, i) => `
-          <span class="w-1.5 h-1.5 rounded-full ${i === 0 ? "bg-amber-400 w-3.5" : "bg-white/50"}"></span>
+          <span class="h-1.5 rounded-full transition-all duration-300 ${i === 0 ? "bg-amber-400 w-4" : "bg-white/45 w-1.5"}"></span>
         `).join("");
       } else {
         dots.innerHTML = "";
       }
+
+      track.ontouchstart = () => { isUserTouchingBanner = true; };
+      track.ontouchend = () => { isUserTouchingBanner = false; startBannerAutoPlay(); };
+      track.onpointerdown = () => { isUserTouchingBanner = true; };
+      track.onpointerup = () => { isUserTouchingBanner = false; startBannerAutoPlay(); };
+
+      startBannerAutoPlay();
     }
 
+    let bannerScrollRaf = null;
     window.handleBannerScroll = function() {
-      const track = document.getElementById("promoBannersTrack");
-      const dots = document.getElementById("promoBannersDots");
-      if (!track || !dots || !track.clientWidth) return;
-      const idx = Math.round(track.scrollLeft / track.clientWidth);
-      Array.from(dots.children).forEach((d, i) => {
-        d.className = i === idx ? "w-3.5 h-1.5 rounded-full bg-amber-400" : "w-1.5 h-1.5 rounded-full bg-white/50";
+      if (bannerScrollRaf) return;
+      bannerScrollRaf = requestAnimationFrame(() => {
+        bannerScrollRaf = null;
+        const track = document.getElementById("promoBannersTrack");
+        const dots = document.getElementById("promoBannersDots");
+        if (!track || !dots || !track.clientWidth) return;
+        const idx = Math.round(track.scrollLeft / track.clientWidth);
+        Array.from(dots.children).forEach((d, i) => {
+          d.className = i === idx
+            ? "h-1.5 rounded-full transition-all duration-300 bg-amber-400 w-4"
+            : "h-1.5 rounded-full transition-all duration-300 bg-white/45 w-1.5";
+        });
       });
     };
 
@@ -1258,8 +1304,11 @@
       if (!targetDept || targetDept === "all") {
         resetAllFilters();
       } else {
+        let normalizedDept = targetDept;
+        if (targetDept === "venda_carros" || targetDept === "servicos_carros") normalizedDept = "carros";
+        if (targetDept === "venda_motos" || targetDept === "servicos_motos") normalizedDept = "motos";
         currentIntentFilter = "all";
-        setDepartmentFilter(targetDept);
+        setDepartmentFilter(normalizedDept);
       }
     };
 
@@ -1626,19 +1675,19 @@
       let filtered = posts;
       let activeDescriptions = [];
 
-      // 1. Filtro por intenção da barra inferior
+      // 1. Filtro por intenção da barra inferior (Produtos vs Serviços vs Salvos)
       if (currentIntentFilter === "saved") {
         filtered = filtered.filter(p => savedIds.includes(p.id));
         activeDescriptions.push("Itens Salvos");
       } else if (currentIntentFilter !== "all") {
-        filtered = filtered.filter(p => getDeptInfo(p).group === currentIntentFilter);
-        const names = { produtos: "Produtos", veiculos: "Carros & Motos", servicos: "Serviços & Seguros" };
+        filtered = filtered.filter(p => getPostClassification(p).intentGroup === currentIntentFilter);
+        const names = { produtos: "Produtos & Veículos", servicos: "Serviços & Seguros" };
         activeDescriptions.push(names[currentIntentFilter] || currentIntentFilter);
       }
 
-      // 2. Filtro por Departamento específico
+      // 2. Filtro por Departamento unificado (Eletrônicos, Eletro, Casa, Construção, Carros, Motos, Serviços)
       if (currentDepartmentFilter !== "all") {
-        filtered = filtered.filter(p => getDeptInfo(p).id === currentDepartmentFilter);
+        filtered = filtered.filter(p => getPostClassification(p).deptId === currentDepartmentFilter);
         const deptObj = DEPARTMENTS.find(d => d.id === currentDepartmentFilter);
         if (deptObj) activeDescriptions.push(deptObj.name);
       }
@@ -1646,13 +1695,14 @@
       // 3. Filtro por Busca Textual
       if (currentSearchQuery) {
         filtered = filtered.filter(p => {
-          const deptName = getDeptInfo(p).name.toLowerCase();
+          const info = getPostClassification(p);
           return (
             (p.title || "").toLowerCase().includes(currentSearchQuery) ||
             (p.description || "").toLowerCase().includes(currentSearchQuery) ||
             (p.partnerName || "").toLowerCase().includes(currentSearchQuery) ||
             (p.serviceMode || "").toLowerCase().includes(currentSearchQuery) ||
-            deptName.includes(currentSearchQuery)
+            info.deptName.toLowerCase().includes(currentSearchQuery) ||
+            info.badge.toLowerCase().includes(currentSearchQuery)
           );
         });
         activeDescriptions.push(`Busca: "${currentSearchQuery}"`);
@@ -1678,7 +1728,7 @@
       container.innerHTML = filtered.map((post, postIndex) => {
         const isSaved = savedIds.includes(post.id);
         const images = post.images || [];
-        const dept = getDeptInfo(post);
+        const info = getPostClassification(post);
         const partnerTitle = (post.partnerName && post.partnerName.trim()) ? post.partnerName.trim() : (config.companyName || "TERÊ SHOP");
         const serviceModeLabel = post.serviceMode || "Atendimento Online e Presencial • Teresina-PI";
         const safeTitle = (post.title || "").replace(/'/g, "");
@@ -1692,7 +1742,7 @@
             <div class="px-3.5 sm:px-5 py-3 flex items-center justify-between gap-2">
               <div class="flex items-center gap-2.5 min-w-0">
                 <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#031238] text-amber-400 flex items-center justify-center text-xs sm:text-sm border border-amber-400/50 flex-shrink-0">
-                  <i class="fa-solid ${dept.icon}"></i>
+                  <i class="fa-solid ${info.icon}"></i>
                 </div>
                 <div class="min-w-0">
                   <p class="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight truncate flex items-center gap-1">
@@ -1703,7 +1753,7 @@
                 </div>
               </div>
               <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
-                <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full tracking-wide whitespace-nowrap ${dept.badgeClass}">${dept.short.toUpperCase()}</span>
+                <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full tracking-wide whitespace-nowrap ${info.badgeClass}">${info.badge}</span>
                 ${isAdminLogged && !isSharedVitrineMode ? `
                   <button onclick="startEditPost('${post.id}')" title="Editar anúncio" class="text-blue-600 hover:text-blue-800 p-1.5 bg-blue-50 rounded-lg">
                     <i class="fa-solid fa-pen text-xs"></i>
@@ -1805,8 +1855,8 @@
       const post = posts.find(p => p.id === postId);
       if (!post || !post.instagram) return;
       const url = resolveInstagramUrl(post.instagram);
-      const dept = getDeptInfo(post);
-      const msg = `Olá! Vi o anúncio em ${dept.name}: "${post.title}" na TERÊ SHOP e gostaria de mais informações.`;
+      const info = getPostClassification(post);
+      const msg = `Olá! Vi o anúncio em ${info.deptName}: "${post.title}" na TERÊ SHOP e gostaria de mais informações.`;
 
       if (navigator.clipboard) navigator.clipboard.writeText(msg).catch(() => {});
       showToast("Mensagem copiada! Cole no Direct do Instagram.");
@@ -1816,8 +1866,8 @@
     window.openPostWhatsapp = function(postId) {
       const post = posts.find(p => p.id === postId);
       if (!post || !post.whatsapp) return;
-      const dept = getDeptInfo(post);
-      const msg = `Olá! Vi o anúncio em ${dept.name}: "${post.title}" na TERÊ SHOP e gostaria de mais informações.`;
+      const info = getPostClassification(post);
+      const msg = `Olá! Vi o anúncio em ${info.deptName}: "${post.title}" na TERÊ SHOP e gostaria de mais informações.`;
       const url = resolveWhatsappUrl(post.whatsapp, msg);
       window.open(url, "_blank");
     };
@@ -2025,19 +2075,16 @@
       };
       const p = palettes[tpl] || palettes.royal_gold;
 
-      // Fundo Gradiente
       const grad = ctx.createLinearGradient(0, 0, W, H);
       grad.addColorStop(0, p.bg1);
       grad.addColorStop(1, p.bg2);
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, W, H);
 
-      // Moldura Dourada/Destaque
       ctx.strokeStyle = p.accent;
       ctx.lineWidth = 14;
       ctx.strokeRect(24, 24, W - 48, H - 48);
 
-      // Selo Superior
       ctx.fillStyle = p.accent;
       ctx.beginPath();
       ctx.roundRect(70, 64, 460, 62, 31);
@@ -2047,13 +2094,11 @@
       ctx.textAlign = "center";
       ctx.fillText(badge.slice(0, 24), 300, 105);
 
-      // Parceiro no canto superior direito
       ctx.fillStyle = "rgba(255,255,255,0.85)";
       ctx.font = "700 24px sans-serif";
       ctx.textAlign = "right";
       ctx.fillText(partner.slice(0, 28), W - 70, 104);
 
-      // Área Central da Foto (Enquadramento Inteiro)
       const photoBoxX = 70;
       const photoBoxY = 160;
       const photoBoxW = W - 140;
@@ -2078,13 +2123,11 @@
         ctx.fillText("SELECIONE UMA FOTO ACIMA", W / 2, photoBoxY + photoBoxH / 2);
       }
 
-      // Manchete Inferior
       ctx.fillStyle = p.text;
       ctx.font = "900 46px sans-serif";
       ctx.textAlign = "left";
       wrapCanvasText(ctx, headline, 70, 775, W - 140, 56, 2);
 
-      // Faixa de Preço / Condição
       ctx.fillStyle = p.accent;
       ctx.beginPath();
       ctx.roundRect(70, 895, W - 140, 96, 24);
@@ -2728,8 +2771,13 @@
       document.getElementById("editingBannerAlert").classList.remove("hidden");
       document.getElementById("publishBtn").textContent = "Salvar Alterações";
 
-      const dept = getDeptInfo(post);
-      document.getElementById("postDepartment").value = dept.id;
+      const validDeptValues = [
+        "eletronicos", "eletrodomesticos", "casa", "construcao",
+        "venda_carros", "servicos_carros", "venda_motos", "servicos_motos", "servicos_gerais"
+      ];
+      const fallbackDept = post.type === "conserto" ? "servicos_gerais" : "eletronicos";
+      document.getElementById("postDepartment").value = validDeptValues.includes(post.department) ? post.department : fallbackDept;
+
       document.getElementById("postPartnerName").value = post.partnerName || "";
       document.getElementById("postServiceMode").value = post.serviceMode || "Atendimento Online e Presencial • Teresina-PI";
       document.getElementById("postTitle").value = post.title || "";
@@ -2769,8 +2817,8 @@
 
       try {
         const department = document.getElementById("postDepartment").value;
-        const deptObj = DEPARTMENTS.find(d => d.id === department);
-        const legacyType = deptObj && deptObj.group === "servicos" ? "conserto" : "venda";
+        const isService = department.startsWith("servicos_");
+        const legacyType = isService ? "conserto" : "venda";
         const partnerName = document.getElementById("postPartnerName").value.trim();
         const serviceMode = document.getElementById("postServiceMode").value;
         const title = document.getElementById("postTitle").value.trim();
@@ -2851,7 +2899,7 @@
       setTimeout(() => toast.classList.add("opacity-0"), 3400);
     }
 
-    // Inicializa carrossel de departamentos imediatamente
+    // Inicializa carrossel dos 7 departamentos imediatamente
     renderDepartmentsCarousel();
   </script>
 </body>
