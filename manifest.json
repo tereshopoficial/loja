@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "TERÊ SHOP • Teresina-PI",
-  "short_name": "TERÊ SHOP",
-  "description": "Vendas e assistência técnica especializada em Teresina-PI.",
+  "name": "TERÊ SHOPPING • Teresina-PI",
+  "short_name": "TERÊ SHOPPING",
+  "description": "Marketplace de vendas, veículos, construção e serviços especializados em Teresina-PI.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
