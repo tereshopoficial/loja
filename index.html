@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>TERÊ SHOP • Teresina-PI</title>
-  <meta name="description" content="Vitrine oficial TERÊ SHOP — Vendas e consertos especializados em Teresina-PI." />
+  <title>TERÊ SHOP • Marketplace Teresina-PI</title>
+  <meta name="description" content="Marketplace oficial TERÊ SHOP — Construção, Casa, Eletrônicos, Eletrodomésticos, Carros, Motos e Serviços em Teresina-PI." />
 
   <!-- Prévia Oficial de Compartilhamento (WhatsApp, Instagram, Facebook) -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="TERÊ SHOP • Teresina-PI" />
-  <meta property="og:description" content="Confira nossas ofertas, aparelhos e serviços técnicos em Teresina-PI." />
+  <meta property="og:description" content="Produtos, veículos e serviços especializados em Teresina-PI." />
   <meta property="og:url" content="https://tereshopoficial.github.io/loja/?vitrine=1" />
   <meta property="og:image" content="https://tereshopoficial.github.io/loja/icon-512.png" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -44,7 +44,7 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     
-    /* Rolagem horizontal fluida sem bloquear a rolagem vertical da página no Android */
+    /* Rolagem horizontal fluida sem bloquear a rolagem vertical no Android */
     .carousel-track {
       scroll-snap-type: x mandatory;
       touch-action: pan-x pan-y;
@@ -79,15 +79,15 @@
     }
   </style>
 </head>
-<body class="bg-slate-200/70 text-gray-900 font-sans antialiased pb-24 md:pb-28">
+<body class="bg-slate-200/75 text-gray-900 font-sans antialiased pb-24 md:pb-28">
 
   <!-- SPLASH SCREEN NATIVA DE ABERTURA -->
   <div id="splashScreen" class="fixed inset-0 z-50 bg-gradient-to-b from-[#031238] via-[#08246b] to-[#031238] flex flex-col items-center justify-center text-white splash-animate pointer-events-none">
     <div class="w-28 h-28 rounded-3xl bg-white/10 border border-amber-400/40 flex items-center justify-center shadow-2xl mb-4 overflow-hidden p-2">
-      <img id="splashLogoImg" src="./icon-512.png" alt="TERÊ SHOP" class="w-full h-full object-contain" />
+      <img src="./icon-512.png" alt="TERÊ SHOP" class="w-full h-full object-contain" />
     </div>
     <h2 class="font-black text-2xl tracking-tight text-white">TERÊ SHOP</h2>
-    <p class="text-[11px] font-bold tracking-[0.25em] text-amber-400 uppercase mt-1">Teresina - PI</p>
+    <p class="text-[11px] font-bold tracking-[0.25em] text-amber-400 uppercase mt-1">Marketplace • Teresina - PI</p>
   </div>
 
   <!-- AVISO PARA NAVEGADOR INTERNO DO INSTAGRAM / WHATSAPP -->
@@ -98,11 +98,11 @@
     </div>
   </div>
 
-  <!-- CABEÇALHO / CAPA SUPERIOR RESPONSIVA (CAMADA GPU OTIMIZADA) -->
+  <!-- CABEÇALHO + BARRA DE BUSCA ESTILO MARKETPLACE -->
   <header class="sticky top-0 z-40 bg-[#031238] shadow-md gpu-layer">
     <div class="w-full max-w-2xl mx-auto relative overflow-hidden">
       
-      <!-- Botões Flutuantes Semitransparentes (Sem backdrop-blur pesado para 60fps no Android) -->
+      <!-- Botões Flutuantes Semitransparentes -->
       <div class="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-3 sm:px-4 pt-2.5 safe-top pointer-events-none">
         <button onclick="shareApp()" title="Compartilhar App"
           class="pointer-events-auto w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-black/55 hover:bg-black/75 border border-white/25 text-white shadow-sm active:scale-90 transition-transform">
@@ -116,13 +116,13 @@
       </div>
 
       <!-- MODO 1: CAPA PANORÂMICA / SLOGAN EM ALTA DEFINIÇÃO -->
-      <div id="headerLogoWrapper" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="hidden w-full bg-[#031238] cursor-pointer">
-        <img id="headerLogoImg" src="" alt="TERÊ SHOP • Teresina-PI" decoding="async" class="w-full h-auto max-h-[195px] sm:max-h-[245px] object-contain block mx-auto" />
+      <div id="headerLogoWrapper" onclick="resetAllFilters()" class="hidden w-full bg-[#031238] cursor-pointer">
+        <img id="headerLogoImg" src="" alt="TERÊ SHOP • Teresina-PI" decoding="async" class="w-full h-auto max-h-[175px] sm:max-h-[220px] object-contain block mx-auto" />
       </div>
 
       <!-- MODO 2: TÍTULO ESCRITO ESTILIZADO -->
-      <div id="headerTitleWrapper" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-        class="w-full min-h-[74px] sm:min-h-[84px] pt-2 pb-2.5 px-14 flex flex-col items-center justify-center text-center bg-gradient-to-r from-[#031238] via-[#0a2d82] to-[#031238] safe-top cursor-pointer">
+      <div id="headerTitleWrapper" onclick="resetAllFilters()"
+        class="w-full min-h-[68px] sm:min-h-[78px] pt-2 pb-2 px-14 flex flex-col items-center justify-center text-center bg-gradient-to-r from-[#031238] via-[#0a2d82] to-[#031238] safe-top cursor-pointer">
         <h1 id="headerCompanyName" class="font-black text-xl sm:text-2xl tracking-tight leading-none text-white">
           TERÊ SHOP
         </h1>
@@ -131,11 +131,46 @@
         </span>
       </div>
 
+      <!-- BARRA DE PESQUISA INTELIGENTE (ESTILO MERCADO LIVRE / AMAZON) -->
+      <div class="px-3 sm:px-4 pb-2.5 pt-1 bg-[#031238]">
+        <div class="relative flex items-center">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 text-gray-400 text-xs sm:text-sm pointer-events-none"></i>
+          <input type="search" id="searchInput" oninput="handleSearchInput()" placeholder="Buscar produtos, veículos, construção ou serviços..."
+            class="w-full bg-white text-slate-900 placeholder-gray-400 text-xs sm:text-sm font-medium rounded-full pl-9 pr-9 py-2 shadow-inner focus:outline-none focus:ring-2 focus:ring-amber-400" />
+          <button type="button" id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-3 text-gray-400 hover:text-gray-700 p-1">
+            <i class="fa-solid fa-circle-xmark text-sm"></i>
+          </button>
+        </div>
+      </div>
+
     </div>
   </header>
 
-  <!-- CONTENTOR PRINCIPAL FLUIDO (ANDROID + IOS + DESKTOP) -->
+  <!-- CONTENTOR PRINCIPAL FLUIDO -->
   <div class="w-full max-w-2xl mx-auto md:my-3 md:rounded-2xl md:overflow-hidden md:shadow-md md:border md:border-gray-200/80 bg-white">
+
+    <!-- CARROSSEL DE DEPARTAMENTOS / NICHOS OFICIAIS -->
+    <section class="w-full bg-white border-b border-gray-200 py-3">
+      <div class="px-3.5 sm:px-5 pb-2 flex items-center justify-between">
+        <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-700">
+          Departamentos & Serviços
+        </span>
+        <button onclick="setDepartmentFilter('all')" id="clearDeptBtn" class="hidden text-[11px] font-bold text-blue-700 hover:underline">
+          Ver todos
+        </button>
+      </div>
+      <div id="departmentsCarousel" class="stories-scroll flex gap-2.5 sm:gap-3 overflow-x-auto no-scrollbar px-3.5 sm:px-5 pb-1">
+        <!-- Ícones dos 9 Departamentos renderizados via JS -->
+      </div>
+    </section>
+
+    <!-- BANNERS PROMOCIONAIS ROTATIVOS EDITÁVEIS (CAMPANHAS & FEIRÕES) -->
+    <section id="promoBannersSection" class="w-full bg-slate-950 border-b border-gray-200 hidden relative">
+      <div id="promoBannersTrack" onscroll="handleBannerScroll()" class="carousel-track flex overflow-x-auto no-scrollbar">
+        <!-- Banners clicáveis renderizados dinamicamente -->
+      </div>
+      <div id="promoBannersDots" class="absolute bottom-2 inset-x-0 flex justify-center gap-1.5 pointer-events-none"></div>
+    </section>
 
     <!-- CARROSSEL HORIZONTAL DE DESTAQUES RÁPIDOS 24H (FOTOS OU VÍDEOS) -->
     <section id="storiesSection" class="w-full bg-white border-b border-gray-200 hidden">
@@ -147,39 +182,52 @@
         <span class="text-[10px] sm:text-[11px] text-gray-400 whitespace-nowrap">Toque para abrir</span>
       </div>
       <div id="storiesCarousel" class="stories-scroll flex gap-2.5 sm:gap-3.5 overflow-x-auto no-scrollbar px-3.5 sm:px-5 py-3 snap-x snap-mandatory">
-        <!-- Cards de fotos e vídeos 24h renderizados dinamicamente -->
+        <!-- Cards de fotos e vídeos 24h -->
       </div>
     </section>
 
-    <!-- FEED PRINCIPAL -->
-    <main id="feedContainer" class="w-full divide-y divide-gray-200 bg-white min-h-[75vh]">
+    <!-- INDICADOR DE FILTRO ATIVO -->
+    <div id="activeFilterBar" class="hidden px-4 py-2.5 bg-blue-50/80 border-b border-blue-100 flex items-center justify-between gap-2">
+      <span id="activeFilterLabel" class="text-xs font-bold text-blue-900 truncate"></span>
+      <button onclick="resetAllFilters()" class="text-[11px] font-extrabold text-blue-700 bg-white px-2.5 py-1 rounded-lg border border-blue-200 flex-shrink-0">
+        Limpar filtro
+      </button>
+    </div>
+
+    <!-- FEED PRINCIPAL DE OFERTAS E SERVIÇOS -->
+    <main id="feedContainer" class="w-full divide-y divide-gray-200 bg-white min-h-[65vh]">
       <div class="py-24 px-6 text-center text-gray-400">
         <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-blue-600"></i>
-        <p class="text-xs font-medium">Carregando vitrine TERÊ SHOP...</p>
+        <p class="text-xs font-medium">Carregando marketplace TERÊ SHOP...</p>
       </div>
     </main>
 
   </div>
 
-  <!-- BARRA DE NAVEGAÇÃO INFERIOR (OTIMIZADA PARA 60FPS NO ANDROID) -->
+  <!-- BARRA DE NAVEGAÇÃO INFERIOR ADAPTÁVEL -->
   <nav class="fixed bottom-0 inset-x-0 md:bottom-3 md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-2xl z-40 bg-white border-t md:border border-gray-200 md:rounded-2xl shadow-[0_-2px_10px_rgba(0,0,0,0.06)] md:shadow-xl safe-bottom gpu-layer">
     <div class="w-full flex items-center justify-around h-16 px-1 sm:px-3">
-      <button onclick="setFilter('all')" id="nav-all" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-blue-700 active:scale-90 transition-transform">
+      <button onclick="setIntentFilter('all')" id="nav-all" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-blue-700 active:scale-90 transition-transform">
         <i class="fa-solid fa-house text-base sm:text-lg"></i>
         <span class="text-[10px] sm:text-[11px] font-extrabold truncate">Início</span>
       </button>
 
-      <button onclick="setFilter('venda')" id="nav-venda" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
+      <button onclick="setIntentFilter('produtos')" id="nav-produtos" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
         <i class="fa-solid fa-bag-shopping text-base sm:text-lg"></i>
-        <span class="text-[10px] sm:text-[11px] font-bold truncate">Vendas</span>
+        <span class="text-[10px] sm:text-[11px] font-bold truncate">Produtos</span>
       </button>
 
-      <button onclick="setFilter('conserto')" id="nav-conserto" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
+      <button onclick="setIntentFilter('veiculos')" id="nav-veiculos" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
+        <i class="fa-solid fa-car text-base sm:text-lg"></i>
+        <span class="text-[10px] sm:text-[11px] font-bold truncate">Veículos</span>
+      </button>
+
+      <button onclick="setIntentFilter('servicos')" id="nav-servicos" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
         <i class="fa-solid fa-screwdriver-wrench text-base sm:text-lg"></i>
-        <span class="text-[10px] sm:text-[11px] font-bold truncate">Consertos</span>
+        <span class="text-[10px] sm:text-[11px] font-bold truncate">Serviços</span>
       </button>
 
-      <button onclick="setFilter('saved')" id="nav-saved" class="relative flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
+      <button onclick="setIntentFilter('saved')" id="nav-saved" class="relative flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
         <div class="relative">
           <i id="nav-saved-icon" class="fa-regular fa-bookmark text-base sm:text-lg"></i>
           <span id="savedBadgeCount" class="hidden absolute -top-1.5 -right-2.5 bg-amber-500 text-slate-950 text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center">0</span>
@@ -210,16 +258,12 @@
       </button>
     </div>
 
-    <div id="lightboxTrack" onscroll="handleLightboxScroll()" class="carousel-track flex-1 flex overflow-x-auto no-scrollbar items-center max-w-4xl w-full mx-auto">
-      <!-- Fotos em tela cheia -->
-    </div>
+    <div id="lightboxTrack" onscroll="handleLightboxScroll()" class="carousel-track flex-1 flex overflow-x-auto no-scrollbar items-center max-w-4xl w-full mx-auto"></div>
 
-    <div id="lightboxFooter" class="max-w-2xl w-full mx-auto p-4 bg-black/90 flex gap-2.5">
-      <!-- Botões de contato direto no lightbox -->
-    </div>
+    <div id="lightboxFooter" class="max-w-2xl w-full mx-auto p-4 bg-black/90 flex gap-2.5"></div>
   </div>
 
-  <!-- VISUALIZADOR EM TELA CHEIA PARA DESTAQUES 24H (FOTOS E VÍDEOS) -->
+  <!-- VISUALIZADOR EM TELA CHEIA PARA DESTAQUES 24H -->
   <div id="storyViewerModal" class="fixed inset-0 z-50 bg-black hidden flex-col justify-between safe-top safe-bottom">
     <div class="max-w-2xl w-full mx-auto relative z-20 p-3.5 sm:p-4 bg-black/85 flex items-center justify-between text-white gap-2">
       <div class="flex items-center gap-2 min-w-0">
@@ -227,9 +271,7 @@
           <i class="fa-solid fa-arrow-left"></i>
           <span>Voltar</span>
         </button>
-        <span id="viewerBadge" class="text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full bg-amber-500 text-slate-950 truncate">
-          Oferta 24h
-        </span>
+        <span id="viewerBadge" class="text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full bg-amber-500 text-slate-950 truncate">Oferta 24h</span>
       </div>
       <div class="flex items-center gap-2 flex-shrink-0">
         <button onclick="toggleViewerAudio()" id="viewerAudioBtn" title="Alternar Áudio" class="px-3 h-9 rounded-full bg-white/20 flex items-center justify-center gap-1.5 text-white text-xs font-bold">
@@ -242,9 +284,7 @@
       </div>
     </div>
 
-    <div id="viewerTrack" onscroll="handleViewerScroll()" class="carousel-track flex-1 flex overflow-x-auto no-scrollbar items-center max-w-2xl w-full mx-auto">
-      <!-- Slides de foto ou vídeo em tela cheia -->
-    </div>
+    <div id="viewerTrack" onscroll="handleViewerScroll()" class="carousel-track flex-1 flex overflow-x-auto no-scrollbar items-center max-w-2xl w-full mx-auto"></div>
 
     <div id="viewerFooter" class="max-w-2xl w-full mx-auto relative z-20 p-4 bg-black/90 text-white space-y-2.5">
       <div class="flex items-center justify-between gap-2">
@@ -255,7 +295,7 @@
     </div>
   </div>
 
-  <!-- MODAL INSTRUÇÕES DE INSTALAÇÃO INTELIGENTE (ANDROID + IPHONE) -->
+  <!-- MODAL INSTRUÇÕES DE INSTALAÇÃO (ANDROID + IPHONE) -->
   <div id="installGuideModal" class="fixed inset-0 z-50 bg-black/65 hidden items-end sm:items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4">
       <div class="flex items-center justify-between">
@@ -269,7 +309,6 @@
         <button onclick="closeModal('installGuideModal')" class="text-gray-400 hover:text-gray-700 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
 
-      <!-- Passos para iPhone / iPad (iOS) -->
       <div id="iosInstallSteps" class="hidden bg-slate-50 rounded-2xl p-3.5 space-y-2.5 text-xs text-slate-700 border border-slate-200">
         <p class="flex items-center gap-2.5">
           <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center flex-shrink-0">1</span>
@@ -285,7 +324,6 @@
         </p>
       </div>
 
-      <!-- Passos para Android (Chrome / Samsung / Edge) -->
       <div id="androidInstallSteps" class="hidden bg-slate-50 rounded-2xl p-3.5 space-y-2.5 text-xs text-slate-700 border border-slate-200">
         <p class="flex items-center gap-2.5">
           <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 font-bold flex items-center justify-center flex-shrink-0">1</span>
@@ -308,8 +346,7 @@
   </div>
 
   <!-- TOAST DE NOTIFICAÇÃO -->
-  <div id="toast" class="fixed bottom-20 md:bottom-24 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-200 text-center max-w-[90vw]">
-  </div>
+  <div id="toast" class="fixed bottom-20 md:bottom-24 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-200 text-center max-w-[90vw]"></div>
 
   <!-- MODAL LOGIN DO ADMINISTRADOR -->
   <div id="loginModal" class="fixed inset-0 z-50 bg-black/65 hidden items-center justify-center p-4">
@@ -323,7 +360,7 @@
         </div>
         <button onclick="closeModal('loginModal')" class="text-gray-400 hover:text-gray-700 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
-      <p class="text-xs text-gray-500 mb-4">Insira a senha de administrador para gerir anúncios, destaques 24h e capa do app.</p>
+      <p class="text-xs text-gray-500 mb-4">Insira a senha de administrador para gerir anúncios, banners, cards e destaques 24h.</p>
       
       <form onsubmit="event.preventDefault(); verifyAdminLogin();" class="space-y-3">
         <div class="relative">
@@ -344,9 +381,9 @@
     </div>
   </div>
 
-  <!-- MODAL PAINEL ADMINISTRATIVO RESPONSIVO -->
+  <!-- MODAL PAINEL ADMINISTRATIVO EXPANDIDO (5 ABAS: POST, DESTAQUE 24H, ESTÚDIO CARDS, BANNERS, AJUSTES) -->
   <div id="adminModal" class="fixed inset-0 z-50 bg-black/65 hidden items-end sm:items-center justify-center">
-    <div class="bg-white w-full max-w-xl rounded-t-3xl sm:rounded-3xl max-h-[92vh] flex flex-col shadow-2xl">
+    <div class="bg-white w-full max-w-2xl rounded-t-3xl sm:rounded-3xl max-h-[93vh] flex flex-col shadow-2xl">
       
       <div class="px-4 py-3.5 border-b border-gray-200 flex items-center justify-between gap-2">
         <button type="button" onclick="cancelAndReturnFromAdmin()" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold flex items-center gap-1.5 transition flex-shrink-0">
@@ -356,7 +393,7 @@
 
         <div class="flex items-center gap-1.5 min-w-0">
           <span class="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0"></span>
-          <h2 class="font-bold text-sm text-slate-900 truncate">Gestão TERÊ SHOP</h2>
+          <h2 class="font-bold text-sm text-slate-900 truncate">Central Marketplace TERÊ SHOP</h2>
         </div>
 
         <button type="button" onclick="logoutAdmin()" class="px-2.5 py-1.5 rounded-xl bg-red-50 text-red-600 text-xs font-bold hover:bg-red-100 transition flex-shrink-0">
@@ -364,23 +401,29 @@
         </button>
       </div>
 
-      <!-- Navegação Interna do Admin (3 Abas) -->
-      <div class="flex border-b border-gray-200 text-[11px] sm:text-xs font-bold bg-gray-50">
-        <button type="button" onclick="switchAdminTab('newPost')" id="admTab-newPost" class="flex-1 py-3 border-b-2 border-blue-700 text-blue-700 truncate px-1">
-          + Novo Post
+      <!-- Navegação Interna do Admin (5 Abas Scrolláveis) -->
+      <div class="flex overflow-x-auto no-scrollbar border-b border-gray-200 text-[11px] font-bold bg-gray-50">
+        <button type="button" onclick="switchAdminTab('newPost')" id="admTab-newPost" class="px-3.5 py-3 border-b-2 border-blue-700 text-blue-700 whitespace-nowrap">
+          + Novo Anúncio
         </button>
-        <button type="button" onclick="switchAdminTab('newVideo')" id="admTab-newVideo" class="flex-1 py-3 border-b-2 border-transparent text-gray-500 truncate px-1">
+        <button type="button" onclick="switchAdminTab('cardStudio')" id="admTab-cardStudio" class="px-3.5 py-3 border-b-2 border-transparent text-amber-700 whitespace-nowrap">
+          🎨 Estúdio Cards
+        </button>
+        <button type="button" onclick="switchAdminTab('newVideo')" id="admTab-newVideo" class="px-3.5 py-3 border-b-2 border-transparent text-gray-500 whitespace-nowrap">
           + Destaque 24h
         </button>
-        <button type="button" onclick="switchAdminTab('settings')" id="admTab-settings" class="flex-1 py-3 border-b-2 border-transparent text-gray-500 truncate px-1">
-          Capa & Ajustes
+        <button type="button" onclick="switchAdminTab('banners')" id="admTab-banners" class="px-3.5 py-3 border-b-2 border-transparent text-gray-500 whitespace-nowrap">
+          🖼️ Banners Topo
+        </button>
+        <button type="button" onclick="switchAdminTab('settings')" id="admTab-settings" class="px-3.5 py-3 border-b-2 border-transparent text-gray-500 whitespace-nowrap">
+          ⚙️ Capa & Senha
         </button>
       </div>
 
       <!-- Conteúdo Scrollável Admin -->
       <div class="p-4 sm:p-6 overflow-y-auto space-y-4">
 
-        <!-- ABA 1: CRIAR OU EDITAR POST / BANNER -->
+        <!-- ABA 1: CRIAR OU EDITAR ANÚNCIO MULTI-NICHO -->
         <form id="newPostForm" onsubmit="handleSavePost(event)" class="space-y-4">
           <input type="hidden" id="editingPostId" value="" />
 
@@ -391,36 +434,42 @@
 
           <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
             <div>
-              <label class="block text-xs font-bold text-gray-700 mb-1.5">Categoria da Divulgação *</label>
-              <div class="grid grid-cols-2 gap-2">
-                <label class="cursor-pointer">
-                  <input type="radio" name="postType" value="venda" checked class="peer sr-only" />
-                  <div class="text-center py-2.5 rounded-xl border border-gray-300 bg-white text-xs font-semibold peer-checked:bg-emerald-600 peer-checked:text-white peer-checked:border-emerald-600 transition">
-                    <i class="fa-solid fa-tag mr-1"></i> Somente Venda
-                  </div>
-                </label>
-                <label class="cursor-pointer">
-                  <input type="radio" name="postType" value="conserto" class="peer sr-only" />
-                  <div class="text-center py-2.5 rounded-xl border border-gray-300 bg-white text-xs font-semibold peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 transition">
-                    <i class="fa-solid fa-wrench mr-1"></i> Somente Conserto
-                  </div>
-                </label>
-              </div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">Departamento / Nicho Oficial *</label>
+              <select id="postDepartment" required class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-xs sm:text-sm font-bold bg-white text-slate-900 focus:outline-none focus:border-blue-600">
+                <option value="eletronicos">📱 Eletrônicos (Celulares, Notebooks, Games)</option>
+                <option value="eletrodomesticos">❄️ Eletrodomésticos (Geladeira, Ar, TV, Linha Branca)</option>
+                <option value="casa">🛋️ Casa & Decoração (Móveis, Utilidades, Enxoval)</option>
+                <option value="construcao">🧱 Construção & Ferramentas (Materiais, Elétrica, Hidráulica)</option>
+                <option value="venda_carros">🚗 Carros • Vendas (Novos, Seminovos, Repasses)</option>
+                <option value="servicos_carros">🔧 Carros • Serviços (Mecânica, Estética, Pneus, Som)</option>
+                <option value="venda_motos">🏍️ Motos • Vendas (Novas, Seminovas, Consórcios)</option>
+                <option value="servicos_motos">🛠️ Motos • Serviços (Oficina, Peças, Revisões)</option>
+                <option value="servicos_gerais">🛡️ Serviços Gerais (Manutenção, Seguros, Fretes, Técnicos)</option>
+              </select>
             </div>
 
-            <div>
-              <label class="block text-xs font-bold text-gray-700 mb-1">Modalidade de Atendimento (Individual deste Post) *</label>
-              <select id="postServiceMode" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-xs font-semibold bg-white text-slate-800 focus:outline-none focus:border-blue-600">
-                <option value="Atendimento Online e Presencial">Atendimento Online e Presencial</option>
-                <option value="Atendimento Online">Atendimento Online</option>
-                <option value="Atendimento Presencial">Atendimento Presencial</option>
-                <option value="Entrega em Domicílio • Teresina-PI">Entrega em Domicílio • Teresina-PI</option>
-              </select>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">Nome da Loja / Parceiro *</label>
+                <input type="text" id="postPartnerName" placeholder="Ex: Auto Center Teresina ou TERÊ SHOP"
+                  class="w-full border border-gray-300 rounded-xl px-3 py-2 text-xs font-semibold bg-white focus:outline-none focus:border-blue-600" />
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">Modalidade / Região *</label>
+                <select id="postServiceMode" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-xs font-semibold bg-white text-slate-800 focus:outline-none focus:border-blue-600">
+                  <option value="Atendimento Online e Presencial • Teresina-PI">Online e Presencial • Teresina-PI</option>
+                  <option value="Entrega Rápida em Teresina-PI">Entrega Rápida em Teresina-PI</option>
+                  <option value="Atendimento Presencial na Loja / Oficina">Presencial na Loja / Oficina</option>
+                  <option value="Atendimento em Domicílio / Delivery">Atendimento em Domicílio</option>
+                  <option value="Cotação e Atendimento 100% Online">100% Online / WhatsApp</option>
+                </select>
+              </div>
             </div>
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1.5">Imagens em Alta Definição (Máx. 10 — Enquadramento Total) *</label>
+            <label class="block text-xs font-bold text-gray-700 mb-1.5">Imagens ou Cards em Alta Definição (Máx. 10) *</label>
             <label for="postImagesInput" class="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl border-2 border-dashed border-blue-300 bg-blue-50/70 text-blue-800 text-xs font-bold cursor-pointer active:scale-[0.99] transition">
               <i class="fa-solid fa-images text-base"></i>
               <span>Selecionar Fotos da Galeria (até 10)</span>
@@ -430,37 +479,37 @@
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1">Título do Produto ou Serviço *</label>
-            <input type="text" id="postTitle" required placeholder="Ex: iPhone 15 Pro Max ou Troca de Tela Express"
+            <label class="block text-xs font-bold text-gray-700 mb-1">Título do Produto, Veículo ou Serviço *</label>
+            <input type="text" id="postTitle" required placeholder="Ex: Honda Civic EXL 2021, Cimento CP-II ou Seguro Auto"
               class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-600" />
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1">Valor ou Condição (Opcional)</label>
-            <input type="text" id="postPrice" placeholder="Ex: R$ 4.500,00 ou Orçamento Grátis"
+            <label class="block text-xs font-bold text-gray-700 mb-1">Valor, Parcela ou Condição (Opcional)</label>
+            <input type="text" id="postPrice" placeholder="Ex: R$ 89.900,00 | 12x sem juros | Cotação Grátis"
               class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-600" />
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1">Descrição e Detalhes *</label>
-            <textarea id="postDescription" rows="3" required placeholder="Descreva garantia, especificações, prazo de entrega..."
+            <label class="block text-xs font-bold text-gray-700 mb-1">Descrição Completa e Diferenciais *</label>
+            <textarea id="postDescription" rows="3" required placeholder="Informe especificações, ano/km, garantia, cobertura do seguro ou prazo de entrega..."
               class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-600"></textarea>
           </div>
 
           <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
-            <label class="block text-xs font-bold text-slate-800">Links Diretos de Atendimento (Exclusivos deste Post)</label>
+            <label class="block text-xs font-bold text-slate-800">Canais Diretos do Parceiro (Exclusivos deste Anúncio)</label>
             
             <div>
               <label class="block text-[11px] font-bold text-gray-600 mb-1">
-                <i class="fa-brands fa-instagram text-pink-600 mr-1"></i> Instagram de Atendimento (Link ou @usuário)
+                <i class="fa-brands fa-instagram text-pink-600 mr-1"></i> Instagram do Parceiro (Link ou @usuário)
               </label>
-              <input type="text" id="postInstagram" placeholder="Ex: https://instagram.com/vendedor ou @vendedor"
+              <input type="text" id="postInstagram" placeholder="Ex: https://instagram.com/loja ou @loja"
                 class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:border-blue-600" />
             </div>
 
             <div>
               <label class="block text-[11px] font-bold text-gray-600 mb-1">
-                <i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i> WhatsApp de Atendimento (Link ou DDD + Número)
+                <i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i> WhatsApp do Parceiro (Link ou DDD + Número)
               </label>
               <input type="text" id="postWhatsapp" placeholder="Ex: https://wa.me/5586999999999 ou 86999999999"
                 class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:border-blue-600" />
@@ -469,7 +518,7 @@
 
           <div class="space-y-2 pt-1">
             <button type="submit" id="publishBtn" class="w-full bg-[#081c45] text-white font-semibold py-3 rounded-xl text-sm hover:bg-blue-900 transition">
-              Publicar na Vitrine
+              Publicar no Marketplace
             </button>
             <button type="button" onclick="cancelAndReturnFromAdmin()" class="w-full bg-gray-100 text-gray-700 font-bold py-2.5 rounded-xl text-xs hover:bg-gray-200 transition">
               Cancelar e Voltar ao Feed
@@ -477,10 +526,85 @@
           </div>
         </form>
 
-        <!-- ABA 2: PUBLICAR DESTAQUE 24H (FOTO OU VÍDEO COM FAIXA DE 15s ESTILO STATUS WHATSAPP) -->
+        <!-- ABA 2: ESTÚDIO DE CARDS PROFISSIONAIS EDITÁVEIS -->
+        <div id="cardStudioSection" class="space-y-4 hidden">
+          <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-950">
+            <b><i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Estúdio Criativo TERÊ SHOP:</b> Crie cards profissionais em Alta Definição (`1080x1080`) para qualquer nicho e envie direto para um anúncio, destaque 24h ou WhatsApp/Instagram.
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">Estilo / Template do Card</label>
+              <select id="studioTemplate" onchange="renderStudioCanvas()" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-xs font-bold bg-white">
+                <option value="royal_gold">👑 Oficial TERÊ SHOP (Azul & Ouro)</option>
+                <option value="vehicles">🚗 Feirão Veículos (Carros & Motos)</option>
+                <option value="construction">🧱 Construção & Casa (Laranja & Escuro)</option>
+                <option value="services">🛡️ Serviços & Seguros (Esmeralda Corp)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">Foto Principal do Card</label>
+              <label for="studioPhotoInput" class="flex items-center justify-center gap-1.5 w-full py-2 px-3 rounded-xl border border-blue-300 bg-blue-50 text-blue-800 text-xs font-bold cursor-pointer">
+                <i class="fa-solid fa-camera"></i>
+                <span>Escolher Foto</span>
+              </label>
+              <input type="file" id="studioPhotoInput" accept="image/*" onchange="handleStudioPhotoUpload(event)" class="sr-only" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-[11px] font-bold text-gray-700 mb-1">Selo Superior</label>
+              <input type="text" id="studioBadgeText" value="OFERTA VERIFICADA" oninput="renderStudioCanvas()"
+                class="w-full border border-gray-300 rounded-xl px-3 py-1.5 text-xs" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-gray-700 mb-1">Nome da Loja / Parceiro</label>
+              <input type="text" id="studioPartnerText" value="TERÊ SHOP • TERESINA-PI" oninput="renderStudioCanvas()"
+                class="w-full border border-gray-300 rounded-xl px-3 py-1.5 text-xs" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-[11px] font-bold text-gray-700 mb-1">Manchete / Título no Card</label>
+              <input type="text" id="studioHeadline" value="Qualidade e Garantia em Teresina" oninput="renderStudioCanvas()"
+                class="w-full border border-gray-300 rounded-xl px-3 py-1.5 text-xs" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-gray-700 mb-1">Destaque de Preço / Condição</label>
+              <input type="text" id="studioPriceTag" value="CONSULTE CONDIÇÕES" oninput="renderStudioCanvas()"
+                class="w-full border border-gray-300 rounded-xl px-3 py-1.5 text-xs" />
+            </div>
+          </div>
+
+          <!-- Prévia ao Vivo do Canvas -->
+          <div class="bg-slate-900 p-3 rounded-2xl flex flex-col items-center">
+            <canvas id="studioCanvas" width="1080" height="1080" class="w-full max-w-[300px] aspect-square rounded-xl shadow-lg bg-[#031238]"></canvas>
+          </div>
+
+          <!-- Ações Rápidas com o Card Criado -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <button type="button" onclick="useStudioCardInPost()" class="bg-[#081c45] text-white font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-plus"></i>
+              <span>Usar em Anúncio</span>
+            </button>
+            <button type="button" onclick="useStudioCardInStory()" class="bg-amber-500 text-slate-950 font-extrabold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-bolt"></i>
+              <span>Enviar p/ 24h</span>
+            </button>
+            <button type="button" onclick="downloadStudioCard()" class="bg-emerald-600 text-white font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-download"></i>
+              <span>Baixar Arte</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ABA 3: PUBLICAR DESTAQUE 24H (FOTO OU VÍDEO COM FAIXA DE 15s) -->
         <form id="newVideoForm" onsubmit="handleSaveVideoStory(event)" class="space-y-4 hidden">
           <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-900 space-y-1">
-            <p><i class="fa-solid fa-bolt mr-1"></i> Publique uma <b>Foto em HD</b> ou um <b>Vídeo</b> (até 3 min / 120 MB). Para vídeos longos, arraste a <b>faixa dourada de 15 segundos</b> até o trecho desejado (início, meio ou fim) estilo Status do WhatsApp.</p>
+            <p><i class="fa-solid fa-bolt mr-1"></i> Publique uma <b>Foto/Card em HD</b> ou um <b>Vídeo</b> (até 120 MB). Para vídeos longos, arraste a <b>faixa dourada de 15s</b> até o trecho desejado estilo Status.</p>
           </div>
 
           <div>
@@ -488,15 +612,15 @@
             <select id="videoBadge" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm bg-white">
               <option value="Oferta Relâmpago">⚡ Oferta Relâmpago</option>
               <option value="Chegou Agora">🔥 Chegou Agora</option>
-              <option value="Conserto Express">🛠️ Conserto Express</option>
+              <option value="Feirão Veículos">🚗 Feirão Veículos</option>
               <option value="Promoção 24h">💎 Promoção 24h</option>
+              <option value="Serviço Express">🛠️ Serviço Express</option>
             </select>
           </div>
 
           <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
             <div>
               <label class="block text-xs font-bold text-gray-700 mb-1.5">Opção A: Selecionar Foto ou Vídeo da Galeria *</label>
-              
               <label for="storyMediaInput" class="flex flex-col items-center justify-center gap-1.5 w-full py-4 px-4 rounded-xl border-2 border-dashed border-amber-400 bg-amber-50 text-amber-950 text-xs font-extrabold cursor-pointer active:scale-[0.98] transition text-center">
                 <div class="flex items-center gap-2 text-xl text-amber-600">
                   <i class="fa-solid fa-image"></i>
@@ -507,7 +631,6 @@
                 <span class="text-[10px] font-normal text-amber-800">Fotos em HD • Vídeos recortáveis em faixa de 15s</span>
               </label>
               <input type="file" id="storyMediaInput" accept="image/*,video/*" onchange="handleStoryMediaLoaded(event)" class="sr-only" />
-
               <p id="videoFileStatus" class="text-[11px] text-blue-700 font-bold mt-2"></p>
             </div>
 
@@ -518,10 +641,9 @@
             </div>
           </div>
 
-          <!-- PRÉVIA DE FOTO PARA DESTAQUE 24H -->
           <div id="storyPhotoPreviewBox" class="hidden p-3 rounded-xl bg-slate-900 text-white space-y-2">
             <div class="flex items-center justify-between text-xs">
-              <span class="font-bold text-emerald-400"><i class="fa-solid fa-image mr-1"></i> Prévia da Foto 24h (Enquadramento Inteiro)</span>
+              <span class="font-bold text-emerald-400"><i class="fa-solid fa-image mr-1"></i> Prévia da Foto 24h</span>
               <span class="bg-white/15 px-2 py-0.5 rounded-full text-[10px]">Alta Definição</span>
             </div>
             <div class="bg-black rounded-lg overflow-hidden flex items-center justify-center max-h-60">
@@ -529,7 +651,6 @@
             </div>
           </div>
 
-          <!-- RECORTADOR VISUAL ESTILO STATUS DO WHATSAPP (JANELA DESLIZANTE DE 15 SEGUNDOS) -->
           <div id="videoTrimmerBox" class="hidden p-3.5 rounded-xl bg-slate-900 text-white space-y-3">
             <div class="flex items-center justify-between text-xs">
               <span class="font-bold text-amber-400"><i class="fa-solid fa-scissors mr-1"></i> Faixa de 15s (Estilo Status)</span>
@@ -540,16 +661,13 @@
               <video id="trimPreviewVideo" playsinline webkit-playsinline class="max-h-60 w-auto object-contain"></video>
             </div>
 
-            <!-- Linha do Tempo Interativa com Janela Dourada Arrastável de 15 Segundos -->
             <div id="whatsappTimelineWrapper" class="space-y-2 select-none">
               <div class="flex items-center justify-between text-[10px] text-gray-400 font-semibold">
                 <span>Início: 00:00</span>
                 <span id="totalVideoDurationText" class="text-white">Duração total: 00:00</span>
               </div>
 
-              <!-- Trilha da Timeline -->
               <div id="timelineTrack" class="relative h-12 bg-slate-800 rounded-xl border border-slate-700 overflow-hidden cursor-pointer touch-none">
-                <!-- Marcações visuais de fundo -->
                 <div class="absolute inset-0 flex justify-between items-center px-2 opacity-25 pointer-events-none">
                   <span class="w-0.5 h-5 bg-white rounded"></span>
                   <span class="w-0.5 h-3 bg-white rounded"></span>
@@ -560,13 +678,10 @@
                   <span class="w-0.5 h-6 bg-white rounded"></span>
                   <span class="w-0.5 h-4 bg-white rounded"></span>
                   <span class="w-0.5 h-5 bg-white rounded"></span>
-                  <span class="w-0.5 h-3 bg-white rounded"></span>
-                  <span class="w-0.5 h-6 bg-white rounded"></span>
                 </div>
 
-                <!-- Janela Dourada Arrastável de 15 Segundos -->
                 <div id="timelineWindow"
-                  class="absolute top-0 bottom-0 bg-amber-500/30 border-y-2 border-x-4 border-amber-400 rounded-lg flex items-center justify-center cursor-grab active:cursor-grabbing shadow-[0_0_12px_rgba(245,158,11,0.45)]"
+                  class="absolute top-0 bottom-0 bg-amber-500/30 border-y-2 border-x-4 border-amber-400 rounded-lg flex items-center justify-center cursor-grab active:cursor-grabbing"
                   style="left: 0%; width: 100%;">
                   <span class="bg-amber-400 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full pointer-events-none whitespace-nowrap">
                     ◄ 15s ►
@@ -574,17 +689,10 @@
                 </div>
               </div>
 
-              <!-- Botões Rápidos de Atalho -->
               <div class="flex items-center justify-between gap-1.5 pt-0.5">
-                <button type="button" onclick="jumpTimelinePreset('start')" class="flex-1 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-[10px] font-bold">
-                  15s Iniciais
-                </button>
-                <button type="button" onclick="jumpTimelinePreset('middle')" class="flex-1 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-[10px] font-bold">
-                  Meio do Vídeo
-                </button>
-                <button type="button" onclick="jumpTimelinePreset('end')" class="flex-1 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-[10px] font-bold">
-                  15s Finais
-                </button>
+                <button type="button" onclick="jumpTimelinePreset('start')" class="flex-1 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-[10px] font-bold">15s Iniciais</button>
+                <button type="button" onclick="jumpTimelinePreset('middle')" class="flex-1 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-[10px] font-bold">Meio do Vídeo</button>
+                <button type="button" onclick="jumpTimelinePreset('end')" class="flex-1 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-[10px] font-bold">15s Finais</button>
               </div>
             </div>
 
@@ -601,7 +709,7 @@
 
           <div>
             <label class="block text-xs font-bold text-gray-700 mb-1">Título / Legenda Curta do Destaque *</label>
-            <input type="text" id="videoTitle" required placeholder="Ex: Chegou lote novo de iPhones lacrados!"
+            <input type="text" id="videoTitle" required placeholder="Ex: Lote novo de iPhones lacrados ou Feirão de Motos!"
               class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm" />
           </div>
 
@@ -623,7 +731,54 @@
           <div id="adminActiveVideosList" class="pt-3 border-t border-gray-200 space-y-2"></div>
         </form>
 
-        <!-- ABA 3: CAPA PANORÂMICA DO TOPO & CONFIGURAÇÕES -->
+        <!-- ABA 4: BANNERS PROMOCIONAIS ROTATIVOS DO TOPO -->
+        <form id="bannersForm" onsubmit="handleSavePromoBanner(event)" class="space-y-4 hidden">
+          <div class="p-3 rounded-xl bg-blue-50 border border-blue-200 text-[11px] text-blue-950">
+            <b>Banners de Destaque no Topo:</b> Publique banners horizontais (`1600x550` recomendado) para campanhas, feirões ou parceiros patrocinados. Ao clicar no banner, o cliente filtra o departamento escolhido.
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1.5">Imagem do Banner Horizontal *</label>
+            <label for="bannerImageInput" class="flex items-center justify-center gap-2 w-full py-3.5 px-4 rounded-xl border-2 border-dashed border-blue-400 bg-blue-50 text-blue-900 text-xs font-bold cursor-pointer">
+              <i class="fa-solid fa-panorama text-base"></i>
+              <span>Selecionar Imagem do Banner (HD)</span>
+            </label>
+            <input type="file" id="bannerImageInput" accept="image/*" onchange="handleBannerImageUpload(event)" class="sr-only" />
+            <div id="bannerPreviewBox" class="hidden mt-2 bg-slate-900 p-2 rounded-xl">
+              <img id="bannerPreviewImg" src="" class="w-full h-auto max-h-32 object-contain rounded-lg" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1">Título da Campanha *</label>
+            <input type="text" id="bannerTitle" required placeholder="Ex: Feirão de Motos e Carros Teresina"
+              class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1">Ação ao Clicar no Banner</label>
+            <select id="bannerTargetDept" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-xs font-bold bg-white">
+              <option value="all">Mostrar Todas as Ofertas</option>
+              <option value="construcao">Filtrar: Construção & Ferramentas</option>
+              <option value="casa">Filtrar: Casa & Decoração</option>
+              <option value="eletronicos">Filtrar: Eletrônicos</option>
+              <option value="eletrodomesticos">Filtrar: Eletrodomésticos</option>
+              <option value="venda_carros">Filtrar: Carros • Vendas</option>
+              <option value="servicos_carros">Filtrar: Carros • Serviços</option>
+              <option value="venda_motos">Filtrar: Motos • Vendas</option>
+              <option value="servicos_motos">Filtrar: Motos • Serviços</option>
+              <option value="servicos_gerais">Filtrar: Serviços Gerais & Seguros</option>
+            </select>
+          </div>
+
+          <button type="submit" id="saveBannerBtn" class="w-full bg-[#081c45] text-white font-bold py-3 rounded-xl text-sm">
+            Publicar Banner no Topo
+          </button>
+
+          <div id="adminActiveBannersList" class="pt-3 border-t border-gray-200 space-y-2"></div>
+        </form>
+
+        <!-- ABA 5: CAPA PANORÂMICA DO TOPO & CONFIGURAÇÕES -->
         <form id="settingsForm" onsubmit="handleSaveSettings(event)" class="space-y-4 hidden">
           
           <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
@@ -697,7 +852,7 @@
     }
   </script>
 
-  <!-- FIREBASE REALTIME DATABASE + APP LOGIC -->
+  <!-- FIREBASE REALTIME DATABASE + SUPER-APP LOGIC -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getDatabase, ref, set, push, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
@@ -715,6 +870,31 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
+
+    // CATÁLOGO OFICIAL DOS 9 DEPARTAMENTOS DO MARKETPLACE TERÊ SHOP
+    const DEPARTMENTS = [
+      { id: "eletronicos", name: "Eletrônicos", short: "Eletrônicos", icon: "fa-mobile-screen", group: "produtos", badgeClass: "bg-indigo-100 text-indigo-800" },
+      { id: "eletrodomesticos", name: "Eletrodomésticos", short: "Eletro", icon: "fa-blender-phone", group: "produtos", badgeClass: "bg-cyan-100 text-cyan-800" },
+      { id: "casa", name: "Casa & Decoração", short: "Casa", icon: "fa-couch", group: "produtos", badgeClass: "bg-amber-100 text-amber-900" },
+      { id: "construcao", name: "Construção", short: "Construção", icon: "fa-helmet-safety", group: "produtos", badgeClass: "bg-orange-100 text-orange-800" },
+      { id: "venda_carros", name: "Venda Carros", short: "Carros", icon: "fa-car-side", group: "veiculos", badgeClass: "bg-emerald-100 text-emerald-800" },
+      { id: "servicos_carros", name: "Serv. Carros", short: "Serv. Carro", icon: "fa-car-burst", group: "servicos", badgeClass: "bg-slate-200 text-slate-800" },
+      { id: "venda_motos", name: "Venda Motos", short: "Motos", icon: "fa-motorcycle", group: "veiculos", badgeClass: "bg-teal-100 text-teal-800" },
+      { id: "servicos_motos", name: "Serv. Motos", short: "Serv. Moto", icon: "fa-screwdriver-wrench", group: "servicos", badgeClass: "bg-sky-100 text-sky-800" },
+      { id: "servicos_gerais", name: "Serviços & Seguros", short: "Serviços", icon: "fa-shield-heart", group: "servicos", badgeClass: "bg-purple-100 text-purple-800" }
+    ];
+
+    function getDeptInfo(post) {
+      if (post.department) {
+        const found = DEPARTMENTS.find(d => d.id === post.department);
+        if (found) return found;
+      }
+      // Compatibilidade automática com anúncios antigos ("venda" / "conserto")
+      if (post.type === "conserto") {
+        return { id: "servicos_gerais", name: "Assistência & Serviços", short: "Serviços", icon: "fa-screwdriver-wrench", group: "servicos", badgeClass: "bg-blue-100 text-blue-800" };
+      }
+      return { id: "eletronicos", name: "Oferta & Venda", short: "Oferta", icon: "fa-tag", group: "produtos", badgeClass: "bg-emerald-100 text-emerald-800" };
+    }
 
     const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
     const WINDOW_DURATION_SEC = 15;
@@ -796,14 +976,21 @@
     let config = { ...DEFAULT_CONFIG };
     let posts = [];
     let activeVideos = [];
+    let promoBanners = [];
     let savedIds = JSON.parse(localStorage.getItem("tereshop_saved")) || [];
-    let currentFilter = "all";
+
+    // Estados de Filtro do Marketplace
+    let currentIntentFilter = "all"; // all, produtos, veiculos, servicos, saved
+    let currentDepartmentFilter = "all"; // all ou id do departamento
+    let currentSearchQuery = "";
+
     let isAdminLogged = false;
     let pendingPostImages = [];
+    let pendingBannerImage = "";
     let pendingLogoData = "";
     let viewerMuted = false;
 
-    // Estado do Publicador Misto 24h (Foto ou Vídeo com Faixa de 15s)
+    // Estado do Publicador Misto 24h
     let selectedStoryMediaType = "";
     let pendingStoryImageBase64 = "";
     let selectedRawVideoFile = null;
@@ -812,6 +999,95 @@
     let trimStartSec = 0;
     let trimEndSec = 15;
     let trimCheckInterval = null;
+
+    // Estado do Estúdio de Cards
+    let studioUploadedImg = null;
+
+    function renderDepartmentsCarousel() {
+      const box = document.getElementById("departmentsCarousel");
+      const clearBtn = document.getElementById("clearDeptBtn");
+      if (!box) return;
+
+      if (clearBtn) {
+        clearBtn.classList.toggle("hidden", currentDepartmentFilter === "all");
+      }
+
+      box.innerHTML = DEPARTMENTS.map(dept => {
+        const isSelected = currentDepartmentFilter === dept.id;
+        return `
+          <button type="button" onclick="setDepartmentFilter('${dept.id}')"
+            class="flex-shrink-0 flex flex-col items-center gap-1.5 w-[72px] sm:w-[80px] group active:scale-95 transition-transform">
+            <div class="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl flex items-center justify-center text-base sm:text-lg shadow-xs border transition
+              ${isSelected
+                ? "bg-[#031238] text-amber-400 border-amber-400 ring-2 ring-amber-400/40"
+                : "bg-slate-50 text-[#081c45] border-slate-200 group-hover:border-blue-400"}">
+              <i class="fa-solid ${dept.icon}"></i>
+            </div>
+            <span class="text-[10px] sm:text-[11px] font-bold leading-tight text-center line-clamp-1
+              ${isSelected ? "text-blue-700 font-extrabold" : "text-slate-700"}">
+              ${dept.short}
+            </span>
+          </button>
+        `;
+      }).join("");
+    }
+
+    window.setDepartmentFilter = function(deptId) {
+      currentDepartmentFilter = currentDepartmentFilter === deptId ? "all" : deptId;
+      renderDepartmentsCarousel();
+      renderFeed();
+    };
+
+    window.setIntentFilter = function(intent) {
+      currentIntentFilter = intent;
+      currentDepartmentFilter = "all";
+      renderDepartmentsCarousel();
+
+      ["all", "produtos", "veiculos", "servicos", "saved"].forEach(tab => {
+        const el = document.getElementById(`nav-${tab}`);
+        if (!el) return;
+        if (tab === intent) {
+          el.classList.add("text-blue-700");
+          el.classList.remove("text-gray-400");
+        } else {
+          el.classList.remove("text-blue-700");
+          el.classList.add("text-gray-400");
+        }
+      });
+
+      const savedIcon = document.getElementById("nav-saved-icon");
+      if (savedIcon) {
+        savedIcon.className = intent === "saved" ? "fa-solid fa-bookmark text-base sm:text-lg" : "fa-regular fa-bookmark text-base sm:text-lg";
+      }
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      renderFeed();
+    };
+
+    window.handleSearchInput = function() {
+      const input = document.getElementById("searchInput");
+      const clearBtn = document.getElementById("clearSearchBtn");
+      currentSearchQuery = (input.value || "").trim().toLowerCase();
+      if (clearBtn) {
+        clearBtn.classList.toggle("hidden", currentSearchQuery.length === 0);
+      }
+      renderFeed();
+    };
+
+    window.clearSearch = function() {
+      const input = document.getElementById("searchInput");
+      if (input) input.value = "";
+      currentSearchQuery = "";
+      const clearBtn = document.getElementById("clearSearchBtn");
+      if (clearBtn) clearBtn.classList.add("hidden");
+      renderFeed();
+    };
+
+    window.resetAllFilters = function() {
+      clearSearch();
+      currentDepartmentFilter = "all";
+      setIntentFilter("all");
+    };
 
     function formatSecondsMMSS(sec) {
       const s = Math.max(0, Math.floor(sec || 0));
@@ -834,7 +1110,6 @@
       }
     }
 
-    // Controle de performance de vídeos no Android (pausa vídeos fora da tela durante rolagem)
     let miniVideoObserver = null;
     function setupMiniVideoVisibilityControl() {
       if (miniVideoObserver) miniVideoObserver.disconnect();
@@ -856,6 +1131,7 @@
       });
     }
 
+    // CONEXÕES FIREBASE
     const configRef = ref(db, "config");
     onValue(configRef, (snapshot) => {
       if (snapshot.exists()) {
@@ -866,6 +1142,20 @@
       pendingLogoData = config.logoData || "";
       applyConfigUI();
       renderFeed();
+    });
+
+    const bannersRef = ref(db, "promoBanners");
+    onValue(bannersRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        promoBanners = Object.entries(data)
+          .map(([id, val]) => ({ id, ...val }))
+          .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+      } else {
+        promoBanners = [];
+      }
+      renderPromoBanners();
+      renderAdminBannersList();
     });
 
     const videosRef = ref(db, "stories24h");
@@ -905,7 +1195,7 @@
 
     function applyConfigUI() {
       const titleText = config.companyName || "TERÊ SHOP";
-      document.title = `${titleText} • Teresina-PI`;
+      document.title = `${titleText} • Marketplace Teresina-PI`;
       document.getElementById("headerCompanyName").textContent = titleText;
 
       const logoWrapper = document.getElementById("headerLogoWrapper");
@@ -923,6 +1213,55 @@
         titleWrapper.classList.remove("hidden");
       }
     }
+
+    function renderPromoBanners() {
+      const section = document.getElementById("promoBannersSection");
+      const track = document.getElementById("promoBannersTrack");
+      const dots = document.getElementById("promoBannersDots");
+      if (!section || !track) return;
+
+      if (promoBanners.length === 0) {
+        section.classList.add("hidden");
+        return;
+      }
+
+      section.classList.remove("hidden");
+      track.innerHTML = promoBanners.map(b => `
+        <div onclick="handleBannerClick('${b.targetDept || "all"}')" class="carousel-slide w-full relative cursor-pointer bg-[#031238]">
+          <img src="${b.imageData}" alt="${b.title}" decoding="async" class="w-full h-auto max-h-[190px] sm:max-h-[240px] object-contain mx-auto block" />
+          <div class="absolute bottom-2 left-3 bg-black/75 text-white text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full">
+            ${b.title} <i class="fa-solid fa-chevron-right text-[9px] ml-1 text-amber-400"></i>
+          </div>
+        </div>
+      `).join("");
+
+      if (promoBanners.length > 1) {
+        dots.innerHTML = promoBanners.map((_, i) => `
+          <span class="w-1.5 h-1.5 rounded-full ${i === 0 ? "bg-amber-400 w-3.5" : "bg-white/50"}"></span>
+        `).join("");
+      } else {
+        dots.innerHTML = "";
+      }
+    }
+
+    window.handleBannerScroll = function() {
+      const track = document.getElementById("promoBannersTrack");
+      const dots = document.getElementById("promoBannersDots");
+      if (!track || !dots || !track.clientWidth) return;
+      const idx = Math.round(track.scrollLeft / track.clientWidth);
+      Array.from(dots.children).forEach((d, i) => {
+        d.className = i === idx ? "w-3.5 h-1.5 rounded-full bg-amber-400" : "w-1.5 h-1.5 rounded-full bg-white/50";
+      });
+    };
+
+    window.handleBannerClick = function(targetDept) {
+      if (!targetDept || targetDept === "all") {
+        resetAllFilters();
+      } else {
+        currentIntentFilter = "all";
+        setDepartmentFilter(targetDept);
+      }
+    };
 
     function updateSavedBadge() {
       const badge = document.getElementById("savedBadgeCount");
@@ -1025,9 +1364,7 @@
       activeVideos.forEach(item => {
         if (!isStoryImage(item)) {
           const vEl = document.getElementById(`mini-vid-${item.id}`);
-          if (vEl) {
-            applyVideoAudioState(vEl, true);
-          }
+          if (vEl) applyVideoAudioState(vEl, true);
         }
       });
 
@@ -1139,9 +1476,7 @@
       document.getElementById("viewerTitle").textContent = item.title;
 
       const audioBtn = document.getElementById("viewerAudioBtn");
-      if (audioBtn) {
-        audioBtn.classList.toggle("hidden", isStoryImage(item));
-      }
+      if (audioBtn) audioBtn.classList.toggle("hidden", isStoryImage(item));
 
       const btnBox = document.getElementById("viewerActionBtnContainer");
       if (item.contactLink && item.contactLink.trim()) {
@@ -1215,7 +1550,7 @@
       const item = activeVideos[idx];
       if (!item || !item.contactLink) return;
       const raw = item.contactLink.trim();
-      const msg = `Olá! Vi o destaque "${item.title}" (24h) da TERÊ SHOP e tenho interesse!`;
+      const msg = `Olá! Vi o destaque "${item.title}" (24h) na TERÊ SHOP e tenho interesse!`;
 
       if (raw.includes("instagram.com") || raw.startsWith("@")) {
         if (navigator.clipboard) navigator.clipboard.writeText(msg).catch(() => {});
@@ -1224,27 +1559,6 @@
       } else {
         window.open(resolveWhatsappUrl(raw, msg), "_blank");
       }
-    };
-
-    window.setFilter = function(filter) {
-      currentFilter = filter;
-      ["all", "venda", "conserto", "saved"].forEach(tab => {
-        const el = document.getElementById(`nav-${tab}`);
-        if (!el) return;
-        if (tab === filter) {
-          el.classList.add("text-blue-700");
-          el.classList.remove("text-gray-400");
-        } else {
-          el.classList.remove("text-blue-700");
-          el.classList.add("text-gray-400");
-        }
-      });
-      const savedIcon = document.getElementById("nav-saved-icon");
-      if (savedIcon) {
-        savedIcon.className = filter === "saved" ? "fa-solid fa-bookmark text-base sm:text-lg" : "fa-regular fa-bookmark text-base sm:text-lg";
-      }
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      renderFeed();
     };
 
     let activeLightboxTotal = 0;
@@ -1306,18 +1620,57 @@
     function renderFeed() {
       updateSavedBadge();
       const container = document.getElementById("feedContainer");
-      let filtered = posts;
+      const filterBar = document.getElementById("activeFilterBar");
+      const filterLabel = document.getElementById("activeFilterLabel");
 
-      if (currentFilter === "venda") filtered = posts.filter(p => p.type === "venda");
-      if (currentFilter === "conserto") filtered = posts.filter(p => p.type === "conserto");
-      if (currentFilter === "saved") filtered = posts.filter(p => savedIds.includes(p.id));
+      let filtered = posts;
+      let activeDescriptions = [];
+
+      // 1. Filtro por intenção da barra inferior
+      if (currentIntentFilter === "saved") {
+        filtered = filtered.filter(p => savedIds.includes(p.id));
+        activeDescriptions.push("Itens Salvos");
+      } else if (currentIntentFilter !== "all") {
+        filtered = filtered.filter(p => getDeptInfo(p).group === currentIntentFilter);
+        const names = { produtos: "Produtos", veiculos: "Carros & Motos", servicos: "Serviços & Seguros" };
+        activeDescriptions.push(names[currentIntentFilter] || currentIntentFilter);
+      }
+
+      // 2. Filtro por Departamento específico
+      if (currentDepartmentFilter !== "all") {
+        filtered = filtered.filter(p => getDeptInfo(p).id === currentDepartmentFilter);
+        const deptObj = DEPARTMENTS.find(d => d.id === currentDepartmentFilter);
+        if (deptObj) activeDescriptions.push(deptObj.name);
+      }
+
+      // 3. Filtro por Busca Textual
+      if (currentSearchQuery) {
+        filtered = filtered.filter(p => {
+          const deptName = getDeptInfo(p).name.toLowerCase();
+          return (
+            (p.title || "").toLowerCase().includes(currentSearchQuery) ||
+            (p.description || "").toLowerCase().includes(currentSearchQuery) ||
+            (p.partnerName || "").toLowerCase().includes(currentSearchQuery) ||
+            (p.serviceMode || "").toLowerCase().includes(currentSearchQuery) ||
+            deptName.includes(currentSearchQuery)
+          );
+        });
+        activeDescriptions.push(`Busca: "${currentSearchQuery}"`);
+      }
+
+      if (activeDescriptions.length > 0) {
+        filterBar.classList.remove("hidden");
+        filterLabel.textContent = `Exibindo (${filtered.length}): ${activeDescriptions.join(" • ")}`;
+      } else {
+        filterBar.classList.add("hidden");
+      }
 
       if (filtered.length === 0) {
         container.innerHTML = `
-          <div class="py-24 px-6 text-center text-gray-400">
-            <i class="fa-regular fa-images text-4xl mb-3 text-slate-300"></i>
-            <p class="text-sm font-semibold text-slate-600">Nenhuma publicação encontrada.</p>
-            <p class="text-xs mt-1">Explore outras abas na barra inferior ou aguarde novas ofertas.</p>
+          <div class="py-20 px-6 text-center text-gray-400">
+            <i class="fa-solid fa-store-slash text-4xl mb-3 text-slate-300"></i>
+            <p class="text-sm font-semibold text-slate-600">Nenhuma oferta encontrada neste filtro.</p>
+            <p class="text-xs mt-1">Tente limpar a busca ou explorar outros departamentos.</p>
           </div>`;
         return;
       }
@@ -1325,31 +1678,32 @@
       container.innerHTML = filtered.map((post, postIndex) => {
         const isSaved = savedIds.includes(post.id);
         const images = post.images || [];
-        const badgeClass = post.type === "venda"
-          ? "bg-emerald-100 text-emerald-800"
-          : "bg-blue-100 text-blue-800";
-        const badgeLabel = post.type === "venda" ? "VENDA" : "CONSERTO";
-        const serviceModeLabel = post.serviceMode || "Atendimento Online e Presencial";
+        const dept = getDeptInfo(post);
+        const partnerTitle = (post.partnerName && post.partnerName.trim()) ? post.partnerName.trim() : (config.companyName || "TERÊ SHOP");
+        const serviceModeLabel = post.serviceMode || "Atendimento Online e Presencial • Teresina-PI";
         const safeTitle = (post.title || "").replace(/'/g, "");
 
         const hasPostInsta = Boolean(post.instagram && post.instagram.trim());
         const hasPostWhats = Boolean(post.whatsapp && post.whatsapp.trim());
         const imgLoadingAttr = postIndex < 2 ? "eager" : "lazy";
 
-        const avatarHtml = `<img src="./icon-512.png" alt="TERÊ SHOP" decoding="async" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-contain bg-[#031238] p-0.5 border border-amber-400/50 flex-shrink-0" />`;
-
         return `
           <article class="pb-5 sm:pb-6 bg-white">
             <div class="px-3.5 sm:px-5 py-3 flex items-center justify-between gap-2">
               <div class="flex items-center gap-2.5 min-w-0">
-                ${avatarHtml}
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#031238] text-amber-400 flex items-center justify-center text-xs sm:text-sm border border-amber-400/50 flex-shrink-0">
+                  <i class="fa-solid ${dept.icon}"></i>
+                </div>
                 <div class="min-w-0">
-                  <p class="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight truncate">${config.companyName || "TERÊ SHOP"}</p>
+                  <p class="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight truncate flex items-center gap-1">
+                    <span>${partnerTitle}</span>
+                    <i class="fa-solid fa-circle-check text-blue-600 text-[11px]" title="Parceiro Verificado TERÊ SHOP"></i>
+                  </p>
                   <p class="text-[11px] text-gray-500 font-medium truncate">${serviceModeLabel}</p>
                 </div>
               </div>
               <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
-                <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full tracking-wide whitespace-nowrap ${badgeClass}">${badgeLabel}</span>
+                <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full tracking-wide whitespace-nowrap ${dept.badgeClass}">${dept.short.toUpperCase()}</span>
                 ${isAdminLogged && !isSharedVitrineMode ? `
                   <button onclick="startEditPost('${post.id}')" title="Editar anúncio" class="text-blue-600 hover:text-blue-800 p-1.5 bg-blue-50 rounded-lg">
                     <i class="fa-solid fa-pen text-xs"></i>
@@ -1441,9 +1795,7 @@
         const dotsContainer = document.getElementById(`dots-${postId}`);
         if (dotsContainer) {
           Array.from(dotsContainer.children).forEach((dot, i) => {
-            dot.className = i === index
-              ? "w-3.5 h-1.5 rounded-full bg-blue-600"
-              : "w-1.5 h-1.5 rounded-full bg-gray-300";
+            dot.className = i === index ? "w-3.5 h-1.5 rounded-full bg-blue-600" : "w-1.5 h-1.5 rounded-full bg-gray-300";
           });
         }
       });
@@ -1453,8 +1805,8 @@
       const post = posts.find(p => p.id === postId);
       if (!post || !post.instagram) return;
       const url = resolveInstagramUrl(post.instagram);
-      const category = post.type === "venda" ? "VENDA" : "CONSERTO";
-      const msg = `Olá! Vi o anúncio de ${category}: "${post.title}" (${post.serviceMode || "Atendimento"}) no App ${config.companyName} e gostaria de mais informações.`;
+      const dept = getDeptInfo(post);
+      const msg = `Olá! Vi o anúncio em ${dept.name}: "${post.title}" na TERÊ SHOP e gostaria de mais informações.`;
 
       if (navigator.clipboard) navigator.clipboard.writeText(msg).catch(() => {});
       showToast("Mensagem copiada! Cole no Direct do Instagram.");
@@ -1464,8 +1816,8 @@
     window.openPostWhatsapp = function(postId) {
       const post = posts.find(p => p.id === postId);
       if (!post || !post.whatsapp) return;
-      const category = post.type === "venda" ? "VENDA" : "CONSERTO";
-      const msg = `Olá! Vi o anúncio de ${category}: "${post.title}" (${post.serviceMode || "Atendimento"}) no App ${config.companyName} e gostaria de mais informações.`;
+      const dept = getDeptInfo(post);
+      const msg = `Olá! Vi o anúncio em ${dept.name}: "${post.title}" na TERÊ SHOP e gostaria de mais informações.`;
       const url = resolveWhatsappUrl(post.whatsapp, msg);
       window.open(url, "_blank");
     };
@@ -1492,7 +1844,7 @@
       const publicUrl = getPublicShareUrl();
       const shareData = {
         title: `${config.companyName || "TERÊ SHOP"} • Teresina-PI`,
-        text: `Acesse o App oficial ${config.companyName || "TERÊ SHOP"} (Vendas e Consertos em Teresina-PI):`,
+        text: `Acesse o Marketplace oficial ${config.companyName || "TERÊ SHOP"} em Teresina-PI:`,
         url: publicUrl
       };
       if (navigator.share) {
@@ -1505,7 +1857,7 @@
 
     window.sharePost = function(title) {
       const publicUrl = getPublicShareUrl();
-      const text = `Confira este item no App ${config.companyName || "TERÊ SHOP"}: ${title} - ${publicUrl}`;
+      const text = `Confira este item na TERÊ SHOP: ${title} - ${publicUrl}`;
       if (navigator.share) {
         navigator.share({ title, text, url: publicUrl }).catch(() => {});
       } else {
@@ -1566,7 +1918,7 @@
       resetPostForm();
       resetVideoForm();
       closeModal("adminModal");
-      showToast("Voltou para o feed");
+      showToast("Voltou para o marketplace");
     };
 
     function openAdminPanel() {
@@ -1584,6 +1936,8 @@
       }
 
       renderAdminVideosList();
+      renderAdminBannersList();
+      renderStudioCanvas();
       document.getElementById("adminModal").classList.replace("hidden", "flex");
     }
 
@@ -1596,17 +1950,261 @@
 
     window.switchAdminTab = function(tab) {
       document.getElementById("newPostForm").classList.toggle("hidden", tab !== "newPost");
+      document.getElementById("cardStudioSection").classList.toggle("hidden", tab !== "cardStudio");
       document.getElementById("newVideoForm").classList.toggle("hidden", tab !== "newVideo");
+      document.getElementById("bannersForm").classList.toggle("hidden", tab !== "banners");
       document.getElementById("settingsForm").classList.toggle("hidden", tab !== "settings");
 
-      ["newPost", "newVideo", "settings"].forEach(t => {
+      ["newPost", "cardStudio", "newVideo", "banners", "settings"].forEach(t => {
         const btn = document.getElementById(`admTab-${t}`);
+        if (!btn) return;
         btn.className = t === tab
-          ? "flex-1 py-3 border-b-2 border-blue-700 text-blue-700 truncate px-1"
-          : "flex-1 py-3 border-b-2 border-transparent text-gray-500 truncate px-1";
+          ? "px-3.5 py-3 border-b-2 border-blue-700 text-blue-700 whitespace-nowrap"
+          : "px-3.5 py-3 border-b-2 border-transparent text-gray-500 whitespace-nowrap";
       });
+
+      if (tab === "cardStudio") renderStudioCanvas();
     };
 
+    // =========================================================================
+    // ESTÚDIO CRIATIVO DE CARDS PROFISSIONAIS (HTML5 CANVAS 1080x1080)
+    // =========================================================================
+    window.handleStudioPhotoUpload = function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          studioUploadedImg = img;
+          renderStudioCanvas();
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    };
+
+    function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines) {
+      const words = text.split(" ");
+      let line = "";
+      let lineCount = 0;
+      for (let n = 0; n < words.length; n++) {
+        const testLine = line + words[n] + " ";
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > maxWidth && n > 0) {
+          ctx.fillText(line.trim(), x, y);
+          line = words[n] + " ";
+          y += lineHeight;
+          lineCount++;
+          if (lineCount >= maxLines - 1) break;
+        } else {
+          line = testLine;
+        }
+      }
+      ctx.fillText(line.trim(), x, y);
+    }
+
+    window.renderStudioCanvas = function() {
+      const canvas = document.getElementById("studioCanvas");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      const W = 1080;
+      const H = 1080;
+
+      const tpl = document.getElementById("studioTemplate").value;
+      const badge = (document.getElementById("studioBadgeText").value || "OFERTA").toUpperCase();
+      const partner = (document.getElementById("studioPartnerText").value || "TERÊ SHOP").toUpperCase();
+      const headline = document.getElementById("studioHeadline").value || "Oferta Especial Teresina";
+      const priceTag = (document.getElementById("studioPriceTag").value || "CONFIRA").toUpperCase();
+
+      const palettes = {
+        royal_gold: { bg1: "#031238", bg2: "#0b2e8a", accent: "#f59e0b", accentText: "#031238", text: "#ffffff" },
+        vehicles: { bg1: "#0f172a", bg2: "#1e293b", accent: "#10b981", accentText: "#022c22", text: "#ffffff" },
+        construction: { bg1: "#1c1917", bg2: "#292524", accent: "#f97316", accentText: "#ffffff", text: "#ffffff" },
+        services: { bg1: "#042f2e", bg2: "#115e59", accent: "#34d399", accentText: "#022c22", text: "#ffffff" }
+      };
+      const p = palettes[tpl] || palettes.royal_gold;
+
+      // Fundo Gradiente
+      const grad = ctx.createLinearGradient(0, 0, W, H);
+      grad.addColorStop(0, p.bg1);
+      grad.addColorStop(1, p.bg2);
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+
+      // Moldura Dourada/Destaque
+      ctx.strokeStyle = p.accent;
+      ctx.lineWidth = 14;
+      ctx.strokeRect(24, 24, W - 48, H - 48);
+
+      // Selo Superior
+      ctx.fillStyle = p.accent;
+      ctx.beginPath();
+      ctx.roundRect(70, 64, 460, 62, 31);
+      ctx.fill();
+      ctx.fillStyle = p.accentText;
+      ctx.font = "900 28px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(badge.slice(0, 24), 300, 105);
+
+      // Parceiro no canto superior direito
+      ctx.fillStyle = "rgba(255,255,255,0.85)";
+      ctx.font = "700 24px sans-serif";
+      ctx.textAlign = "right";
+      ctx.fillText(partner.slice(0, 28), W - 70, 104);
+
+      // Área Central da Foto (Enquadramento Inteiro)
+      const photoBoxX = 70;
+      const photoBoxY = 160;
+      const photoBoxW = W - 140;
+      const photoBoxH = 540;
+
+      ctx.fillStyle = "rgba(0,0,0,0.45)";
+      ctx.beginPath();
+      ctx.roundRect(photoBoxX, photoBoxY, photoBoxW, photoBoxH, 28);
+      ctx.fill();
+
+      if (studioUploadedImg) {
+        const scale = Math.min(photoBoxW / studioUploadedImg.width, photoBoxH / studioUploadedImg.height);
+        const drawW = studioUploadedImg.width * scale;
+        const drawH = studioUploadedImg.height * scale;
+        const drawX = photoBoxX + (photoBoxW - drawW) / 2;
+        const drawY = photoBoxY + (photoBoxH - drawH) / 2;
+        ctx.drawImage(studioUploadedImg, drawX, drawY, drawW, drawH);
+      } else {
+        ctx.fillStyle = "rgba(255,255,255,0.35)";
+        ctx.font = "700 32px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("SELECIONE UMA FOTO ACIMA", W / 2, photoBoxY + photoBoxH / 2);
+      }
+
+      // Manchete Inferior
+      ctx.fillStyle = p.text;
+      ctx.font = "900 46px sans-serif";
+      ctx.textAlign = "left";
+      wrapCanvasText(ctx, headline, 70, 775, W - 140, 56, 2);
+
+      // Faixa de Preço / Condição
+      ctx.fillStyle = p.accent;
+      ctx.beginPath();
+      ctx.roundRect(70, 895, W - 140, 96, 24);
+      ctx.fill();
+
+      ctx.fillStyle = p.accentText;
+      ctx.font = "900 44px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(priceTag.slice(0, 28), W / 2, 958);
+    };
+
+    window.useStudioCardInPost = function() {
+      const canvas = document.getElementById("studioCanvas");
+      const dataUrl = canvas.toDataURL("image/jpeg", 0.90);
+      pendingPostImages.push(dataUrl);
+      document.getElementById("imagePreviewGrid").innerHTML = pendingPostImages.map(src => `
+        <img src="${src}" class="w-full aspect-square object-contain bg-slate-900 rounded-lg border border-gray-200" />
+      `).join("");
+      document.getElementById("postTitle").value = document.getElementById("studioHeadline").value;
+      document.getElementById("postPrice").value = document.getElementById("studioPriceTag").value;
+      document.getElementById("postPartnerName").value = document.getElementById("studioPartnerText").value;
+      switchAdminTab("newPost");
+      showToast("Card adicionado ao Novo Anúncio!");
+    };
+
+    window.useStudioCardInStory = function() {
+      const canvas = document.getElementById("studioCanvas");
+      const dataUrl = canvas.toDataURL("image/jpeg", 0.90);
+      selectedStoryMediaType = "image";
+      pendingStoryImageBase64 = dataUrl;
+      selectedRawVideoFile = null;
+      document.getElementById("storyPhotoPreviewImg").src = dataUrl;
+      document.getElementById("storyPhotoPreviewBox").classList.remove("hidden");
+      document.getElementById("videoTrimmerBox").classList.add("hidden");
+      document.getElementById("videoTitle").value = document.getElementById("studioHeadline").value;
+      document.getElementById("videoFileStatus").textContent = "✓ Card do Estúdio pronto para publicar!";
+      switchAdminTab("newVideo");
+      showToast("Card enviado para Destaque 24h!");
+    };
+
+    window.downloadStudioCard = function() {
+      const canvas = document.getElementById("studioCanvas");
+      const link = document.createElement("a");
+      link.download = `tereshop-card-${Date.now()}.jpg`;
+      link.href = canvas.toDataURL("image/jpeg", 0.92);
+      link.click();
+      showToast("Arte salva na galeria/downloads!");
+    };
+
+    // =========================================================================
+    // BANNERS PROMOCIONAIS DO TOPO
+    // =========================================================================
+    window.handleBannerImageUpload = async function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      pendingBannerImage = await compressImage(file, 1400, 0.88);
+      document.getElementById("bannerPreviewImg").src = pendingBannerImage;
+      document.getElementById("bannerPreviewBox").classList.remove("hidden");
+    };
+
+    window.handleSavePromoBanner = async function(event) {
+      event.preventDefault();
+      if (!pendingBannerImage) {
+        showToast("Selecione uma imagem horizontal para o banner.");
+        return;
+      }
+      const btn = document.getElementById("saveBannerBtn");
+      btn.disabled = true;
+      btn.textContent = "Publicando banner...";
+
+      try {
+        const title = document.getElementById("bannerTitle").value.trim();
+        const targetDept = document.getElementById("bannerTargetDept").value;
+        await set(push(ref(db, "promoBanners")), {
+          title,
+          targetDept,
+          imageData: pendingBannerImage,
+          timestamp: Date.now()
+        });
+        document.getElementById("bannersForm").reset();
+        document.getElementById("bannerPreviewBox").classList.add("hidden");
+        pendingBannerImage = "";
+        showToast("Banner publicado no topo!");
+      } catch (err) {
+        showToast("Erro ao publicar banner.");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Publicar Banner no Topo";
+      }
+    };
+
+    window.deletePromoBanner = async function(bannerId) {
+      if (!confirm("Remover este banner promocional?")) return;
+      await remove(ref(db, `promoBanners/${bannerId}`));
+      showToast("Banner removido.");
+    };
+
+    function renderAdminBannersList() {
+      const box = document.getElementById("adminActiveBannersList");
+      if (!box) return;
+      if (promoBanners.length === 0) {
+        box.innerHTML = `<p class="text-[11px] text-gray-400">Nenhum banner promocional ativo.</p>`;
+        return;
+      }
+      box.innerHTML = `
+        <p class="text-xs font-bold text-gray-700">Banners Ativos (${promoBanners.length}):</p>
+        ${promoBanners.map(b => `
+          <div class="flex items-center justify-between bg-gray-50 p-2.5 rounded-xl border border-gray-200 text-xs">
+            <span class="font-bold truncate pr-2">${b.title}</span>
+            <button type="button" onclick="deletePromoBanner('${b.id}')" class="text-red-600 p-1.5 rounded-lg hover:bg-red-50">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        `).join("")}
+      `;
+    }
+
+    // =========================================================================
+    // PUBLICADOR MISTO 24H (FOTO OU VÍDEO COM FAIXA DESLIZANTE DE 15s)
+    // =========================================================================
     function resetVideoForm() {
       const form = document.getElementById("newVideoForm");
       if (form) form.reset();
@@ -1645,7 +2243,6 @@
       document.getElementById("videoTrimmerBox").classList.remove("hidden");
     };
 
-    // CARREGAMENTO MISTO: FOTO EM HD OU VÍDEO COM LINHA DO TEMPO DESLIZANTE DE 15s
     window.handleStoryMediaLoaded = async function(event) {
       const file = event.target.files[0];
       const statusEl = document.getElementById("videoFileStatus");
@@ -1655,9 +2252,7 @@
       document.getElementById("videoTrimmerBox").classList.add("hidden");
       document.getElementById("storyPhotoPreviewBox").classList.add("hidden");
 
-      const isImageFile = file.type.startsWith("image/");
-
-      if (isImageFile) {
+      if (file.type.startsWith("image/")) {
         selectedStoryMediaType = "image";
         selectedRawVideoFile = null;
         statusEl.textContent = "Otimizando foto em HD...";
@@ -1668,7 +2263,6 @@
         return;
       }
 
-      // Caso seja VÍDEO
       selectedStoryMediaType = "video";
       pendingStoryImageBase64 = "";
       const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
@@ -1701,13 +2295,8 @@
         updateTimelineWindowUI();
         document.getElementById("videoTrimmerBox").classList.remove("hidden");
       };
-
-      videoEl.onerror = () => {
-        statusEl.textContent = `✓ Vídeo pronto (${sizeMB} MB).`;
-      };
     };
 
-    // LÓGICA DA LINHA DO TEMPO ESTILO STATUS DO WHATSAPP (ARRASTAR JANELA DE 15 SEGUNDOS)
     function updateTimelineWindowUI() {
       const winEl = document.getElementById("timelineWindow");
       const badgeEl = document.getElementById("trimWindowBadge");
@@ -1745,16 +2334,11 @@
         setTimelineStartPosition(0);
         return;
       }
-      if (preset === "start") {
-        setTimelineStartPosition(0);
-      } else if (preset === "middle") {
-        setTimelineStartPosition((videoTotalDuration - WINDOW_DURATION_SEC) / 2);
-      } else if (preset === "end") {
-        setTimelineStartPosition(videoTotalDuration - WINDOW_DURATION_SEC);
-      }
+      if (preset === "start") setTimelineStartPosition(0);
+      else if (preset === "middle") setTimelineStartPosition((videoTotalDuration - WINDOW_DURATION_SEC) / 2);
+      else if (preset === "end") setTimelineStartPosition(videoTotalDuration - WINDOW_DURATION_SEC);
     };
 
-    // Eventos de Toque e Mouse na Trilha da Timeline
     (function initTimelineScrubber() {
       const track = document.getElementById("timelineTrack");
       if (!track) return;
@@ -1773,12 +2357,10 @@
         track.setPointerCapture(e.pointerId);
         handlePointerMove(e.clientX);
       });
-
       track.addEventListener("pointermove", (e) => {
         if (!isDragging) return;
         handlePointerMove(e.clientX);
       });
-
       track.addEventListener("pointerup", () => { isDragging = false; });
       track.addEventListener("pointercancel", () => { isDragging = false; });
     })();
@@ -1812,7 +2394,7 @@
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => resolve(reader.result);
-        reader.onerror = () => reject(new Error("Falha ao ler arquivo da galeria."));
+        reader.onerror = () => reject(new Error("Falha ao ler arquivo."));
         reader.readAsDataURL(file);
       });
     }
@@ -1830,11 +2412,8 @@
         }
 
         const supportsRecorder = typeof MediaRecorder !== "undefined" && typeof HTMLCanvasElement.prototype.captureStream === "function";
-
         if (!supportsRecorder) {
-          if (file.size <= MAX_DIRECT_FILE_BYTES) {
-            return resolve(await fileToBase64Direct(file));
-          }
+          if (file.size <= MAX_DIRECT_FILE_BYTES) return resolve(await fileToBase64Direct(file));
           return reject(new Error("Neste navegador, recorte o vídeo para até 15s na galeria antes de enviar."));
         }
 
@@ -1851,9 +2430,7 @@
         document.body.appendChild(tempVideo);
 
         const cleanup = () => {
-          if (audioCtx && audioCtx.state !== "closed") {
-            audioCtx.close().catch(() => {});
-          }
+          if (audioCtx && audioCtx.state !== "closed") audioCtx.close().catch(() => {});
           if (tempVideo.parentNode) tempVideo.parentNode.removeChild(tempVideo);
         };
 
@@ -1861,11 +2438,8 @@
           if (finished) return;
           finished = true;
           cleanup();
-          if (file.size <= MAX_DIRECT_FILE_BYTES) {
-            resolve(await fileToBase64Direct(file));
-          } else {
-            reject(new Error("Tempo limite ao recortar. Tente um vídeo mais leve."));
-          }
+          if (file.size <= MAX_DIRECT_FILE_BYTES) resolve(await fileToBase64Direct(file));
+          else reject(new Error("Tempo limite ao recortar. Tente um vídeo mais leve."));
         }, 28000);
 
         tempVideo.onloadedmetadata = () => {
@@ -1906,9 +2480,7 @@
             : new MediaRecorder(combinedStream);
 
           const chunks = [];
-          recorder.ondataavailable = (e) => {
-            if (e.data && e.data.size > 0) chunks.push(e.data);
-          };
+          recorder.ondataavailable = (e) => { if (e.data && e.data.size > 0) chunks.push(e.data); };
 
           recorder.onstop = () => {
             if (finished) return;
@@ -1930,20 +2502,15 @@
           const beginCapture = () => {
             if (recordingStarted || finished) return;
             recordingStarted = true;
-            if (audioCtx && audioCtx.state === "suspended") {
-              audioCtx.resume().catch(() => {});
-            }
+            if (audioCtx && audioCtx.state === "suspended") audioCtx.resume().catch(() => {});
             recorder.start(250);
             tempVideo.play().catch(async () => {
               if (!finished) {
                 finished = true;
                 clearTimeout(safetyTimer);
                 cleanup();
-                if (file.size <= MAX_DIRECT_FILE_BYTES) {
-                  resolve(await fileToBase64Direct(file));
-                } else {
-                  reject(new Error("Não foi possível processar este vídeo."));
-                }
+                if (file.size <= MAX_DIRECT_FILE_BYTES) resolve(await fileToBase64Direct(file));
+                else reject(new Error("Não foi possível processar este vídeo."));
               }
             });
 
@@ -1963,18 +2530,6 @@
           tempVideo.onseeked = beginCapture;
           tempVideo.currentTime = startSec;
           setTimeout(beginCapture, 350);
-        };
-
-        tempVideo.onerror = async () => {
-          if (finished) return;
-          finished = true;
-          clearTimeout(safetyTimer);
-          cleanup();
-          if (file.size <= MAX_DIRECT_FILE_BYTES) {
-            resolve(await fileToBase64Direct(file));
-          } else {
-            reject(new Error("Formato de vídeo não suportado."));
-          }
         };
       });
     }
@@ -2016,8 +2571,7 @@
         const title = document.getElementById("videoTitle").value.trim();
         const contactLink = document.getElementById("videoContactLink").value.trim();
 
-        const newVidRef = push(ref(db, "stories24h"));
-        await set(newVidRef, {
+        await set(push(ref(db, "stories24h")), {
           mediaType: finalMediaType,
           badge,
           title,
@@ -2072,6 +2626,9 @@
       `;
     }
 
+    // =========================================================================
+    // CONFIGURAÇÕES E GESTÃO DE ANÚNCIOS
+    // =========================================================================
     window.handleLogoUpload = function(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -2171,10 +2728,10 @@
       document.getElementById("editingBannerAlert").classList.remove("hidden");
       document.getElementById("publishBtn").textContent = "Salvar Alterações";
 
-      const typeRadio = document.querySelector(`input[name="postType"][value="${post.type}"]`);
-      if (typeRadio) typeRadio.checked = true;
-
-      document.getElementById("postServiceMode").value = post.serviceMode || "Atendimento Online e Presencial";
+      const dept = getDeptInfo(post);
+      document.getElementById("postDepartment").value = dept.id;
+      document.getElementById("postPartnerName").value = post.partnerName || "";
+      document.getElementById("postServiceMode").value = post.serviceMode || "Atendimento Online e Presencial • Teresina-PI";
       document.getElementById("postTitle").value = post.title || "";
       document.getElementById("postPrice").value = post.price || "";
       document.getElementById("postDescription").value = post.description || "";
@@ -2193,7 +2750,7 @@
       document.getElementById("newPostForm").reset();
       document.getElementById("editingPostId").value = "";
       document.getElementById("editingBannerAlert").classList.add("hidden");
-      document.getElementById("publishBtn").textContent = "Publicar na Vitrine";
+      document.getElementById("publishBtn").textContent = "Publicar no Marketplace";
       document.getElementById("imagePreviewGrid").innerHTML = "";
       pendingPostImages = [];
     };
@@ -2211,7 +2768,10 @@
       btn.textContent = "Salvando na nuvem...";
 
       try {
-        const type = document.querySelector('input[name="postType"]:checked').value;
+        const department = document.getElementById("postDepartment").value;
+        const deptObj = DEPARTMENTS.find(d => d.id === department);
+        const legacyType = deptObj && deptObj.group === "servicos" ? "conserto" : "venda";
+        const partnerName = document.getElementById("postPartnerName").value.trim();
         const serviceMode = document.getElementById("postServiceMode").value;
         const title = document.getElementById("postTitle").value.trim();
         const price = document.getElementById("postPrice").value.trim();
@@ -2223,7 +2783,9 @@
         const targetRef = editingId ? ref(db, `posts/${editingId}`) : push(ref(db, "posts"));
 
         await set(targetRef, {
-          type,
+          type: legacyType,
+          department,
+          partnerName,
           serviceMode,
           title,
           price,
@@ -2236,14 +2798,14 @@
 
         resetPostForm();
         closeModal("adminModal");
-        setFilter("all");
-        showToast(editingId ? "Anúncio atualizado!" : "Anúncio publicado na nuvem!");
+        resetAllFilters();
+        showToast(editingId ? "Anúncio atualizado!" : "Publicado no Marketplace!");
       } catch (err) {
         console.error(err);
         showToast("Erro ao guardar na nuvem.");
       } finally {
         btn.disabled = false;
-        btn.textContent = "Publicar na Vitrine";
+        btn.textContent = "Publicar no Marketplace";
       }
     };
 
@@ -2288,6 +2850,9 @@
       toast.classList.remove("opacity-0");
       setTimeout(() => toast.classList.add("opacity-0"), 3400);
     }
+
+    // Inicializa carrossel de departamentos imediatamente
+    renderDepartmentsCarousel();
   </script>
 </body>
 </html>
