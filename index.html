@@ -3,12 +3,56 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>TERÊ SHOP • Marketplace Teresina-PI</title>
-  <meta name="description" content="Marketplace oficial TERÊ SHOP — Construção, Casa, Eletrônicos, Eletrodomésticos, Carros, Motos e Serviços em Teresina-PI." />
+  <title>TERÊ SHOPPING • Marketplace Teresina-PI</title>
+  <meta name="description" content="Marketplace oficial TERÊ SHOPPING — Construção, Casa, Eletrônicos, Eletrodomésticos, Carros, Motos e Serviços em Teresina-PI." />
+  <meta name="author" content="Matheus George Coelho" />
+  <link rel="canonical" href="https://tereshopoficial.github.io/loja/" />
+
+  <!-- Dados Estruturados Oficiais para o Google (Marca TERÊ SHOPPING + Aplicativo + Fundador) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://tereshopoficial.github.io/loja/#organization",
+        "name": "TERÊ SHOPPING",
+        "alternateName": ["Terê Shopping Teresina", "TERÊ SHOP"],
+        "url": "https://tereshopoficial.github.io/loja/",
+        "logo": "https://tereshopoficial.github.io/loja/icon-512.png",
+        "description": "Marketplace e vitrine digital de vendas, veículos, construção, eletrônicos, eletrodomésticos e serviços especializados em Teresina-PI.",
+        "founder": {
+          "@type": "Person",
+          "name": "Matheus George Coelho"
+        },
+        "areaServed": {
+          "@type": "City",
+          "name": "Teresina",
+          "addressRegion": "PI",
+          "addressCountry": "BR"
+        }
+      },
+      {
+        "@type": "WebApplication",
+        "name": "TERÊ SHOPPING • Teresina-PI",
+        "url": "https://tereshopoficial.github.io/loja/",
+        "applicationCategory": "ShoppingApplication",
+        "operatingSystem": "Android, iOS, Windows, macOS",
+        "author": {
+          "@type": "Person",
+          "name": "Matheus George Coelho"
+        },
+        "publisher": {
+          "@id": "https://tereshopoficial.github.io/loja/#organization"
+        }
+      }
+    ]
+  }
+  </script>
 
   <!-- Prévia Oficial de Compartilhamento (WhatsApp, Instagram, Facebook) -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="TERÊ SHOP • Teresina-PI" />
+  <meta property="og:title" content="TERÊ SHOPPING • Teresina-PI" />
   <meta property="og:description" content="Produtos, veículos e serviços especializados em Teresina-PI." />
   <meta property="og:url" content="https://tereshopoficial.github.io/loja/?vitrine=1" />
   <meta property="og:image" content="https://tereshopoficial.github.io/loja/icon-512.png" />
@@ -21,7 +65,7 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="TERÊ SHOP" />
+  <meta name="apple-mobile-web-app-title" content="TERÊ SHOPPING" />
   <link rel="apple-touch-icon" href="./icon-512.png" />
   <link rel="icon" type="image/png" href="./icon-512.png" />
 
@@ -84,9 +128,9 @@
   <!-- SPLASH SCREEN NATIVA DE ABERTURA -->
   <div id="splashScreen" class="fixed inset-0 z-50 bg-gradient-to-b from-[#031238] via-[#08246b] to-[#031238] flex flex-col items-center justify-center text-white splash-animate pointer-events-none">
     <div class="w-28 h-28 rounded-3xl bg-white/10 border border-amber-400/40 flex items-center justify-center shadow-2xl mb-4 overflow-hidden p-2">
-      <img src="./icon-512.png" alt="TERÊ SHOP" class="w-full h-full object-contain" />
+      <img src="./icon-512.png" alt="TERÊ SHOPPING" class="w-full h-full object-contain" />
     </div>
-    <h2 class="font-black text-2xl tracking-tight text-white">TERÊ SHOP</h2>
+    <h2 class="font-black text-2xl tracking-tight text-white">TERÊ SHOPPING</h2>
     <p class="text-[11px] font-bold tracking-[0.25em] text-amber-400 uppercase mt-1">Marketplace • Teresina - PI</p>
   </div>
 
@@ -117,14 +161,14 @@
 
       <!-- MODO 1: CAPA PANORÂMICA / SLOGAN EM ALTA DEFINIÇÃO -->
       <div id="headerLogoWrapper" onclick="resetAllFilters()" class="hidden w-full bg-[#031238] cursor-pointer">
-        <img id="headerLogoImg" src="" alt="TERÊ SHOP • Teresina-PI" decoding="async" class="w-full h-auto max-h-[175px] sm:max-h-[220px] object-contain block mx-auto" />
+        <img id="headerLogoImg" src="" alt="TERÊ SHOPPING • Teresina-PI" decoding="async" class="w-full h-auto max-h-[175px] sm:max-h-[220px] object-contain block mx-auto" />
       </div>
 
       <!-- MODO 2: TÍTULO ESCRITO ESTILIZADO -->
       <div id="headerTitleWrapper" onclick="resetAllFilters()"
         class="w-full min-h-[68px] sm:min-h-[78px] pt-2 pb-2 px-14 flex flex-col items-center justify-center text-center bg-gradient-to-r from-[#031238] via-[#0a2d82] to-[#031238] safe-top cursor-pointer">
         <h1 id="headerCompanyName" class="font-black text-xl sm:text-2xl tracking-tight leading-none text-white">
-          TERÊ SHOP
+          TERÊ SHOPPING
         </h1>
         <span class="text-[10px] sm:text-[11px] font-bold tracking-[0.22em] text-amber-400 uppercase mt-1">
           Teresina - PI
@@ -198,13 +242,19 @@
     <main id="feedContainer" class="w-full divide-y divide-gray-200 bg-white min-h-[65vh]">
       <div class="py-24 px-6 text-center text-gray-400">
         <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-blue-600"></i>
-        <p class="text-xs font-medium">Carregando marketplace TERÊ SHOP...</p>
+        <p class="text-xs font-medium">Carregando marketplace TERÊ SHOPPING...</p>
       </div>
     </main>
 
+    <!-- RODAPÉ INSTITUCIONAL & INDEXAÇÃO GOOGLE -->
+    <footer class="px-4 py-5 bg-slate-50 border-t border-gray-200 text-center space-y-1">
+      <p class="text-xs font-extrabold text-slate-800">TERÊ SHOPPING • Marketplace Regional de Teresina-PI</p>
+      <p class="text-[11px] text-gray-500">Fundado por <strong class="text-slate-700">Matheus George Coelho</strong> • Todos os direitos reservados</p>
+    </footer>
+
   </div>
 
-  <!-- BARRA DE NAVEGAÇÃO INFERIOR COM 5 BOTÕES (SEM BOTÃO VEÍCULOS) -->
+  <!-- BARRA DE NAVEGAÇÃO INFERIOR COM 5 BOTÕES -->
   <nav class="fixed bottom-0 inset-x-0 md:bottom-3 md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-2xl z-40 bg-white border-t md:border border-gray-200 md:rounded-2xl shadow-[0_-2px_10px_rgba(0,0,0,0.06)] md:shadow-xl safe-bottom gpu-layer">
     <div class="w-full flex items-center justify-around h-16 px-1 sm:px-3">
       <button onclick="setIntentFilter('all')" id="nav-all" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-blue-700 active:scale-90 transition-transform">
@@ -295,9 +345,9 @@
     <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2.5">
-          <img src="./icon-512.png" alt="TERÊ SHOP" class="w-11 h-11 rounded-2xl object-contain bg-[#031238] p-1 border border-amber-400/30" />
+          <img src="./icon-512.png" alt="TERÊ SHOPPING" class="w-11 h-11 rounded-2xl object-contain bg-[#031238] p-1 border border-amber-400/30" />
           <div>
-            <h3 class="font-extrabold text-sm text-slate-900">Instalar App TERÊ SHOP</h3>
+            <h3 class="font-extrabold text-sm text-slate-900">Instalar App TERÊ SHOPPING</h3>
             <p id="installPlatformSubtitle" class="text-[11px] text-gray-500">Acesso direto pela tela inicial</p>
           </div>
         </div>
@@ -330,7 +380,7 @@
         </p>
         <p class="flex items-center gap-2.5">
           <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 font-bold flex items-center justify-center flex-shrink-0">3</span>
-          <span>Confirme em <b>Instalar</b> — o ícone da TERÊ SHOP aparecerá junto aos seus apps!</span>
+          <span>Confirme em <b>Instalar</b> — o ícone da TERÊ SHOPPING aparecerá junto aos seus apps!</span>
         </p>
       </div>
 
@@ -388,7 +438,7 @@
 
         <div class="flex items-center gap-1.5 min-w-0">
           <span class="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0"></span>
-          <h2 class="font-bold text-sm text-slate-900 truncate">Central Marketplace TERÊ SHOP</h2>
+          <h2 class="font-bold text-sm text-slate-900 truncate">Central TERÊ SHOPPING</h2>
         </div>
 
         <button type="button" onclick="logoutAdmin()" class="px-2.5 py-1.5 rounded-xl bg-red-50 text-red-600 text-xs font-bold hover:bg-red-100 transition flex-shrink-0">
@@ -418,7 +468,7 @@
       <!-- Conteúdo Scrollável Admin -->
       <div class="p-4 sm:p-6 overflow-y-auto space-y-4">
 
-        <!-- ABA 1: CRIAR OU EDITAR ANÚNCIO (COM SUB-OPÇÕES DE SERVIÇOS AUTOMOTIVOS E MOTOS) -->
+        <!-- ABA 1: CRIAR OU EDITAR ANÚNCIO -->
         <form id="newPostForm" onsubmit="handleSavePost(event)" class="space-y-4">
           <input type="hidden" id="editingPostId" value="" />
 
@@ -446,7 +496,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               <div>
                 <label class="block text-xs font-bold text-gray-700 mb-1">Nome da Loja / Parceiro *</label>
-                <input type="text" id="postPartnerName" placeholder="Ex: Auto Center Teresina ou TERÊ SHOP"
+                <input type="text" id="postPartnerName" placeholder="Ex: Auto Center Teresina ou TERÊ SHOPPING"
                   class="w-full border border-gray-300 rounded-xl px-3 py-2 text-xs font-semibold bg-white focus:outline-none focus:border-blue-600" />
               </div>
 
@@ -524,14 +574,14 @@
         <!-- ABA 2: ESTÚDIO DE CARDS PROFISSIONAIS EDITÁVEIS -->
         <div id="cardStudioSection" class="space-y-4 hidden">
           <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-950">
-            <b><i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Estúdio Criativo TERÊ SHOP:</b> Crie cards profissionais em Alta Definição (`1080x1080`) para qualquer nicho e envie direto para um anúncio, destaque 24h ou WhatsApp/Instagram.
+            <b><i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Estúdio Criativo TERÊ SHOPPING:</b> Crie cards profissionais em Alta Definição (`1080x1080`) para qualquer nicho e envie direto para um anúncio, destaque 24h ou WhatsApp/Instagram.
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label class="block text-xs font-bold text-gray-700 mb-1">Estilo / Template do Card</label>
               <select id="studioTemplate" onchange="renderStudioCanvas()" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-xs font-bold bg-white">
-                <option value="royal_gold">👑 Oficial TERÊ SHOP (Azul & Ouro)</option>
+                <option value="royal_gold">👑 Oficial TERÊ SHOPPING (Azul & Ouro)</option>
                 <option value="vehicles">🚗 Feirão Veículos (Carros & Motos)</option>
                 <option value="construction">🧱 Construção & Casa (Laranja & Escuro)</option>
                 <option value="services">🛡️ Serviços & Seguros (Esmeralda Corp)</option>
@@ -556,7 +606,7 @@
             </div>
             <div>
               <label class="block text-[11px] font-bold text-gray-700 mb-1">Nome da Loja / Parceiro</label>
-              <input type="text" id="studioPartnerText" value="TERÊ SHOP • TERESINA-PI" oninput="renderStudioCanvas()"
+              <input type="text" id="studioPartnerText" value="TERÊ SHOPPING • TERESINA-PI" oninput="renderStudioCanvas()"
                 class="w-full border border-gray-300 rounded-xl px-3 py-1.5 text-xs" />
             </div>
           </div>
@@ -805,7 +855,7 @@
 
             <div>
               <label class="block text-[11px] font-bold text-gray-600 mb-1">Nome / Título Alternativo</label>
-              <input type="text" id="cfgCompanyName" required value="TERÊ SHOP" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm bg-white" />
+              <input type="text" id="cfgCompanyName" required value="TERÊ SHOPPING" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm bg-white" />
             </div>
           </div>
 
@@ -873,7 +923,6 @@
       { id: "servicos_gerais", name: "Serviços & Seguros", short: "Serviços", icon: "fa-shield-heart" }
     ];
 
-    // Mapeia o código detalhado do anúncio para o Departamento unificado, Selo e Grupo (Produtos vs Serviços)
     function getPostClassification(post) {
       const code = post.department || "";
       switch (code) {
@@ -941,7 +990,7 @@
 
     window.triggerAppInstall = async function() {
       if (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true) {
-        showToast("O App TERÊ SHOP já está instalado no seu aparelho!");
+        showToast("O App TERÊ SHOPPING já está instalado no seu aparelho!");
         return;
       }
 
@@ -949,7 +998,7 @@
         deferredInstallPrompt.prompt();
         const choice = await deferredInstallPrompt.userChoice;
         if (choice.outcome === "accepted") {
-          showToast("Instalando App TERÊ SHOP...");
+          showToast("Instalando App TERÊ SHOPPING...");
         }
         deferredInstallPrompt = null;
         return;
@@ -974,7 +1023,7 @@
     };
 
     const DEFAULT_CONFIG = {
-      companyName: "TERÊ SHOP",
+      companyName: "TERÊ SHOPPING",
       headerMode: "title",
       logoData: "",
       adminPass: "admin123"
@@ -986,8 +1035,7 @@
     let promoBanners = [];
     let savedIds = JSON.parse(localStorage.getItem("tereshop_saved")) || [];
 
-    // Estados de Filtro
-    let currentIntentFilter = "all"; // all, produtos, servicos, saved
+    let currentIntentFilter = "all";
     let currentDepartmentFilter = "all";
     let currentSearchQuery = "";
 
@@ -997,11 +1045,9 @@
     let pendingLogoData = "";
     let viewerMuted = false;
 
-    // Estado do Carrossel Automático de Banners (4 segundos)
     let bannerAutoPlayTimer = null;
     let isUserTouchingBanner = false;
 
-    // Estado do Publicador Misto 24h
     let selectedStoryMediaType = "";
     let pendingStoryImageBase64 = "";
     let selectedRawVideoFile = null;
@@ -1145,7 +1191,13 @@
     const configRef = ref(db, "config");
     onValue(configRef, (snapshot) => {
       if (snapshot.exists()) {
-        config = { ...DEFAULT_CONFIG, ...snapshot.val() };
+        const val = snapshot.val();
+        config = { ...DEFAULT_CONFIG, ...val };
+        // Atualiza automaticamente no banco caso ainda estivesse "TERÊ SHOP"
+        if (!val.companyName || val.companyName === "TERÊ SHOP") {
+          config.companyName = "TERÊ SHOPPING";
+          set(ref(db, "config/companyName"), "TERÊ SHOPPING").catch(() => {});
+        }
       } else {
         set(configRef, DEFAULT_CONFIG);
       }
@@ -1204,7 +1256,7 @@
     });
 
     function applyConfigUI() {
-      const titleText = config.companyName || "TERÊ SHOP";
+      const titleText = config.companyName || "TERÊ SHOPPING";
       document.title = `${titleText} • Marketplace Teresina-PI`;
       document.getElementById("headerCompanyName").textContent = titleText;
 
@@ -1599,7 +1651,7 @@
       const item = activeVideos[idx];
       if (!item || !item.contactLink) return;
       const raw = item.contactLink.trim();
-      const msg = `Olá! Vi o destaque "${item.title}" (24h) na TERÊ SHOP e tenho interesse!`;
+      const msg = `Olá! Vi o destaque "${item.title}" (24h) na TERÊ SHOPPING e tenho interesse!`;
 
       if (raw.includes("instagram.com") || raw.startsWith("@")) {
         if (navigator.clipboard) navigator.clipboard.writeText(msg).catch(() => {});
@@ -1675,7 +1727,6 @@
       let filtered = posts;
       let activeDescriptions = [];
 
-      // 1. Filtro por intenção da barra inferior (Produtos vs Serviços vs Salvos)
       if (currentIntentFilter === "saved") {
         filtered = filtered.filter(p => savedIds.includes(p.id));
         activeDescriptions.push("Itens Salvos");
@@ -1685,14 +1736,12 @@
         activeDescriptions.push(names[currentIntentFilter] || currentIntentFilter);
       }
 
-      // 2. Filtro por Departamento unificado (Eletrônicos, Eletro, Casa, Construção, Carros, Motos, Serviços)
       if (currentDepartmentFilter !== "all") {
         filtered = filtered.filter(p => getPostClassification(p).deptId === currentDepartmentFilter);
         const deptObj = DEPARTMENTS.find(d => d.id === currentDepartmentFilter);
         if (deptObj) activeDescriptions.push(deptObj.name);
       }
 
-      // 3. Filtro por Busca Textual
       if (currentSearchQuery) {
         filtered = filtered.filter(p => {
           const info = getPostClassification(p);
@@ -1729,7 +1778,7 @@
         const isSaved = savedIds.includes(post.id);
         const images = post.images || [];
         const info = getPostClassification(post);
-        const partnerTitle = (post.partnerName && post.partnerName.trim()) ? post.partnerName.trim() : (config.companyName || "TERÊ SHOP");
+        const partnerTitle = (post.partnerName && post.partnerName.trim()) ? post.partnerName.trim() : (config.companyName || "TERÊ SHOPPING");
         const serviceModeLabel = post.serviceMode || "Atendimento Online e Presencial • Teresina-PI";
         const safeTitle = (post.title || "").replace(/'/g, "");
 
@@ -1747,7 +1796,7 @@
                 <div class="min-w-0">
                   <p class="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight truncate flex items-center gap-1">
                     <span>${partnerTitle}</span>
-                    <i class="fa-solid fa-circle-check text-blue-600 text-[11px]" title="Parceiro Verificado TERÊ SHOP"></i>
+                    <i class="fa-solid fa-circle-check text-blue-600 text-[11px]" title="Parceiro Verificado TERÊ SHOPPING"></i>
                   </p>
                   <p class="text-[11px] text-gray-500 font-medium truncate">${serviceModeLabel}</p>
                 </div>
@@ -1856,7 +1905,7 @@
       if (!post || !post.instagram) return;
       const url = resolveInstagramUrl(post.instagram);
       const info = getPostClassification(post);
-      const msg = `Olá! Vi o anúncio em ${info.deptName}: "${post.title}" na TERÊ SHOP e gostaria de mais informações.`;
+      const msg = `Olá! Vi o anúncio em ${info.deptName}: "${post.title}" na TERÊ SHOPPING e gostaria de mais informações.`;
 
       if (navigator.clipboard) navigator.clipboard.writeText(msg).catch(() => {});
       showToast("Mensagem copiada! Cole no Direct do Instagram.");
@@ -1867,7 +1916,7 @@
       const post = posts.find(p => p.id === postId);
       if (!post || !post.whatsapp) return;
       const info = getPostClassification(post);
-      const msg = `Olá! Vi o anúncio em ${info.deptName}: "${post.title}" na TERÊ SHOP e gostaria de mais informações.`;
+      const msg = `Olá! Vi o anúncio em ${info.deptName}: "${post.title}" na TERÊ SHOPPING e gostaria de mais informações.`;
       const url = resolveWhatsappUrl(post.whatsapp, msg);
       window.open(url, "_blank");
     };
@@ -1893,8 +1942,8 @@
     window.shareApp = function() {
       const publicUrl = getPublicShareUrl();
       const shareData = {
-        title: `${config.companyName || "TERÊ SHOP"} • Teresina-PI`,
-        text: `Acesse o Marketplace oficial ${config.companyName || "TERÊ SHOP"} em Teresina-PI:`,
+        title: `${config.companyName || "TERÊ SHOPPING"} • Teresina-PI`,
+        text: `Acesse o Marketplace oficial ${config.companyName || "TERÊ SHOPPING"} em Teresina-PI:`,
         url: publicUrl
       };
       if (navigator.share) {
@@ -1907,7 +1956,7 @@
 
     window.sharePost = function(title) {
       const publicUrl = getPublicShareUrl();
-      const text = `Confira este item na TERÊ SHOP: ${title} - ${publicUrl}`;
+      const text = `Confira este item na TERÊ SHOPPING: ${title} - ${publicUrl}`;
       if (navigator.share) {
         navigator.share({ title, text, url: publicUrl }).catch(() => {});
       } else {
@@ -1972,7 +2021,7 @@
     };
 
     function openAdminPanel() {
-      document.getElementById("cfgCompanyName").value = config.companyName || "TERÊ SHOP";
+      document.getElementById("cfgCompanyName").value = config.companyName || "TERÊ SHOPPING";
       document.getElementById("cfgPassword").value = config.adminPass || "admin123";
 
       const modeRadio = document.querySelector(`input[name="headerMode"][value="${config.headerMode || "logo"}"]`);
@@ -2063,7 +2112,7 @@
 
       const tpl = document.getElementById("studioTemplate").value;
       const badge = (document.getElementById("studioBadgeText").value || "OFERTA").toUpperCase();
-      const partner = (document.getElementById("studioPartnerText").value || "TERÊ SHOP").toUpperCase();
+      const partner = (document.getElementById("studioPartnerText").value || "TERÊ SHOPPING").toUpperCase();
       const headline = document.getElementById("studioHeadline").value || "Oferta Especial Teresina";
       const priceTag = (document.getElementById("studioPriceTag").value || "CONFIRA").toUpperCase();
 
@@ -2171,7 +2220,7 @@
     window.downloadStudioCard = function() {
       const canvas = document.getElementById("studioCanvas");
       const link = document.createElement("a");
-      link.download = `tereshop-card-${Date.now()}.jpg`;
+      link.download = `tereshopping-card-${Date.now()}.jpg`;
       link.href = canvas.toDataURL("image/jpeg", 0.92);
       link.click();
       showToast("Arte salva na galeria/downloads!");
@@ -2876,7 +2925,7 @@
       try {
         const headerMode = document.querySelector('input[name="headerMode"]:checked').value;
         const updatedConfig = {
-          companyName: document.getElementById("cfgCompanyName").value.trim() || "TERÊ SHOP",
+          companyName: document.getElementById("cfgCompanyName").value.trim() || "TERÊ SHOPPING",
           headerMode: headerMode === "logo" && pendingLogoData ? "logo" : "title",
           logoData: pendingLogoData,
           adminPass: document.getElementById("cfgPassword").value.trim() || "admin123"
