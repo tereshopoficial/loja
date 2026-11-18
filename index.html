@@ -142,11 +142,11 @@
     </div>
   </div>
 
-  <!-- ÁREA 1: CABEÇALHO SUPERIOR + PESQUISA INTELIGENTE + ÁREA 2: LOCALIZAÇÃO -->
+  <!-- CABEÇALHO SUPERIOR + PESQUISA INTELIGENTE + LOCALIZAÇÃO -->
   <header class="sticky top-0 z-40 bg-[#031238] shadow-md gpu-layer">
     <div class="w-full max-w-2xl mx-auto relative">
       
-      <!-- Botões Flutuantes Semitransparentes -->
+      <!-- Botões Flutuantes Semitransparentes (Compartilhar, QR Code Único, Acesso ADM) -->
       <div class="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-3 sm:px-4 pt-2.5 safe-top pointer-events-none">
         <div class="pointer-events-auto flex items-center gap-1.5">
           <button onclick="shareApp()" title="Compartilhar App"
@@ -187,7 +187,7 @@
           <i class="fa-solid fa-magnifying-glass absolute left-3.5 text-gray-400 text-xs sm:text-sm pointer-events-none"></i>
           <input type="search" id="searchInput" onfocus="openSearchSuggestions()" oninput="handleSearchInput()"
             onkeydown="if(event.key==='Enter'){saveSearchHistory(this.value); closeSearchSuggestions();}"
-            placeholder="Buscar produtos, carros, motos, construção ou serviços..."
+            placeholder="Buscar produtos, veículos, moda, construção ou serviços..."
             class="w-full bg-white text-slate-900 placeholder-gray-400 text-xs sm:text-sm font-medium rounded-full pl-9 pr-9 py-2 shadow-inner focus:outline-none focus:ring-2 focus:ring-amber-400" />
           <button type="button" id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-3 text-gray-400 hover:text-gray-700 p-1">
             <i class="fa-solid fa-circle-xmark text-sm"></i>
@@ -205,13 +205,14 @@
           </div>
 
           <div class="space-y-1.5">
-            <span class="block text-[10px] font-extrabold uppercase text-gray-400">Em alta em Teresina-PI</span>
+            <span class="block text-[10px] font-extrabold uppercase text-gray-400">Sugestões rápidas em Teresina-PI</span>
             <div class="flex flex-wrap gap-1.5">
               <button type="button" onclick="applyQuickSearch('iPhone')" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-700 text-xs font-semibold">📱 iPhone</button>
               <button type="button" onclick="applyQuickSearch('Carro')" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-700 text-xs font-semibold">🚗 Carros</button>
               <button type="button" onclick="applyQuickSearch('Moto')" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-700 text-xs font-semibold">🏍️ Motos</button>
+              <button type="button" onclick="applyQuickSearch('Vestuário')" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-700 text-xs font-semibold">👕 Vestuário</button>
+              <button type="button" onclick="applyQuickSearch('Beleza')" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-700 text-xs font-semibold">💄 Beleza</button>
               <button type="button" onclick="applyQuickSearch('Construção')" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-700 text-xs font-semibold">🧱 Construção</button>
-              <button type="button" onclick="applyQuickSearch('Seguro')" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-700 text-xs font-semibold">🛡️ Seguros</button>
             </div>
           </div>
 
@@ -221,7 +222,7 @@
         </div>
       </div>
 
-      <!-- ÁREA 2: LOCALIZAÇÃO E ENTREGA EM TERESINA-PI -->
+      <!-- LOCALIZAÇÃO E ENTREGA EM TERESINA-PI -->
       <div onclick="openLocationModal()" class="px-3.5 sm:px-4 py-1.5 bg-[#061b4e] border-t border-white/10 flex items-center justify-between text-white/95 cursor-pointer active:bg-[#08246b] transition">
         <div class="flex items-center gap-1.5 min-w-0 text-[11px] sm:text-xs">
           <i class="fa-solid fa-location-dot text-amber-400 flex-shrink-0"></i>
@@ -237,76 +238,56 @@
   <!-- CONTENTOR PRINCIPAL FLUIDO -->
   <div class="w-full max-w-2xl mx-auto md:my-3 md:rounded-2xl md:overflow-hidden md:shadow-md md:border md:border-gray-200/80 bg-[#F5F5F5]">
 
-    <!-- ÁREA 3: NAVEGAÇÃO HORIZONTAL POR 7 DEPARTAMENTOS + SUBCATEGORIAS -->
-    <section class="w-full bg-white border-b border-gray-200 pt-3 pb-2">
-      <div id="departmentsCarousel" class="stories-scroll flex gap-2.5 sm:gap-3 overflow-x-auto no-scrollbar px-3.5 sm:px-5">
-        <!-- Ícones dos 7 Departamentos renderizados via JS -->
+    <!-- BARRA DE CATEGORIAS EXPANSÍVEL + ATALHOS RÁPIDOS SEM REPETIÇÃO -->
+    <section class="w-full bg-white border-b border-gray-200">
+      <div class="px-3 sm:px-4 py-2.5 flex items-center gap-2 overflow-x-auto no-scrollbar">
+        <!-- Botão Principal Expansível de Categorias -->
+        <button type="button" onclick="toggleCategoriesDrawer()" id="categoriesToggleBtn"
+          class="flex-shrink-0 px-3.5 py-2 rounded-xl bg-[#031238] text-amber-400 font-extrabold text-xs flex items-center gap-2 shadow-2xs active:scale-95 transition">
+          <i class="fa-solid fa-layer-group"></i>
+          <span>Categorias</span>
+          <span class="bg-amber-400/20 text-amber-300 text-[10px] px-1.5 py-0.2 rounded-md">19</span>
+          <i id="categoriesChevronIcon" class="fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
+        </button>
+
+        <!-- 3 Filtros Diretos Distintos -->
+        <button type="button" onclick="scrollToFlashDeals()"
+          class="flex-shrink-0 px-3 py-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 font-bold text-xs flex items-center gap-1.5 active:scale-95 transition">
+          <i class="fa-solid fa-bolt text-amber-600"></i>
+          <span>Ofertas 24h</span>
+        </button>
+
+        <button type="button" onclick="setIntentFilter('produtos')" id="chip-produtos"
+          class="flex-shrink-0 px-3 py-2 rounded-xl bg-slate-100 hover:bg-blue-50 text-slate-700 font-bold text-xs flex items-center gap-1.5 active:scale-95 transition">
+          <i class="fa-solid fa-bag-shopping text-[#3483FA]"></i>
+          <span>Produtos</span>
+        </button>
+
+        <button type="button" onclick="setIntentFilter('servicos')" id="chip-servicos"
+          class="flex-shrink-0 px-3 py-2 rounded-xl bg-slate-100 hover:bg-blue-50 text-slate-700 font-bold text-xs flex items-center gap-1.5 active:scale-95 transition">
+          <i class="fa-solid fa-screwdriver-wrench text-purple-600"></i>
+          <span>Serviços</span>
+        </button>
       </div>
+
+      <!-- GAVETA EXPANSÍVEL COM OS 19 DEPARTAMENTOS -->
+      <div id="categoriesDrawer" class="hidden px-3 sm:px-4 pb-3.5 pt-2 border-t border-gray-100 bg-slate-50/70 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500">Selecione um Departamento</span>
+          <button type="button" onclick="setDepartmentFilter('all'); toggleCategoriesDrawer(false);" class="text-[11px] font-bold text-[#3483FA] hover:underline">
+            Mostrar todos
+          </button>
+        </div>
+        <div id="categoriesGrid" class="grid grid-cols-3 sm:grid-cols-4 gap-2">
+          <!-- 19 Departamentos renderizados via JS -->
+        </div>
+      </div>
+
       <!-- Subcategorias dinâmicas (ex: Venda vs Serviços em Carros e Motos) -->
-      <div id="subcategoriesBar" class="hidden px-3.5 sm:px-5 pt-2.5 mt-2 border-t border-gray-100 flex items-center gap-1.5 overflow-x-auto no-scrollbar"></div>
+      <div id="subcategoriesBar" class="hidden px-3.5 sm:px-4 py-2 border-t border-gray-100 flex items-center gap-1.5 overflow-x-auto no-scrollbar bg-white"></div>
     </section>
 
-    <!-- ÁREA 4: BANNER PROMOCIONAL PREMIUM (FAIXA DE BENEFÍCIO DA MARCA) -->
-    <section class="px-3 sm:px-4 pt-3">
-      <div onclick="openQrShareModal()" class="bg-gradient-to-r from-[#031238] via-[#0b2e8a] to-[#031238] border border-amber-400/40 rounded-2xl px-3.5 py-2.5 flex items-center justify-between gap-2.5 text-white shadow-xs cursor-pointer active:scale-[0.99] transition">
-        <div class="flex items-center gap-2.5 min-w-0">
-          <span class="w-8 h-8 rounded-xl bg-amber-400 text-[#031238] flex items-center justify-center font-black text-sm flex-shrink-0">
-            <i class="fa-solid fa-bolt"></i>
-          </span>
-          <div class="min-w-0">
-            <p class="text-xs sm:text-[13px] font-extrabold leading-tight truncate">Vitrine Oficial Teresina-PI • Negocie Direto</p>
-            <p class="text-[10px] sm:text-[11px] text-amber-300 font-medium truncate">Sem intermediários • Compartilhe o QR Code da loja</p>
-          </div>
-        </div>
-        <i class="fa-solid fa-chevron-right text-xs text-amber-400 flex-shrink-0"></i>
-      </div>
-    </section>
-
-    <!-- ÁREA 5: ATALHOS RÁPIDOS DE SERVIÇOS & BENEFÍCIOS -->
-    <section class="px-3 sm:px-4 pt-3">
-      <div class="bg-white rounded-2xl border border-gray-200/80 py-3 px-2 shadow-2xs">
-        <div class="stories-scroll flex items-start justify-between gap-2 overflow-x-auto no-scrollbar px-1">
-          <button type="button" onclick="scrollToFlashDeals()" class="flex-1 min-w-[66px] flex flex-col items-center gap-1 text-center active:scale-95 transition">
-            <div class="relative w-11 h-11 rounded-full bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center text-base">
-              <i class="fa-solid fa-fire"></i>
-              <span class="absolute -top-1.5 -right-1 bg-[#00A650] text-white text-[8px] font-black px-1.5 py-0.2 rounded-full">24H</span>
-            </div>
-            <span class="text-[10px] font-bold text-slate-700 leading-tight">Ofertas Dia</span>
-          </button>
-
-          <button type="button" onclick="setIntentFilter('produtos')" class="flex-1 min-w-[66px] flex flex-col items-center gap-1 text-center active:scale-95 transition">
-            <div class="w-11 h-11 rounded-full bg-blue-50 border border-blue-200 text-[#3483FA] flex items-center justify-center text-base">
-              <i class="fa-solid fa-bag-shopping"></i>
-            </div>
-            <span class="text-[10px] font-bold text-slate-700 leading-tight">Produtos</span>
-          </button>
-
-          <button type="button" onclick="setDepartmentFilter('carros')" class="flex-1 min-w-[66px] flex flex-col items-center gap-1 text-center active:scale-95 transition">
-            <div class="w-11 h-11 rounded-full bg-emerald-50 border border-emerald-200 text-[#00A650] flex items-center justify-center text-base">
-              <i class="fa-solid fa-car"></i>
-            </div>
-            <span class="text-[10px] font-bold text-slate-700 leading-tight">Veículos</span>
-          </button>
-
-          <button type="button" onclick="setIntentFilter('servicos')" class="flex-1 min-w-[66px] flex flex-col items-center gap-1 text-center active:scale-95 transition">
-            <div class="w-11 h-11 rounded-full bg-purple-50 border border-purple-200 text-purple-700 flex items-center justify-center text-base">
-              <i class="fa-solid fa-screwdriver-wrench"></i>
-            </div>
-            <span class="text-[10px] font-bold text-slate-700 leading-tight">Serviços</span>
-          </button>
-
-          <button type="button" onclick="openQrShareModal()" class="flex-1 min-w-[66px] flex flex-col items-center gap-1 text-center active:scale-95 transition">
-            <div class="relative w-11 h-11 rounded-full bg-slate-100 border border-slate-200 text-[#031238] flex items-center justify-center text-base">
-              <i class="fa-solid fa-qrcode"></i>
-              <span class="absolute -top-1.5 -right-1 bg-amber-400 text-[#031238] text-[8px] font-black px-1.5 py-0.2 rounded-full">NOVO</span>
-            </div>
-            <span class="text-[10px] font-bold text-slate-700 leading-tight">QR Loja</span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ÁREA 6: CARROSSEL DINÂMICO DE BANNERS DO TOPO (AUTO-SLIDE 4s + ARRASTE COM DEDO SEM BOTÕES) -->
+    <!-- CARROSSEL DINÂMICO DE BANNERS DO TOPO (AUTO-SLIDE 4s + ARRASTE COM DEDO SEM BOTÕES) -->
     <section id="promoBannersSection" class="px-3 sm:px-4 pt-3 hidden">
       <div class="w-full bg-slate-950 rounded-2xl overflow-hidden border border-gray-200 shadow-2xs relative">
         <div id="promoBannersTrack" onscroll="handleBannerScroll()" class="carousel-track flex overflow-x-auto no-scrollbar">
@@ -316,7 +297,7 @@
       </div>
     </section>
 
-    <!-- ÁREA 8 (DESTAQUES): OFERTAS RELÂMPAGO 24H COM TEMPORIZADOR REGRESSIVO -->
+    <!-- OFERTAS RELÂMPAGO 24H COM TEMPORIZADOR REGRESSIVO -->
     <section id="storiesSection" class="px-3 sm:px-4 pt-3 hidden">
       <div class="bg-gradient-to-b from-[#031238] to-[#08246b] rounded-2xl overflow-hidden border border-amber-400/30 shadow-sm">
         <div class="px-3.5 pt-3 pb-1.5 flex items-center justify-between gap-2 text-white">
@@ -360,7 +341,7 @@
       </div>
     </div>
 
-    <!-- ÁREA 7: VITRINE DE PRODUTOS E SERVIÇOS (GRADE 2 COLUNAS ESTILO MARKETPLACE) -->
+    <!-- VITRINE DE PRODUTOS E SERVIÇOS (GRADE 2 COLUNAS ESTILO MARKETPLACE) -->
     <main id="feedContainer" class="w-full px-3 sm:px-4 pt-3 pb-4 min-h-[55vh]">
       <div class="py-24 px-6 text-center text-gray-400 bg-white rounded-2xl">
         <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-blue-600"></i>
@@ -369,15 +350,9 @@
     </main>
 
     <!-- RODAPÉ INSTITUCIONAL & INDEXAÇÃO GOOGLE -->
-    <footer class="px-4 py-5 bg-white border-t border-gray-200 text-center space-y-2 mt-2">
+    <footer class="px-4 py-5 bg-white border-t border-gray-200 text-center space-y-1 mt-2">
       <p class="text-xs font-extrabold text-slate-800">TERÊ SHOPPING • Marketplace Regional de Teresina-PI</p>
       <p class="text-[11px] text-gray-500">Fundado por <strong class="text-slate-700">Matheus George Coelho</strong> • Todos os direitos reservados</p>
-      <div class="pt-1">
-        <button onclick="openQrShareModal()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#031238] text-amber-400 text-[11px] font-bold shadow-xs active:scale-95 transition-transform">
-          <i class="fa-solid fa-qrcode"></i>
-          <span>Compartilhar via QR Code</span>
-        </button>
-      </div>
     </footer>
 
   </div>
@@ -390,7 +365,7 @@
         <span class="text-[10px] sm:text-[11px] font-extrabold truncate">Início</span>
       </button>
 
-      <button onclick="openCategoriesDirectoryModal()" id="nav-categories" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
+      <button onclick="openCategoriesAndScroll()" id="nav-categories" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
         <i class="fa-solid fa-layer-group text-base sm:text-lg"></i>
         <span class="text-[10px] sm:text-[11px] font-bold truncate">Categorias</span>
       </button>
@@ -473,39 +448,6 @@
         <button onclick="selectDeliveryLocation('Zona Norte • Teresina-PI')" class="w-full text-left px-3.5 py-2.5 rounded-xl bg-slate-50 hover:bg-blue-50 border border-slate-200">🌳 Zona Norte (Mocambinho, Buenos Aires, Primavera)</button>
         <button onclick="selectDeliveryLocation('Zona Sudeste • Teresina-PI')" class="w-full text-left px-3.5 py-2.5 rounded-xl bg-slate-50 hover:bg-blue-50 border border-slate-200">🏡 Zona Sudeste (Dirceu, Renascença, Itararé)</button>
         <button onclick="selectDeliveryLocation('Centro • Teresina-PI')" class="w-full text-left px-3.5 py-2.5 rounded-xl bg-slate-50 hover:bg-blue-50 border border-slate-200">🏢 Centro Comercial • Teresina-PI</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL DIRETÓRIO DE CATEGORIAS -->
-  <div id="categoriesDirectoryModal" class="fixed inset-0 z-50 bg-black/65 hidden items-end sm:items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-5 shadow-2xl space-y-4">
-      <div class="flex items-center justify-between">
-        <h3 class="font-extrabold text-sm text-slate-900">Todos os Departamentos</h3>
-        <button onclick="closeModal('categoriesDirectoryModal')" class="text-gray-400 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
-      </div>
-      <div class="grid grid-cols-2 gap-2.5 text-xs font-bold">
-        <button onclick="closeModal('categoriesDirectoryModal'); setDepartmentFilter('eletronicos')" class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-2.5 text-left">
-          <i class="fa-solid fa-mobile-screen text-[#3483FA] text-base"></i><span>Eletrônicos</span>
-        </button>
-        <button onclick="closeModal('categoriesDirectoryModal'); setDepartmentFilter('eletrodomesticos')" class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-2.5 text-left">
-          <i class="fa-solid fa-blender-phone text-cyan-600 text-base"></i><span>Eletrodomésticos</span>
-        </button>
-        <button onclick="closeModal('categoriesDirectoryModal'); setDepartmentFilter('casa')" class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-2.5 text-left">
-          <i class="fa-solid fa-couch text-amber-600 text-base"></i><span>Casa & Decoração</span>
-        </button>
-        <button onclick="closeModal('categoriesDirectoryModal'); setDepartmentFilter('construcao')" class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-2.5 text-left">
-          <i class="fa-solid fa-helmet-safety text-orange-600 text-base"></i><span>Construção</span>
-        </button>
-        <button onclick="closeModal('categoriesDirectoryModal'); setDepartmentFilter('carros')" class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-2.5 text-left">
-          <i class="fa-solid fa-car-side text-[#00A650] text-base"></i><span>Carros</span>
-        </button>
-        <button onclick="closeModal('categoriesDirectoryModal'); setDepartmentFilter('motos')" class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-2.5 text-left">
-          <i class="fa-solid fa-motorcycle text-teal-600 text-base"></i><span>Motos</span>
-        </button>
-        <button onclick="closeModal('categoriesDirectoryModal'); setDepartmentFilter('servicos_gerais')" class="col-span-2 p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-2.5 text-left">
-          <i class="fa-solid fa-shield-heart text-purple-600 text-base"></i><span>Serviços Gerais, Manutenção & Seguros</span>
-        </button>
       </div>
     </div>
   </div>
@@ -759,7 +701,7 @@
       <!-- Conteúdo Scrollável Admin -->
       <div class="p-4 sm:p-6 overflow-y-auto space-y-4">
 
-        <!-- ABA 1: CRIAR OU EDITAR ANÚNCIO -->
+        <!-- ABA 1: CRIAR OU EDITAR ANÚNCIO (19 DEPARTAMENTOS COMPLETOS) -->
         <form id="newPostForm" onsubmit="handleSavePost(event)" class="space-y-4">
           <input type="hidden" id="editingPostId" value="" />
 
@@ -772,15 +714,27 @@
             <div>
               <label class="block text-xs font-bold text-gray-700 mb-1">Categoria / Nicho de Divulgação *</label>
               <select id="postDepartment" required class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-xs sm:text-sm font-bold bg-white text-slate-900 focus:outline-none focus:border-blue-600">
-                <option value="eletronicos">📱 Eletrônicos (Celulares, Notebooks, Games)</option>
+                <option value="eletronicos">📱 Eletrônicos (Celulares, Áudio, Gadgets)</option>
+                <option value="computacao">💻 Computação (Notebooks, PCs, Periféricos)</option>
+                <option value="videogames">🎮 Videogames (Consoles, Jogos, Acessórios)</option>
                 <option value="eletrodomesticos">❄️ Eletrodomésticos (Geladeira, Ar, TV, Linha Branca)</option>
                 <option value="casa">🛋️ Casa & Decoração (Móveis, Utilidades, Enxoval)</option>
                 <option value="construcao">🧱 Construção & Ferramentas (Materiais, Elétrica, Hidráulica)</option>
                 <option value="venda_carros">🚗 Carros • Venda de Veículo (Novos, Seminovos, Repasses)</option>
-                <option value="servicos_carros">🔧 Carros • Serviços Automotivos (Mecânica, Estética, Pneus, Som)</option>
+                <option value="servicos_carros">🔧 Carros • Serviços Automotivos (Mecânica, Estética, Pneus)</option>
                 <option value="venda_motos">🏍️ Motos • Venda de Moto (Novas, Seminovas, Consórcios)</option>
                 <option value="servicos_motos">🛠️ Motos • Serviços e Oficina (Revisão, Peças, Acessórios)</option>
-                <option value="servicos_gerais">🛡️ Serviços Gerais (Manutenção, Seguros, Fretes, Técnicos)</option>
+                <option value="acessorios_veiculos">🛞 Acessórios para Veículos (Som, Peças, Capacetes)</option>
+                <option value="vestuario">👕 Vestuário & Moda (Roupas, Calçados, Bolsas)</option>
+                <option value="joias_relogios">⌚ Joias & Relógios (Relógios, Semijoias, Óculos)</option>
+                <option value="beleza_saude">💄 Beleza & Saúde (Perfumes, Cosméticos, Cuidados)</option>
+                <option value="esporte_fitness">🏋️ Esporte & Fitness (Suplementos, Bikes, Academia)</option>
+                <option value="brinquedos_jogos">🧸 Brinquedos & Jogos (Infantil, Tabuleiros, Hobby)</option>
+                <option value="papelaria">✏️ Papelaria (Escolar, Escritório, Suprimentos)</option>
+                <option value="alimentos_bebidas">🍔 Alimentos & Bebidas (Empório, Bebidas, Gourmet)</option>
+                <option value="livros">📚 Livros (Literatura, Concursos, Técnicos)</option>
+                <option value="animais_estimacao">🐾 Animais de Estimação (Pet Shop, Rações, Acessórios)</option>
+                <option value="servicos_gerais">🛡️ Serviços Gerais & Seguros (Manutenção, Fretes, Técnicos)</option>
               </select>
             </div>
 
@@ -816,7 +770,7 @@
 
           <div>
             <label class="block text-xs font-bold text-gray-700 mb-1">Título do Produto, Veículo ou Serviço *</label>
-            <input type="text" id="postTitle" required placeholder="Ex: Honda Civic EXL 2021, Revisão Completa ou Cimento CP-II"
+            <input type="text" id="postTitle" required placeholder="Ex: Honda Civic EXL 2021, Revisão Completa ou Relógio Smart"
               class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-600" />
           </div>
 
@@ -835,7 +789,7 @@
 
           <div>
             <label class="block text-xs font-bold text-gray-700 mb-1">Descrição Completa e Diferenciais *</label>
-            <textarea id="postDescription" rows="3" required placeholder="Informe especificações, ano/km, garantia, cobertura do seguro ou prazo de entrega..."
+            <textarea id="postDescription" rows="3" required placeholder="Informe especificações, tamanhos, ano/km, garantia ou prazo de entrega..."
               class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-600"></textarea>
           </div>
 
@@ -1101,11 +1055,23 @@
             <select id="bannerTargetDept" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-xs font-bold bg-white">
               <option value="all">Mostrar Todas as Ofertas</option>
               <option value="eletronicos">Filtrar: Eletrônicos</option>
+              <option value="computacao">Filtrar: Computação</option>
+              <option value="videogames">Filtrar: Videogames</option>
               <option value="eletrodomesticos">Filtrar: Eletrodomésticos</option>
               <option value="casa">Filtrar: Casa & Decoração</option>
               <option value="construcao">Filtrar: Construção & Ferramentas</option>
-              <option value="carros">Filtrar: Carros (Vendas & Serviços)</option>
-              <option value="motos">Filtrar: Motos (Vendas & Serviços)</option>
+              <option value="carros">Filtrar: Carros</option>
+              <option value="motos">Filtrar: Motos</option>
+              <option value="acessorios_veiculos">Filtrar: Acessórios para Veículos</option>
+              <option value="vestuario">Filtrar: Vestuário</option>
+              <option value="joias_relogios">Filtrar: Joias & Relógios</option>
+              <option value="beleza_saude">Filtrar: Beleza & Saúde</option>
+              <option value="esporte_fitness">Filtrar: Esporte & Fitness</option>
+              <option value="brinquedos_jogos">Filtrar: Brinquedos & Jogos</option>
+              <option value="papelaria">Filtrar: Papelaria</option>
+              <option value="alimentos_bebidas">Filtrar: Alimentos & Bebidas</option>
+              <option value="livros">Filtrar: Livros</option>
+              <option value="animais_estimacao">Filtrar: Animais de Estimação</option>
               <option value="servicos_gerais">Filtrar: Serviços Gerais & Seguros</option>
             </select>
           </div>
@@ -1210,13 +1176,26 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
+    // 19 DEPARTAMENTOS COMPLETOS DO MARKETPLACE TERÊ SHOPPING
     const DEPARTMENTS = [
       { id: "eletronicos", name: "Eletrônicos", short: "Eletrônicos", icon: "fa-mobile-screen" },
+      { id: "computacao", name: "Computação", short: "Computação", icon: "fa-laptop" },
+      { id: "videogames", name: "Videogames", short: "Videogames", icon: "fa-gamepad" },
       { id: "eletrodomesticos", name: "Eletrodomésticos", short: "Eletro", icon: "fa-blender-phone" },
       { id: "casa", name: "Casa & Decoração", short: "Casa", icon: "fa-couch" },
       { id: "construcao", name: "Construção", short: "Construção", icon: "fa-helmet-safety" },
       { id: "carros", name: "Carros", short: "Carros", icon: "fa-car-side" },
       { id: "motos", name: "Motos", short: "Motos", icon: "fa-motorcycle" },
+      { id: "acessorios_veiculos", name: "Acessórios p/ Veículos", short: "Acess. Auto", icon: "fa-dharmachakra" },
+      { id: "vestuario", name: "Vestuário", short: "Vestuário", icon: "fa-shirt" },
+      { id: "joias_relogios", name: "Joias & Relógios", short: "Joias/Relóg.", icon: "fa-gem" },
+      { id: "beleza_saude", name: "Beleza & Saúde", short: "Beleza/Saúde", icon: "fa-spa" },
+      { id: "esporte_fitness", name: "Esporte & Fitness", short: "Esporte/Fit", icon: "fa-dumbbell" },
+      { id: "brinquedos_jogos", name: "Brinquedos & Jogos", short: "Brinquedos", icon: "fa-puzzle-piece" },
+      { id: "papelaria", name: "Papelaria", short: "Papelaria", icon: "fa-pen-ruler" },
+      { id: "alimentos_bebidas", name: "Alimentos & Bebidas", short: "Alimentos", icon: "fa-utensils" },
+      { id: "livros", name: "Livros", short: "Livros", icon: "fa-book" },
+      { id: "animais_estimacao", name: "Animais de Estimação", short: "Pet Shop", icon: "fa-paw" },
       { id: "servicos_gerais", name: "Serviços & Seguros", short: "Serviços", icon: "fa-shield-heart" }
     ];
 
@@ -1225,6 +1204,10 @@
       switch (code) {
         case "eletronicos":
           return { deptId: "eletronicos", deptName: "Eletrônicos", badge: "ELETRÔNICOS", badgeClass: "bg-indigo-100 text-indigo-800", icon: "fa-mobile-screen", intentGroup: "produtos", rawCode: code };
+        case "computacao":
+          return { deptId: "computacao", deptName: "Computação", badge: "COMPUTAÇÃO", badgeClass: "bg-blue-100 text-blue-800", icon: "fa-laptop", intentGroup: "produtos", rawCode: code };
+        case "videogames":
+          return { deptId: "videogames", deptName: "Videogames", badge: "GAMES", badgeClass: "bg-violet-100 text-violet-800", icon: "fa-gamepad", intentGroup: "produtos", rawCode: code };
         case "eletrodomesticos":
           return { deptId: "eletrodomesticos", deptName: "Eletrodomésticos", badge: "ELETRO", badgeClass: "bg-cyan-100 text-cyan-800", icon: "fa-blender-phone", intentGroup: "produtos", rawCode: code };
         case "casa":
@@ -1239,6 +1222,26 @@
           return { deptId: "motos", deptName: "Motos", badge: "VENDA MOTO", badgeClass: "bg-teal-100 text-teal-800", icon: "fa-motorcycle", intentGroup: "produtos", rawCode: code };
         case "servicos_motos":
           return { deptId: "motos", deptName: "Motos", badge: "SERV. MOTO", badgeClass: "bg-sky-100 text-sky-800", icon: "fa-screwdriver-wrench", intentGroup: "servicos", rawCode: code };
+        case "acessorios_veiculos":
+          return { deptId: "acessorios_veiculos", deptName: "Acessórios p/ Veículos", badge: "ACESS. AUTO", badgeClass: "bg-zinc-200 text-zinc-800", icon: "fa-dharmachakra", intentGroup: "produtos", rawCode: code };
+        case "vestuario":
+          return { deptId: "vestuario", deptName: "Vestuário", badge: "VESTUÁRIO", badgeClass: "bg-pink-100 text-pink-800", icon: "fa-shirt", intentGroup: "produtos", rawCode: code };
+        case "joias_relogios":
+          return { deptId: "joias_relogios", deptName: "Joias & Relógios", badge: "JOIAS/RELÓG.", badgeClass: "bg-yellow-100 text-yellow-900", icon: "fa-gem", intentGroup: "produtos", rawCode: code };
+        case "beleza_saude":
+          return { deptId: "beleza_saude", deptName: "Beleza & Saúde", badge: "BELEZA/SAÚDE", badgeClass: "bg-rose-100 text-rose-800", icon: "fa-spa", intentGroup: "produtos", rawCode: code };
+        case "esporte_fitness":
+          return { deptId: "esporte_fitness", deptName: "Esporte & Fitness", badge: "ESPORTE/FIT", badgeClass: "bg-lime-100 text-lime-800", icon: "fa-dumbbell", intentGroup: "produtos", rawCode: code };
+        case "brinquedos_jogos":
+          return { deptId: "brinquedos_jogos", deptName: "Brinquedos & Jogos", badge: "BRINQUEDOS", badgeClass: "bg-fuchsia-100 text-fuchsia-800", icon: "fa-puzzle-piece", intentGroup: "produtos", rawCode: code };
+        case "papelaria":
+          return { deptId: "papelaria", deptName: "Papelaria", badge: "PAPELARIA", badgeClass: "bg-sky-100 text-sky-900", icon: "fa-pen-ruler", intentGroup: "produtos", rawCode: code };
+        case "alimentos_bebidas":
+          return { deptId: "alimentos_bebidas", deptName: "Alimentos & Bebidas", badge: "ALIMENTOS", badgeClass: "bg-red-100 text-red-800", icon: "fa-utensils", intentGroup: "produtos", rawCode: code };
+        case "livros":
+          return { deptId: "livros", deptName: "Livros", badge: "LIVROS", badgeClass: "bg-stone-200 text-stone-800", icon: "fa-book", intentGroup: "produtos", rawCode: code };
+        case "animais_estimacao":
+          return { deptId: "animais_estimacao", deptName: "Animais de Estimação", badge: "PET SHOP", badgeClass: "bg-emerald-100 text-emerald-900", icon: "fa-paw", intentGroup: "produtos", rawCode: code };
         case "servicos_gerais":
           return { deptId: "servicos_gerais", deptName: "Serviços & Seguros", badge: "SERVIÇOS", badgeClass: "bg-purple-100 text-purple-800", icon: "fa-shield-heart", intentGroup: "servicos", rawCode: code };
         default:
@@ -1358,6 +1361,7 @@
     let currentSubcategoryFilter = "all";
     let currentSearchQuery = "";
     let feedLayoutMode = "grid";
+    let isCategoriesDrawerOpen = false;
 
     let isAdminLogged = false;
     let pendingPostImages = [];
@@ -1422,8 +1426,116 @@
       }
     };
 
-    window.openCategoriesDirectoryModal = function() {
-      document.getElementById("categoriesDirectoryModal").classList.replace("hidden", "flex");
+    // =========================================================================
+    // CONTROLE DO CAMPO EXPANSÍVEL "CATEGORIAS" (19 DEPARTAMENTOS)
+    // =========================================================================
+    window.toggleCategoriesDrawer = function(forceState) {
+      isCategoriesDrawerOpen = typeof forceState === "boolean" ? forceState : !isCategoriesDrawerOpen;
+      const drawer = document.getElementById("categoriesDrawer");
+      const chevron = document.getElementById("categoriesChevronIcon");
+      if (drawer) {
+        drawer.classList.toggle("hidden", !isCategoriesDrawerOpen);
+      }
+      if (chevron) {
+        chevron.style.transform = isCategoriesDrawerOpen ? "rotate(180deg)" : "rotate(0deg)";
+      }
+      if (isCategoriesDrawerOpen) {
+        renderCategoriesGrid();
+      }
+    };
+
+    window.openCategoriesAndScroll = function() {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      toggleCategoriesDrawer(true);
+    };
+
+    function renderCategoriesGrid() {
+      const grid = document.getElementById("categoriesGrid");
+      const subBar = document.getElementById("subcategoriesBar");
+      if (grid) {
+        grid.innerHTML = DEPARTMENTS.map(dept => {
+          const isSelected = currentDepartmentFilter === dept.id;
+          return `
+            <button type="button" onclick="selectDepartmentFromDrawer('${dept.id}')"
+              class="p-2.5 rounded-xl border text-left flex items-center gap-2 transition active:scale-95
+                ${isSelected
+                  ? "bg-[#031238] text-amber-400 border-amber-400 shadow-xs"
+                  : "bg-white hover:bg-blue-50 text-slate-800 border-gray-200"}">
+              <i class="fa-solid ${dept.icon} text-xs flex-shrink-0 ${isSelected ? 'text-amber-400' : 'text-[#3483FA]'}"></i>
+              <span class="text-[11px] font-bold leading-tight truncate">${dept.short}</span>
+            </button>
+          `;
+        }).join("");
+      }
+
+      if (subBar) {
+        if (currentDepartmentFilter === "carros") {
+          subBar.classList.remove("hidden");
+          subBar.innerHTML = `
+            <button onclick="setSubcategoryFilter('all')" class="px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap ${currentSubcategoryFilter === 'all' ? 'bg-[#031238] text-amber-400' : 'bg-slate-100 text-slate-700'}">Todos Carros</button>
+            <button onclick="setSubcategoryFilter('venda_carros')" class="px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap ${currentSubcategoryFilter === 'venda_carros' ? 'bg-[#031238] text-amber-400' : 'bg-slate-100 text-slate-700'}">Venda de Veículos</button>
+            <button onclick="setSubcategoryFilter('servicos_carros')" class="px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap ${currentSubcategoryFilter === 'servicos_carros' ? 'bg-[#031238] text-amber-400' : 'bg-slate-100 text-slate-700'}">Oficinas & Estética</button>
+          `;
+        } else if (currentDepartmentFilter === "motos") {
+          subBar.classList.remove("hidden");
+          subBar.innerHTML = `
+            <button onclick="setSubcategoryFilter('all')" class="px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap ${currentSubcategoryFilter === 'all' ? 'bg-[#031238] text-amber-400' : 'bg-slate-100 text-slate-700'}">Todas Motos</button>
+            <button onclick="setSubcategoryFilter('venda_motos')" class="px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap ${currentSubcategoryFilter === 'venda_motos' ? 'bg-[#031238] text-amber-400' : 'bg-slate-100 text-slate-700'}">Venda de Motos</button>
+            <button onclick="setSubcategoryFilter('servicos_motos')" class="px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap ${currentSubcategoryFilter === 'servicos_motos' ? 'bg-[#031238] text-amber-400' : 'bg-slate-100 text-slate-700'}">Oficina & Peças</button>
+          `;
+        } else {
+          subBar.classList.add("hidden");
+          subBar.innerHTML = "";
+        }
+      }
+    }
+
+    window.selectDepartmentFromDrawer = function(deptId) {
+      setDepartmentFilter(deptId);
+      toggleCategoriesDrawer(false);
+    };
+
+    window.setDepartmentFilter = function(deptId) {
+      currentDepartmentFilter = currentDepartmentFilter === deptId ? "all" : deptId;
+      currentSubcategoryFilter = "all";
+      renderCategoriesGrid();
+      renderFeed();
+    };
+
+    window.setSubcategoryFilter = function(subCode) {
+      currentSubcategoryFilter = subCode;
+      renderCategoriesGrid();
+      renderFeed();
+    };
+
+    window.setIntentFilter = function(intent) {
+      currentIntentFilter = intent;
+      currentDepartmentFilter = "all";
+      currentSubcategoryFilter = "all";
+      toggleCategoriesDrawer(false);
+      renderCategoriesGrid();
+
+      const navAll = document.getElementById("nav-all");
+      if (navAll) {
+        navAll.classList.toggle("text-[#3483FA]", intent === "all");
+        navAll.classList.toggle("text-gray-400", intent !== "all");
+      }
+
+      const chipProd = document.getElementById("chip-produtos");
+      const chipServ = document.getElementById("chip-servicos");
+      if (chipProd) {
+        chipProd.className = intent === "produtos"
+          ? "flex-shrink-0 px-3 py-2 rounded-xl bg-[#3483FA] text-white font-bold text-xs flex items-center gap-1.5"
+          : "flex-shrink-0 px-3 py-2 rounded-xl bg-slate-100 hover:bg-blue-50 text-slate-700 font-bold text-xs flex items-center gap-1.5";
+      }
+      if (chipServ) {
+        chipServ.className = intent === "servicos"
+          ? "flex-shrink-0 px-3 py-2 rounded-xl bg-purple-700 text-white font-bold text-xs flex items-center gap-1.5"
+          : "flex-shrink-0 px-3 py-2 rounded-xl bg-slate-100 hover:bg-blue-50 text-slate-700 font-bold text-xs flex items-center gap-1.5";
+      }
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      renderFeed();
     };
 
     window.openSearchSuggestions = function() {
@@ -1489,82 +1601,6 @@
       const countEl = document.getElementById("moreSavedCount");
       if (countEl) countEl.textContent = savedIds.length;
       document.getElementById("moreMenuModal").classList.replace("hidden", "flex");
-    };
-
-    function renderDepartmentsCarousel() {
-      const box = document.getElementById("departmentsCarousel");
-      const subBar = document.getElementById("subcategoriesBar");
-      if (!box) return;
-
-      box.innerHTML = DEPARTMENTS.map(dept => {
-        const isSelected = currentDepartmentFilter === dept.id;
-        return `
-          <button type="button" onclick="setDepartmentFilter('${dept.id}')"
-            class="flex-shrink-0 flex flex-col items-center gap-1.5 w-[72px] sm:w-[82px] pb-1.5 border-b-2 transition active:scale-95
-              ${isSelected ? "border-[#3483FA]" : "border-transparent"}">
-            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-base sm:text-lg border transition
-              ${isSelected
-                ? "bg-[#031238] text-amber-400 border-amber-400 shadow-xs"
-                : "bg-slate-50 text-[#081c45] border-slate-200"}">
-              <i class="fa-solid ${dept.icon}"></i>
-            </div>
-            <span class="text-[10px] sm:text-[11px] leading-tight text-center line-clamp-1
-              ${isSelected ? "text-[#3483FA] font-extrabold" : "text-slate-700 font-bold"}">
-              ${dept.short}
-            </span>
-          </button>
-        `;
-      }).join("");
-
-      if (subBar) {
-        if (currentDepartmentFilter === "carros") {
-          subBar.classList.remove("hidden");
-          subBar.innerHTML = `
-            <button onclick="setSubcategoryFilter('all')" class="px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap ${currentSubcategoryFilter === 'all' ? 'bg-[#031238] text-amber-400' : 'bg-slate-100 text-slate-700'}">Todos Carros</button>
-            <button onclick="setSubcategoryFilter('venda_carros')" class="px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap ${currentSubcategoryFilter === 'venda_carros' ? 'bg-[#031238] text-amber-400' : 'bg-slate-100 text-slate-700'}">Venda de Veículos</button>
-            <button onclick="setSubcategoryFilter('servicos_carros')" class="px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap ${currentSubcategoryFilter === 'servicos_carros' ? 'bg-[#031238] text-amber-400' : 'bg-slate-100 text-slate-700'}">Oficinas & Estética</button>
-          `;
-        } else if (currentDepartmentFilter === "motos") {
-          subBar.classList.remove("hidden");
-          subBar.innerHTML = `
-            <button onclick="setSubcategoryFilter('all')" class="px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap ${currentSubcategoryFilter === 'all' ? 'bg-[#031238] text-amber-400' : 'bg-slate-100 text-slate-700'}">Todas Motos</button>
-            <button onclick="setSubcategoryFilter('venda_motos')" class="px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap ${currentSubcategoryFilter === 'venda_motos' ? 'bg-[#031238] text-amber-400' : 'bg-slate-100 text-slate-700'}">Venda de Motos</button>
-            <button onclick="setSubcategoryFilter('servicos_motos')" class="px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap ${currentSubcategoryFilter === 'servicos_motos' ? 'bg-[#031238] text-amber-400' : 'bg-slate-100 text-slate-700'}">Oficina & Peças</button>
-          `;
-        } else {
-          subBar.classList.add("hidden");
-          subBar.innerHTML = "";
-        }
-      }
-    }
-
-    window.setDepartmentFilter = function(deptId) {
-      currentDepartmentFilter = currentDepartmentFilter === deptId ? "all" : deptId;
-      currentSubcategoryFilter = "all";
-      renderDepartmentsCarousel();
-      renderFeed();
-    };
-
-    window.setSubcategoryFilter = function(subCode) {
-      currentSubcategoryFilter = subCode;
-      renderDepartmentsCarousel();
-      renderFeed();
-    };
-
-    window.setIntentFilter = function(intent) {
-      currentIntentFilter = intent;
-      currentDepartmentFilter = "all";
-      currentSubcategoryFilter = "all";
-      renderDepartmentsCarousel();
-
-      const navAll = document.getElementById("nav-all");
-      if (navAll) {
-        navAll.classList.toggle("text-[#3483FA]", intent === "all");
-        navAll.classList.toggle("text-gray-400", intent !== "all");
-      }
-
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      renderFeed();
     };
 
     window.handleSearchInput = function() {
@@ -2490,7 +2526,7 @@
           <div class="py-20 px-6 text-center text-gray-400 bg-white rounded-2xl">
             <i class="fa-solid fa-store-slash text-4xl mb-3 text-slate-300"></i>
             <p class="text-sm font-semibold text-slate-600">Nenhuma oferta encontrada neste filtro.</p>
-            <p class="text-xs mt-1">Tente limpar a busca ou explorar outros departamentos.</p>
+            <p class="text-xs mt-1">Tente limpar a busca ou explorar outras categorias.</p>
           </div>`;
         return;
       }
@@ -3574,12 +3610,10 @@
       document.getElementById("editingBannerAlert").classList.remove("hidden");
       document.getElementById("publishBtn").textContent = "Salvar Alterações";
 
-      const validDeptValues = [
-        "eletronicos", "eletrodomesticos", "casa", "construcao",
-        "venda_carros", "servicos_carros", "venda_motos", "servicos_motos", "servicos_gerais"
-      ];
+      const selectEl = document.getElementById("postDepartment");
+      const hasOption = Array.from(selectEl.options).some(opt => opt.value === post.department);
       const fallbackDept = post.type === "conserto" ? "servicos_gerais" : "eletronicos";
-      document.getElementById("postDepartment").value = validDeptValues.includes(post.department) ? post.department : fallbackDept;
+      selectEl.value = hasOption ? post.department : fallbackDept;
 
       document.getElementById("postPartnerName").value = post.partnerName || "";
       document.getElementById("postServiceMode").value = post.serviceMode || "Atendimento Online e Presencial • Teresina-PI";
@@ -3705,7 +3739,7 @@
       setTimeout(() => toast.classList.add("opacity-0"), 3400);
     }
 
-    renderDepartmentsCarousel();
+    renderCategoriesGrid();
   </script>
 </body>
 </html>
