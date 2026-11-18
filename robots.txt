@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://tereshoppingoficial.github.io/loja/sitemap.xml
+Sitemap: https://www.tereshopping.com.br/sitemap.xml
