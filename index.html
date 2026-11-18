@@ -59,15 +59,6 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://www.tereshopping.com.br/icon-512.png" />
 
-  <!-- Prévia Oficial de Compartilhamento (WhatsApp, Instagram, Facebook) -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="TERÊ SHOPPING • Teresina-PI" />
-  <meta property="og:description" content="Produtos, veículos e serviços especializados em Teresina-PI." />
-  <meta property="og:url" content="https://tereshopoficial.github.io/loja/?vitrine=1" />
-  <meta property="og:image" content="https://tereshopoficial.github.io/loja/icon-512.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="https://tereshopoficial.github.io/loja/icon-512.png" />
-
   <!-- Configuração PWA Multi-Plataforma (Android WebAPK + iOS Safari + Desktop) -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#031238" />
@@ -80,6 +71,7 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     html {
       -webkit-tap-highlight-color: transparent;
@@ -157,10 +149,16 @@
       
       <!-- Botões Flutuantes Semitransparentes -->
       <div class="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-3 sm:px-4 pt-2.5 safe-top pointer-events-none">
-        <button onclick="shareApp()" title="Compartilhar App"
-          class="pointer-events-auto w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-black/55 hover:bg-black/75 border border-white/25 text-white shadow-sm active:scale-90 transition-transform">
-          <i class="fa-solid fa-share-nodes text-sm sm:text-base"></i>
-        </button>
+        <div class="pointer-events-auto flex items-center gap-1.5">
+          <button onclick="shareApp()" title="Compartilhar App"
+            class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-black/55 hover:bg-black/75 border border-white/25 text-white shadow-sm active:scale-90 transition-transform">
+            <i class="fa-solid fa-share-nodes text-sm sm:text-base"></i>
+          </button>
+          <button onclick="openQrShareModal()" title="QR Code de Compartilhamento"
+            class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-black/55 hover:bg-black/75 border border-amber-400/40 text-amber-400 shadow-sm active:scale-90 transition-transform">
+            <i class="fa-solid fa-qrcode text-sm sm:text-base"></i>
+          </button>
+        </div>
 
         <button onclick="openAdminGate()" id="adminToggleBtn" title="Acesso Administrativo"
           class="pointer-events-auto w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-black/55 hover:bg-black/75 border border-white/25 text-white/95 shadow-sm active:scale-90 transition-transform">
@@ -175,7 +173,7 @@
 
       <!-- MODO 2: TÍTULO ESCRITO ESTILIZADO -->
       <div id="headerTitleWrapper" onclick="resetAllFilters()"
-        class="w-full min-h-[68px] sm:min-h-[78px] pt-2 pb-2 px-14 flex flex-col items-center justify-center text-center bg-gradient-to-r from-[#031238] via-[#0a2d82] to-[#031238] safe-top cursor-pointer">
+        class="w-full min-h-[68px] sm:min-h-[78px] pt-2 pb-2 px-24 flex flex-col items-center justify-center text-center bg-gradient-to-r from-[#031238] via-[#0a2d82] to-[#031238] safe-top cursor-pointer">
         <h1 id="headerCompanyName" class="font-black text-xl sm:text-2xl tracking-tight leading-none text-white">
           TERÊ SHOPPING
         </h1>
@@ -256,9 +254,15 @@
     </main>
 
     <!-- RODAPÉ INSTITUCIONAL & INDEXAÇÃO GOOGLE -->
-    <footer class="px-4 py-5 bg-slate-50 border-t border-gray-200 text-center space-y-1">
+    <footer class="px-4 py-5 bg-slate-50 border-t border-gray-200 text-center space-y-2">
       <p class="text-xs font-extrabold text-slate-800">TERÊ SHOPPING • Marketplace Regional de Teresina-PI</p>
       <p class="text-[11px] text-gray-500">Fundado por <strong class="text-slate-700">Matheus George Coelho</strong> • Todos os direitos reservados</p>
+      <div class="pt-1">
+        <button onclick="openQrShareModal()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#031238] text-amber-400 text-[11px] font-bold shadow-xs active:scale-95 transition-transform">
+          <i class="fa-solid fa-qrcode"></i>
+          <span>Compartilhar via QR Code</span>
+        </button>
+      </div>
     </footer>
 
   </div>
@@ -295,6 +299,35 @@
       </button>
     </div>
   </nav>
+
+  <!-- MODAL QR CODE OFICIAL DE COMPARTILHAMENTO -->
+  <div id="qrShareModal" class="fixed inset-0 z-50 bg-black/70 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-xs w-full p-6 shadow-2xl text-center space-y-4">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-extrabold uppercase tracking-wider text-[#031238]">QR Code Oficial</span>
+        <button onclick="closeModal('qrShareModal')" class="text-gray-400 hover:text-gray-700 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div class="p-4 rounded-2xl bg-gradient-to-b from-[#031238] to-[#08246b] text-white space-y-3">
+        <p class="font-black text-base tracking-tight">TERÊ SHOPPING</p>
+        <div id="qrCodeCanvasBox" class="bg-white p-3 rounded-2xl inline-flex items-center justify-center mx-auto shadow-md"></div>
+        <p class="text-[11px] text-amber-300 font-semibold">Aponte a câmera do celular para acessar a vitrine</p>
+      </div>
+
+      <p class="text-[11px] font-mono text-gray-500 break-all">www.tereshopping.com.br</p>
+
+      <div class="flex gap-2">
+        <button onclick="copyPublicLink()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5">
+          <i class="fa-regular fa-copy"></i>
+          <span>Copiar Link</span>
+        </button>
+        <button onclick="shareApp()" class="flex-1 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-share-nodes"></i>
+          <span>Enviar</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- LIGHTBOX DE FOTOS EM TELA CHEIA -->
   <div id="photoLightboxModal" class="fixed inset-0 z-50 bg-black hidden flex-col justify-between safe-top safe-bottom">
@@ -767,7 +800,7 @@
 
           <div>
             <label class="block text-xs font-bold text-gray-700 mb-1">Link Direto de Contato (WhatsApp ou Instagram)</label>
-            <input type="text" id="videoContactLink" placeholder="Ex: 86999999999 ou https://instagram.com/tereshop"
+            <input type="text" id="videoContactLink" placeholder="Ex: 86999999999 ou https://instagram.com/tereshopping"
               class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm" />
           </div>
 
@@ -1067,6 +1100,7 @@
     let trimCheckInterval = null;
 
     let studioUploadedImg = null;
+    let qrCodeGenerated = false;
 
     function renderDepartmentsCarousel() {
       const box = document.getElementById("departmentsCarousel");
@@ -1202,7 +1236,6 @@
       if (snapshot.exists()) {
         const val = snapshot.val();
         config = { ...DEFAULT_CONFIG, ...val };
-        // Atualiza automaticamente no banco caso ainda estivesse "TERÊ SHOP"
         if (!val.companyName || val.companyName === "TERÊ SHOP") {
           config.companyName = "TERÊ SHOPPING";
           set(ref(db, "config/companyName"), "TERÊ SHOPPING").catch(() => {});
@@ -1943,10 +1976,35 @@
     };
 
     function getPublicShareUrl() {
-      const url = new URL(window.location.href);
-      url.searchParams.set("vitrine", "1");
-      return url.toString();
+      return "https://www.tereshopping.com.br/?vitrine=1";
     }
+
+    window.openQrShareModal = function() {
+      const modal = document.getElementById("qrShareModal");
+      const box = document.getElementById("qrCodeCanvasBox");
+      if (!qrCodeGenerated && typeof QRCode !== "undefined") {
+        box.innerHTML = "";
+        new QRCode(box, {
+          text: getPublicShareUrl(),
+          width: 190,
+          height: 190,
+          colorDark: "#031238",
+          colorLight: "#ffffff",
+          correctLevel: QRCode.CorrectLevel.H
+        });
+        qrCodeGenerated = true;
+      }
+      modal.classList.replace("hidden", "flex");
+    };
+
+    window.copyPublicLink = function() {
+      const publicUrl = getPublicShareUrl();
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(publicUrl).then(() => {
+          showToast("Link oficial copiado!");
+        }).catch(() => {});
+      }
+    };
 
     window.shareApp = function() {
       const publicUrl = getPublicShareUrl();
