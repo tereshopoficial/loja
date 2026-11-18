@@ -89,7 +89,6 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     
-    /* Rolagem horizontal fluida sem bloquear a rolagem vertical no Android */
     .carousel-track {
       scroll-snap-type: x mandatory;
       touch-action: pan-x pan-y;
@@ -124,7 +123,7 @@
     }
   </style>
 </head>
-<body class="bg-slate-200/75 text-gray-900 font-sans antialiased pb-24 md:pb-28">
+<body class="bg-[#F5F5F5] text-[#222222] font-sans antialiased pb-24 md:pb-28">
 
   <!-- SPLASH SCREEN NATIVA DE ABERTURA -->
   <div id="splashScreen" class="fixed inset-0 z-50 bg-gradient-to-b from-[#031238] via-[#08246b] to-[#031238] flex flex-col items-center justify-center text-white splash-animate pointer-events-none">
@@ -143,9 +142,9 @@
     </div>
   </div>
 
-  <!-- CABEÇALHO + BARRA DE BUSCA ESTILO MARKETPLACE -->
+  <!-- ÁREA 1: CABEÇALHO SUPERIOR + PESQUISA INTELIGENTE + ÁREA 2: LOCALIZAÇÃO -->
   <header class="sticky top-0 z-40 bg-[#031238] shadow-md gpu-layer">
-    <div class="w-full max-w-2xl mx-auto relative overflow-hidden">
+    <div class="w-full max-w-2xl mx-auto relative">
       
       <!-- Botões Flutuantes Semitransparentes -->
       <div class="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-3 sm:px-4 pt-2.5 safe-top pointer-events-none">
@@ -167,7 +166,7 @@
       </div>
 
       <!-- MODO 1: CAPA PANORÂMICA / SLOGAN EM ALTA DEFINIÇÃO -->
-      <div id="headerLogoWrapper" onclick="resetAllFilters()" class="hidden w-full bg-[#031238] cursor-pointer">
+      <div id="headerLogoWrapper" onclick="resetAllFilters()" class="hidden w-full bg-[#031238] cursor-pointer overflow-hidden">
         <img id="headerLogoImg" src="" alt="TERÊ SHOPPING • Teresina-PI" decoding="async" class="w-full h-auto max-h-[175px] sm:max-h-[220px] object-contain block mx-auto" />
       </div>
 
@@ -182,79 +181,195 @@
         </span>
       </div>
 
-      <!-- BARRA DE PESQUISA INTELIGENTE -->
-      <div class="px-3 sm:px-4 pb-2.5 pt-1 bg-[#031238]">
+      <!-- BARRA DE PESQUISA INTELIGENTE COM SUGESTÕES E HISTÓRICO -->
+      <div class="px-3 sm:px-4 pb-2 pt-1 bg-[#031238] relative">
         <div class="relative flex items-center">
           <i class="fa-solid fa-magnifying-glass absolute left-3.5 text-gray-400 text-xs sm:text-sm pointer-events-none"></i>
-          <input type="search" id="searchInput" oninput="handleSearchInput()" placeholder="Buscar produtos, carros, motos, construção ou serviços..."
+          <input type="search" id="searchInput" onfocus="openSearchSuggestions()" oninput="handleSearchInput()"
+            onkeydown="if(event.key==='Enter'){saveSearchHistory(this.value); closeSearchSuggestions();}"
+            placeholder="Buscar produtos, carros, motos, construção ou serviços..."
             class="w-full bg-white text-slate-900 placeholder-gray-400 text-xs sm:text-sm font-medium rounded-full pl-9 pr-9 py-2 shadow-inner focus:outline-none focus:ring-2 focus:ring-amber-400" />
           <button type="button" id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-3 text-gray-400 hover:text-gray-700 p-1">
             <i class="fa-solid fa-circle-xmark text-sm"></i>
           </button>
         </div>
+
+        <!-- Dropdown de Sugestões Rápidas e Histórico -->
+        <div id="searchSuggestionsDropdown" class="hidden absolute left-3 right-3 sm:left-4 sm:right-4 top-full mt-1 bg-white rounded-2xl shadow-2xl border border-gray-200 p-3 z-50 space-y-2.5">
+          <div id="searchHistoryBox" class="hidden space-y-1.5">
+            <div class="flex items-center justify-between text-[10px] font-extrabold uppercase text-gray-400">
+              <span>Buscas recentes</span>
+              <button type="button" onclick="clearSearchHistory()" class="text-blue-600 hover:underline">Limpar</button>
+            </div>
+            <div id="searchHistoryChips" class="flex flex-wrap gap-1.5"></div>
+          </div>
+
+          <div class="space-y-1.5">
+            <span class="block text-[10px] font-extrabold uppercase text-gray-400">Em alta em Teresina-PI</span>
+            <div class="flex flex-wrap gap-1.5">
+              <button type="button" onclick="applyQuickSearch('iPhone')" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-700 text-xs font-semibold">📱 iPhone</button>
+              <button type="button" onclick="applyQuickSearch('Carro')" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-700 text-xs font-semibold">🚗 Carros</button>
+              <button type="button" onclick="applyQuickSearch('Moto')" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-700 text-xs font-semibold">🏍️ Motos</button>
+              <button type="button" onclick="applyQuickSearch('Construção')" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-700 text-xs font-semibold">🧱 Construção</button>
+              <button type="button" onclick="applyQuickSearch('Seguro')" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-700 text-xs font-semibold">🛡️ Seguros</button>
+            </div>
+          </div>
+
+          <div class="pt-1 border-t border-gray-100 text-right">
+            <button type="button" onclick="closeSearchSuggestions()" class="text-[11px] font-bold text-gray-500 px-2 py-0.5">Fechar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ÁREA 2: LOCALIZAÇÃO E ENTREGA EM TERESINA-PI -->
+      <div onclick="openLocationModal()" class="px-3.5 sm:px-4 py-1.5 bg-[#061b4e] border-t border-white/10 flex items-center justify-between text-white/95 cursor-pointer active:bg-[#08246b] transition">
+        <div class="flex items-center gap-1.5 min-w-0 text-[11px] sm:text-xs">
+          <i class="fa-solid fa-location-dot text-amber-400 flex-shrink-0"></i>
+          <span class="text-white/75 flex-shrink-0">Enviar para:</span>
+          <span id="selectedLocationLabel" class="font-bold text-white truncate">Teresina - PI (Todas as Zonas)</span>
+        </div>
+        <i class="fa-solid fa-chevron-right text-[10px] text-amber-400 flex-shrink-0 ml-2"></i>
       </div>
 
     </div>
   </header>
 
   <!-- CONTENTOR PRINCIPAL FLUIDO -->
-  <div class="w-full max-w-2xl mx-auto md:my-3 md:rounded-2xl md:overflow-hidden md:shadow-md md:border md:border-gray-200/80 bg-white">
+  <div class="w-full max-w-2xl mx-auto md:my-3 md:rounded-2xl md:overflow-hidden md:shadow-md md:border md:border-gray-200/80 bg-[#F5F5F5]">
 
-    <!-- CARROSSEL DE 7 DEPARTAMENTOS UNIFICADOS -->
-    <section class="w-full bg-white border-b border-gray-200 py-3">
-      <div class="px-3.5 sm:px-5 pb-2 flex items-center justify-between">
-        <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-700">
-          Departamentos & Serviços
-        </span>
-        <button onclick="setDepartmentFilter('all')" id="clearDeptBtn" class="hidden text-[11px] font-bold text-blue-700 hover:underline">
-          Ver todos
-        </button>
-      </div>
-      <div id="departmentsCarousel" class="stories-scroll flex gap-2.5 sm:gap-3 overflow-x-auto no-scrollbar px-3.5 sm:px-5 pb-1">
+    <!-- ÁREA 3: NAVEGAÇÃO HORIZONTAL POR 7 DEPARTAMENTOS + SUBCATEGORIAS -->
+    <section class="w-full bg-white border-b border-gray-200 pt-3 pb-2">
+      <div id="departmentsCarousel" class="stories-scroll flex gap-2.5 sm:gap-3 overflow-x-auto no-scrollbar px-3.5 sm:px-5">
         <!-- Ícones dos 7 Departamentos renderizados via JS -->
       </div>
+      <!-- Subcategorias dinâmicas (ex: Venda vs Serviços em Carros e Motos) -->
+      <div id="subcategoriesBar" class="hidden px-3.5 sm:px-5 pt-2.5 mt-2 border-t border-gray-100 flex items-center gap-1.5 overflow-x-auto no-scrollbar"></div>
     </section>
 
-    <!-- CARROSSEL DINÂMICO DE BANNERS DO TOPO (AUTO-SLIDE 4s + ARRASTE COM DEDO SEM BOTÕES) -->
-    <section id="promoBannersSection" class="w-full bg-slate-950 border-b border-gray-200 hidden relative">
-      <div id="promoBannersTrack" onscroll="handleBannerScroll()" class="carousel-track flex overflow-x-auto no-scrollbar">
-        <!-- Banners clicáveis renderizados dinamicamente -->
-      </div>
-      <div id="promoBannersDots" class="absolute bottom-2 inset-x-0 flex justify-center gap-1.5 pointer-events-none"></div>
-    </section>
-
-    <!-- CARROSSEL HORIZONTAL DE DESTAQUES RÁPIDOS 24H (FOTOS OU VÍDEOS) -->
-    <section id="storiesSection" class="w-full bg-white border-b border-gray-200 hidden">
-      <div class="px-3.5 sm:px-5 pt-3 pb-1 flex items-center justify-between gap-2">
-        <span class="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-amber-500 flex-shrink-0"></span>
-          <span>Destaques Rápidos • 24h</span>
-        </span>
-        <span class="text-[10px] sm:text-[11px] text-gray-400 whitespace-nowrap">Toque para abrir</span>
-      </div>
-      <div id="storiesCarousel" class="stories-scroll flex gap-2.5 sm:gap-3.5 overflow-x-auto no-scrollbar px-3.5 sm:px-5 py-3 snap-x snap-mandatory">
-        <!-- Cards de fotos e vídeos 24h -->
+    <!-- ÁREA 4: BANNER PROMOCIONAL PREMIUM (FAIXA DE BENEFÍCIO DA MARCA) -->
+    <section class="px-3 sm:px-4 pt-3">
+      <div onclick="openQrShareModal()" class="bg-gradient-to-r from-[#031238] via-[#0b2e8a] to-[#031238] border border-amber-400/40 rounded-2xl px-3.5 py-2.5 flex items-center justify-between gap-2.5 text-white shadow-xs cursor-pointer active:scale-[0.99] transition">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <span class="w-8 h-8 rounded-xl bg-amber-400 text-[#031238] flex items-center justify-center font-black text-sm flex-shrink-0">
+            <i class="fa-solid fa-bolt"></i>
+          </span>
+          <div class="min-w-0">
+            <p class="text-xs sm:text-[13px] font-extrabold leading-tight truncate">Vitrine Oficial Teresina-PI • Negocie Direto</p>
+            <p class="text-[10px] sm:text-[11px] text-amber-300 font-medium truncate">Sem intermediários • Compartilhe o QR Code da loja</p>
+          </div>
+        </div>
+        <i class="fa-solid fa-chevron-right text-xs text-amber-400 flex-shrink-0"></i>
       </div>
     </section>
 
-    <!-- INDICADOR DE FILTRO ATIVO -->
-    <div id="activeFilterBar" class="hidden px-4 py-2.5 bg-blue-50/80 border-b border-blue-100 flex items-center justify-between gap-2">
-      <span id="activeFilterLabel" class="text-xs font-bold text-blue-900 truncate"></span>
-      <button onclick="resetAllFilters()" class="text-[11px] font-extrabold text-blue-700 bg-white px-2.5 py-1 rounded-lg border border-blue-200 flex-shrink-0">
-        Limpar filtro
-      </button>
+    <!-- ÁREA 5: ATALHOS RÁPIDOS DE SERVIÇOS & BENEFÍCIOS -->
+    <section class="px-3 sm:px-4 pt-3">
+      <div class="bg-white rounded-2xl border border-gray-200/80 py-3 px-2 shadow-2xs">
+        <div class="stories-scroll flex items-start justify-between gap-2 overflow-x-auto no-scrollbar px-1">
+          <button type="button" onclick="scrollToFlashDeals()" class="flex-1 min-w-[66px] flex flex-col items-center gap-1 text-center active:scale-95 transition">
+            <div class="relative w-11 h-11 rounded-full bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center text-base">
+              <i class="fa-solid fa-fire"></i>
+              <span class="absolute -top-1.5 -right-1 bg-[#00A650] text-white text-[8px] font-black px-1.5 py-0.2 rounded-full">24H</span>
+            </div>
+            <span class="text-[10px] font-bold text-slate-700 leading-tight">Ofertas Dia</span>
+          </button>
+
+          <button type="button" onclick="setIntentFilter('produtos')" class="flex-1 min-w-[66px] flex flex-col items-center gap-1 text-center active:scale-95 transition">
+            <div class="w-11 h-11 rounded-full bg-blue-50 border border-blue-200 text-[#3483FA] flex items-center justify-center text-base">
+              <i class="fa-solid fa-bag-shopping"></i>
+            </div>
+            <span class="text-[10px] font-bold text-slate-700 leading-tight">Produtos</span>
+          </button>
+
+          <button type="button" onclick="setDepartmentFilter('carros')" class="flex-1 min-w-[66px] flex flex-col items-center gap-1 text-center active:scale-95 transition">
+            <div class="w-11 h-11 rounded-full bg-emerald-50 border border-emerald-200 text-[#00A650] flex items-center justify-center text-base">
+              <i class="fa-solid fa-car"></i>
+            </div>
+            <span class="text-[10px] font-bold text-slate-700 leading-tight">Veículos</span>
+          </button>
+
+          <button type="button" onclick="setIntentFilter('servicos')" class="flex-1 min-w-[66px] flex flex-col items-center gap-1 text-center active:scale-95 transition">
+            <div class="w-11 h-11 rounded-full bg-purple-50 border border-purple-200 text-purple-700 flex items-center justify-center text-base">
+              <i class="fa-solid fa-screwdriver-wrench"></i>
+            </div>
+            <span class="text-[10px] font-bold text-slate-700 leading-tight">Serviços</span>
+          </button>
+
+          <button type="button" onclick="openQrShareModal()" class="flex-1 min-w-[66px] flex flex-col items-center gap-1 text-center active:scale-95 transition">
+            <div class="relative w-11 h-11 rounded-full bg-slate-100 border border-slate-200 text-[#031238] flex items-center justify-center text-base">
+              <i class="fa-solid fa-qrcode"></i>
+              <span class="absolute -top-1.5 -right-1 bg-amber-400 text-[#031238] text-[8px] font-black px-1.5 py-0.2 rounded-full">NOVO</span>
+            </div>
+            <span class="text-[10px] font-bold text-slate-700 leading-tight">QR Loja</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ÁREA 6: CARROSSEL DINÂMICO DE BANNERS DO TOPO (AUTO-SLIDE 4s + ARRASTE COM DEDO SEM BOTÕES) -->
+    <section id="promoBannersSection" class="px-3 sm:px-4 pt-3 hidden">
+      <div class="w-full bg-slate-950 rounded-2xl overflow-hidden border border-gray-200 shadow-2xs relative">
+        <div id="promoBannersTrack" onscroll="handleBannerScroll()" class="carousel-track flex overflow-x-auto no-scrollbar">
+          <!-- Banners clicáveis renderizados dinamicamente -->
+        </div>
+        <div id="promoBannersDots" class="absolute bottom-2 inset-x-0 flex justify-center gap-1.5 pointer-events-none"></div>
+      </div>
+    </section>
+
+    <!-- ÁREA 8 (DESTAQUES): OFERTAS RELÂMPAGO 24H COM TEMPORIZADOR REGRESSIVO -->
+    <section id="storiesSection" class="px-3 sm:px-4 pt-3 hidden">
+      <div class="bg-gradient-to-b from-[#031238] to-[#08246b] rounded-2xl overflow-hidden border border-amber-400/30 shadow-sm">
+        <div class="px-3.5 pt-3 pb-1.5 flex items-center justify-between gap-2 text-white">
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="px-2 py-0.5 rounded-md bg-amber-400 text-[#031238] text-[10px] font-black uppercase tracking-wide flex items-center gap-1">
+              <i class="fa-solid fa-bolt"></i>
+              <span>Ofertas Relâmpago</span>
+            </span>
+            <span id="flashCountdownTimer" class="text-[11px] font-mono font-bold text-amber-300">23:59:59</span>
+          </div>
+          <span class="text-[10px] text-white/75 whitespace-nowrap">Toque p/ abrir</span>
+        </div>
+        <div id="storiesCarousel" class="stories-scroll flex gap-2.5 sm:gap-3 overflow-x-auto no-scrollbar px-3.5 py-2.5 snap-x snap-mandatory">
+          <!-- Cards de fotos e vídeos 24h -->
+        </div>
+      </div>
+    </section>
+
+    <!-- BARRA DE CONTROLE DA VITRINE (ORDENAÇÃO + MODO GRADE/LISTA + LIMPAR FILTRO) -->
+    <div class="px-3 sm:px-4 pt-3">
+      <div class="bg-white rounded-xl border border-gray-200/90 px-3 py-2 flex items-center justify-between gap-2">
+        <div class="flex items-center gap-1.5 min-w-0">
+          <span id="feedSectionTitle" class="text-xs font-extrabold text-slate-800 truncate">Destaques para você</span>
+          <span id="feedCountBadge" class="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">0</span>
+        </div>
+
+        <div class="flex items-center gap-1.5 flex-shrink-0">
+          <button type="button" id="clearAllFiltersBtn" onclick="resetAllFilters()" class="hidden text-[10px] font-extrabold text-[#3483FA] bg-blue-50 px-2 py-1 rounded-lg">
+            Limpar
+          </button>
+          <select id="sortSelect" onchange="renderFeed()" class="text-[11px] font-bold text-slate-700 bg-slate-100 rounded-lg px-2 py-1 focus:outline-none">
+            <option value="recent">Mais recentes</option>
+            <option value="price_asc">Menor preço</option>
+            <option value="price_desc">Maior preço</option>
+          </select>
+          <button type="button" onclick="toggleFeedLayout()" id="layoutToggleBtn" title="Alternar Grade / Lista"
+            class="w-7 h-7 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center text-xs">
+            <i id="layoutToggleIcon" class="fa-solid fa-list"></i>
+          </button>
+        </div>
+      </div>
     </div>
 
-    <!-- FEED PRINCIPAL DE OFERTAS E SERVIÇOS -->
-    <main id="feedContainer" class="w-full divide-y divide-gray-200 bg-white min-h-[65vh]">
-      <div class="py-24 px-6 text-center text-gray-400">
+    <!-- ÁREA 7: VITRINE DE PRODUTOS E SERVIÇOS (GRADE 2 COLUNAS ESTILO MARKETPLACE) -->
+    <main id="feedContainer" class="w-full px-3 sm:px-4 pt-3 pb-4 min-h-[55vh]">
+      <div class="py-24 px-6 text-center text-gray-400 bg-white rounded-2xl">
         <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-blue-600"></i>
         <p class="text-xs font-medium">Carregando marketplace TERÊ SHOPPING...</p>
       </div>
     </main>
 
     <!-- RODAPÉ INSTITUCIONAL & INDEXAÇÃO GOOGLE -->
-    <footer class="px-4 py-5 bg-slate-50 border-t border-gray-200 text-center space-y-2">
+    <footer class="px-4 py-5 bg-white border-t border-gray-200 text-center space-y-2 mt-2">
       <p class="text-xs font-extrabold text-slate-800">TERÊ SHOPPING • Marketplace Regional de Teresina-PI</p>
       <p class="text-[11px] text-gray-500">Fundado por <strong class="text-slate-700">Matheus George Coelho</strong> • Todos os direitos reservados</p>
       <div class="pt-1">
@@ -267,38 +382,172 @@
 
   </div>
 
-  <!-- BARRA DE NAVEGAÇÃO INFERIOR COM 5 BOTÕES -->
+  <!-- MENU INFERIOR FIXO COM 5 OPÇÕES PRINCIPAIS -->
   <nav class="fixed bottom-0 inset-x-0 md:bottom-3 md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-2xl z-40 bg-white border-t md:border border-gray-200 md:rounded-2xl shadow-[0_-2px_10px_rgba(0,0,0,0.06)] md:shadow-xl safe-bottom gpu-layer">
     <div class="w-full flex items-center justify-around h-16 px-1 sm:px-3">
-      <button onclick="setIntentFilter('all')" id="nav-all" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-blue-700 active:scale-90 transition-transform">
+      <button onclick="setIntentFilter('all')" id="nav-all" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-[#3483FA] active:scale-90 transition-transform">
         <i class="fa-solid fa-house text-base sm:text-lg"></i>
         <span class="text-[10px] sm:text-[11px] font-extrabold truncate">Início</span>
       </button>
 
-      <button onclick="setIntentFilter('produtos')" id="nav-produtos" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
-        <i class="fa-solid fa-bag-shopping text-base sm:text-lg"></i>
-        <span class="text-[10px] sm:text-[11px] font-bold truncate">Produtos</span>
+      <button onclick="openCategoriesDirectoryModal()" id="nav-categories" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
+        <i class="fa-solid fa-layer-group text-base sm:text-lg"></i>
+        <span class="text-[10px] sm:text-[11px] font-bold truncate">Categorias</span>
       </button>
 
-      <button onclick="setIntentFilter('servicos')" id="nav-servicos" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
-        <i class="fa-solid fa-screwdriver-wrench text-base sm:text-lg"></i>
-        <span class="text-[10px] sm:text-[11px] font-bold truncate">Serviços</span>
-      </button>
-
-      <button onclick="setIntentFilter('saved')" id="nav-saved" class="relative flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
+      <button onclick="openCartModal()" id="nav-cart" class="relative flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
         <div class="relative">
-          <i id="nav-saved-icon" class="fa-regular fa-bookmark text-base sm:text-lg"></i>
-          <span id="savedBadgeCount" class="hidden absolute -top-1.5 -right-2.5 bg-amber-500 text-slate-950 text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center">0</span>
+          <i class="fa-solid fa-bag-shopping text-base sm:text-lg"></i>
+          <span id="cartBadgeCount" class="hidden absolute -top-1.5 -right-2.5 bg-[#00A650] text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center">0</span>
         </div>
-        <span class="text-[10px] sm:text-[11px] font-bold truncate">Salvos</span>
+        <span class="text-[10px] sm:text-[11px] font-bold truncate">Sacola</span>
       </button>
 
-      <button onclick="triggerAppInstall()" id="nav-install" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-amber-600 hover:text-amber-700 active:scale-90 transition-transform">
-        <i class="fa-solid fa-mobile-screen-button text-base sm:text-lg"></i>
-        <span class="text-[10px] sm:text-[11px] font-extrabold truncate">Instalar</span>
+      <button onclick="openVideosTab()" id="nav-videos" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
+        <i class="fa-solid fa-circle-play text-base sm:text-lg"></i>
+        <span class="text-[10px] sm:text-[11px] font-bold truncate">Vídeos 24h</span>
+      </button>
+
+      <button onclick="openMoreMenuModal()" id="nav-more" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
+        <i class="fa-solid fa-bars text-base sm:text-lg"></i>
+        <span class="text-[10px] sm:text-[11px] font-bold truncate">Mais</span>
       </button>
     </div>
   </nav>
+
+  <!-- MODAL PÁGINA COMPLETA DE DETALHES DO PRODUTO / SERVIÇO -->
+  <div id="productDetailModal" class="fixed inset-0 z-50 bg-[#F5F5F5] hidden flex-col safe-top safe-bottom">
+    <div class="bg-[#031238] text-white px-3.5 py-3 flex items-center justify-between gap-2 max-w-2xl w-full mx-auto">
+      <button onclick="closeProductDetail()" class="px-3 py-1.5 rounded-full bg-white/15 flex items-center gap-1.5 text-xs font-bold">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span>Voltar</span>
+      </button>
+      <span class="text-xs font-extrabold tracking-wide text-amber-400 truncate">Detalhes da Oferta</span>
+      <div class="flex items-center gap-1.5">
+        <button id="detailSaveBtn" class="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center text-sm">
+          <i class="fa-regular fa-heart"></i>
+        </button>
+        <button id="detailShareBtn" class="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center text-sm">
+          <i class="fa-solid fa-share-nodes"></i>
+        </button>
+      </div>
+    </div>
+
+    <div id="productDetailBody" class="flex-1 overflow-y-auto max-w-2xl w-full mx-auto pb-24"></div>
+
+    <div id="productDetailFooter" class="bg-white border-t border-gray-200 p-3 max-w-2xl w-full mx-auto flex items-center gap-2"></div>
+  </div>
+
+  <!-- MODAL SACOLA / CARRINHO DE PEDIDOS -->
+  <div id="cartModal" class="fixed inset-0 z-50 bg-black/65 hidden items-end sm:items-center justify-center">
+    <div class="bg-[#F5F5F5] w-full max-w-lg rounded-t-3xl sm:rounded-3xl max-h-[88vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="bg-[#031238] text-white px-4 py-3.5 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-bag-shopping text-amber-400"></i>
+          <h3 class="font-extrabold text-sm">Minha Sacola / Orçamento</h3>
+        </div>
+        <button onclick="closeModal('cartModal')" class="text-white/80 hover:text-white p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-4 space-y-3"></div>
+
+      <div id="cartFooterContainer" class="bg-white border-t border-gray-200 p-4 space-y-2.5"></div>
+    </div>
+  </div>
+
+  <!-- MODAL SELETOR DE REGIÃO / BAIRRO DE ENTREGA EM TERESINA -->
+  <div id="locationModal" class="fixed inset-0 z-50 bg-black/65 hidden items-end sm:items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-5 shadow-2xl space-y-3.5">
+      <div class="flex items-center justify-between">
+        <h3 class="font-extrabold text-sm text-slate-900 flex items-center gap-1.5">
+          <i class="fa-solid fa-location-dot text-amber-500"></i>
+          <span>Onde você está em Teresina?</span>
+        </h3>
+        <button onclick="closeModal('locationModal')" class="text-gray-400 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <p class="text-xs text-gray-500">Selecione sua zona para agilizar entregas e orçamentos com os parceiros:</p>
+      <div class="space-y-1.5 text-xs font-bold">
+        <button onclick="selectDeliveryLocation('Teresina - PI (Todas as Zonas)')" class="w-full text-left px-3.5 py-2.5 rounded-xl bg-slate-50 hover:bg-blue-50 border border-slate-200">📍 Teresina - PI (Todas as Zonas)</button>
+        <button onclick="selectDeliveryLocation('Zona Leste • Teresina-PI')" class="w-full text-left px-3.5 py-2.5 rounded-xl bg-slate-50 hover:bg-blue-50 border border-slate-200">🏙️ Zona Leste (Fátima, Jóquei, Ininga, Morros)</button>
+        <button onclick="selectDeliveryLocation('Zona Sul • Teresina-PI')" class="w-full text-left px-3.5 py-2.5 rounded-xl bg-slate-50 hover:bg-blue-50 border border-slate-200">🏘️ Zona Sul (Promorar, Parque Piauí, Saci, Bela Vista)</button>
+        <button onclick="selectDeliveryLocation('Zona Norte • Teresina-PI')" class="w-full text-left px-3.5 py-2.5 rounded-xl bg-slate-50 hover:bg-blue-50 border border-slate-200">🌳 Zona Norte (Mocambinho, Buenos Aires, Primavera)</button>
+        <button onclick="selectDeliveryLocation('Zona Sudeste • Teresina-PI')" class="w-full text-left px-3.5 py-2.5 rounded-xl bg-slate-50 hover:bg-blue-50 border border-slate-200">🏡 Zona Sudeste (Dirceu, Renascença, Itararé)</button>
+        <button onclick="selectDeliveryLocation('Centro • Teresina-PI')" class="w-full text-left px-3.5 py-2.5 rounded-xl bg-slate-50 hover:bg-blue-50 border border-slate-200">🏢 Centro Comercial • Teresina-PI</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DIRETÓRIO DE CATEGORIAS -->
+  <div id="categoriesDirectoryModal" class="fixed inset-0 z-50 bg-black/65 hidden items-end sm:items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-5 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="font-extrabold text-sm text-slate-900">Todos os Departamentos</h3>
+        <button onclick="closeModal('categoriesDirectoryModal')" class="text-gray-400 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <div class="grid grid-cols-2 gap-2.5 text-xs font-bold">
+        <button onclick="closeModal('categoriesDirectoryModal'); setDepartmentFilter('eletronicos')" class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-2.5 text-left">
+          <i class="fa-solid fa-mobile-screen text-[#3483FA] text-base"></i><span>Eletrônicos</span>
+        </button>
+        <button onclick="closeModal('categoriesDirectoryModal'); setDepartmentFilter('eletrodomesticos')" class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-2.5 text-left">
+          <i class="fa-solid fa-blender-phone text-cyan-600 text-base"></i><span>Eletrodomésticos</span>
+        </button>
+        <button onclick="closeModal('categoriesDirectoryModal'); setDepartmentFilter('casa')" class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-2.5 text-left">
+          <i class="fa-solid fa-couch text-amber-600 text-base"></i><span>Casa & Decoração</span>
+        </button>
+        <button onclick="closeModal('categoriesDirectoryModal'); setDepartmentFilter('construcao')" class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-2.5 text-left">
+          <i class="fa-solid fa-helmet-safety text-orange-600 text-base"></i><span>Construção</span>
+        </button>
+        <button onclick="closeModal('categoriesDirectoryModal'); setDepartmentFilter('carros')" class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-2.5 text-left">
+          <i class="fa-solid fa-car-side text-[#00A650] text-base"></i><span>Carros</span>
+        </button>
+        <button onclick="closeModal('categoriesDirectoryModal'); setDepartmentFilter('motos')" class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-2.5 text-left">
+          <i class="fa-solid fa-motorcycle text-teal-600 text-base"></i><span>Motos</span>
+        </button>
+        <button onclick="closeModal('categoriesDirectoryModal'); setDepartmentFilter('servicos_gerais')" class="col-span-2 p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-2.5 text-left">
+          <i class="fa-solid fa-shield-heart text-purple-600 text-base"></i><span>Serviços Gerais, Manutenção & Seguros</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL MENU "MAIS" (FAVORITOS, INSTALAR, QR CODE, PERFIL) -->
+  <div id="moreMenuModal" class="fixed inset-0 z-50 bg-black/65 hidden items-end sm:items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-5 shadow-2xl space-y-3">
+      <div class="flex items-center justify-between pb-1 border-b border-gray-100">
+        <div class="flex items-center gap-2.5">
+          <img src="./icon-512.png" class="w-9 h-9 rounded-xl bg-[#031238] p-1" />
+          <div>
+            <p class="font-extrabold text-xs text-slate-900">TERÊ SHOPPING</p>
+            <p class="text-[10px] text-gray-500">Marketplace Teresina-PI</p>
+          </div>
+        </div>
+        <button onclick="closeModal('moreMenuModal')" class="text-gray-400 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div class="space-y-1.5 text-xs font-bold">
+        <button onclick="closeModal('moreMenuModal'); setIntentFilter('saved')" class="w-full px-3.5 py-3 rounded-xl bg-slate-50 hover:bg-blue-50 flex items-center justify-between">
+          <span class="flex items-center gap-2.5"><i class="fa-solid fa-heart text-red-500"></i> Meus Favoritos</span>
+          <span id="moreSavedCount" class="bg-slate-200 text-slate-800 px-2 py-0.5 rounded-full text-[10px]">0</span>
+        </button>
+        <button onclick="closeModal('moreMenuModal'); openLocationModal()" class="w-full px-3.5 py-3 rounded-xl bg-slate-50 hover:bg-blue-50 flex items-center justify-between">
+          <span class="flex items-center gap-2.5"><i class="fa-solid fa-location-dot text-amber-500"></i> Alterar Região de Entrega</span>
+          <i class="fa-solid fa-chevron-right text-[10px] text-gray-400"></i>
+        </button>
+        <button onclick="closeModal('moreMenuModal'); openQrShareModal()" class="w-full px-3.5 py-3 rounded-xl bg-slate-50 hover:bg-blue-50 flex items-center justify-between">
+          <span class="flex items-center gap-2.5"><i class="fa-solid fa-qrcode text-[#031238]"></i> QR Code da Vitrine</span>
+          <i class="fa-solid fa-chevron-right text-[10px] text-gray-400"></i>
+        </button>
+        <button onclick="closeModal('moreMenuModal'); triggerAppInstall()" class="w-full px-3.5 py-3 rounded-xl bg-amber-50 text-amber-950 border border-amber-200 flex items-center justify-between">
+          <span class="flex items-center gap-2.5"><i class="fa-solid fa-mobile-screen-button text-amber-600"></i> Instalar Aplicativo no Celular</span>
+          <i class="fa-solid fa-download text-xs text-amber-700"></i>
+        </button>
+        <button id="moreAdminBtn" onclick="closeModal('moreMenuModal'); openAdminGate()" class="w-full px-3.5 py-3 rounded-xl bg-slate-50 hover:bg-blue-50 flex items-center justify-between text-slate-600">
+          <span class="flex items-center gap-2.5"><i class="fa-solid fa-shield-halved text-blue-700"></i> Central Administrativa</span>
+          <i class="fa-solid fa-chevron-right text-[10px] text-gray-400"></i>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- MODAL QR CODE OFICIAL DE COMPARTILHAMENTO -->
   <div id="qrShareModal" class="fixed inset-0 z-50 bg-black/70 hidden items-center justify-center p-4">
@@ -571,10 +820,17 @@
               class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-600" />
           </div>
 
-          <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1">Valor, Parcela ou Condição (Opcional)</label>
-            <input type="text" id="postPrice" placeholder="Ex: R$ 89.900,00 | 12x sem juros | Orçamento Grátis"
-              class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-600" />
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">Preço Atual / Condição</label>
+              <input type="text" id="postPrice" placeholder="Ex: R$ 89.900,00 ou Orçamento Grátis"
+                class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-600" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">Preço Anterior (Para % OFF - Opcional)</label>
+              <input type="text" id="postOldPrice" placeholder="Ex: R$ 95.000,00"
+                class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-600" />
+            </div>
           </div>
 
           <div>
@@ -935,7 +1191,7 @@
     }
   </script>
 
-  <!-- FIREBASE REALTIME DATABASE + SUPER-APP LOGIC -->
+  <!-- FIREBASE REALTIME DATABASE + MARKETPLACE ENGINE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getDatabase, ref, set, push, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
@@ -954,7 +1210,6 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // 7 DEPARTAMENTOS PRINCIPAIS NA VITRINE (CARROS E MOTOS UNIFICADOS PARA FACILITAR PESQUISA)
     const DEPARTMENTS = [
       { id: "eletronicos", name: "Eletrônicos", short: "Eletrônicos", icon: "fa-mobile-screen" },
       { id: "eletrodomesticos", name: "Eletrodomésticos", short: "Eletro", icon: "fa-blender-phone" },
@@ -969,29 +1224,45 @@
       const code = post.department || "";
       switch (code) {
         case "eletronicos":
-          return { deptId: "eletronicos", deptName: "Eletrônicos", badge: "ELETRÔNICOS", badgeClass: "bg-indigo-100 text-indigo-800", icon: "fa-mobile-screen", intentGroup: "produtos" };
+          return { deptId: "eletronicos", deptName: "Eletrônicos", badge: "ELETRÔNICOS", badgeClass: "bg-indigo-100 text-indigo-800", icon: "fa-mobile-screen", intentGroup: "produtos", rawCode: code };
         case "eletrodomesticos":
-          return { deptId: "eletrodomesticos", deptName: "Eletrodomésticos", badge: "ELETRO", badgeClass: "bg-cyan-100 text-cyan-800", icon: "fa-blender-phone", intentGroup: "produtos" };
+          return { deptId: "eletrodomesticos", deptName: "Eletrodomésticos", badge: "ELETRO", badgeClass: "bg-cyan-100 text-cyan-800", icon: "fa-blender-phone", intentGroup: "produtos", rawCode: code };
         case "casa":
-          return { deptId: "casa", deptName: "Casa & Decoração", badge: "CASA", badgeClass: "bg-amber-100 text-amber-900", icon: "fa-couch", intentGroup: "produtos" };
+          return { deptId: "casa", deptName: "Casa & Decoração", badge: "CASA", badgeClass: "bg-amber-100 text-amber-900", icon: "fa-couch", intentGroup: "produtos", rawCode: code };
         case "construcao":
-          return { deptId: "construcao", deptName: "Construção", badge: "CONSTRUÇÃO", badgeClass: "bg-orange-100 text-orange-800", icon: "fa-helmet-safety", intentGroup: "produtos" };
+          return { deptId: "construcao", deptName: "Construção", badge: "CONSTRUÇÃO", badgeClass: "bg-orange-100 text-orange-800", icon: "fa-helmet-safety", intentGroup: "produtos", rawCode: code };
         case "venda_carros":
-          return { deptId: "carros", deptName: "Carros", badge: "VENDA CARRO", badgeClass: "bg-emerald-100 text-emerald-800", icon: "fa-car-side", intentGroup: "produtos" };
+          return { deptId: "carros", deptName: "Carros", badge: "VENDA CARRO", badgeClass: "bg-emerald-100 text-emerald-800", icon: "fa-car-side", intentGroup: "produtos", rawCode: code };
         case "servicos_carros":
-          return { deptId: "carros", deptName: "Carros", badge: "SERV. CARRO", badgeClass: "bg-slate-200 text-slate-800", icon: "fa-car-burst", intentGroup: "servicos" };
+          return { deptId: "carros", deptName: "Carros", badge: "SERV. CARRO", badgeClass: "bg-slate-200 text-slate-800", icon: "fa-car-burst", intentGroup: "servicos", rawCode: code };
         case "venda_motos":
-          return { deptId: "motos", deptName: "Motos", badge: "VENDA MOTO", badgeClass: "bg-teal-100 text-teal-800", icon: "fa-motorcycle", intentGroup: "produtos" };
+          return { deptId: "motos", deptName: "Motos", badge: "VENDA MOTO", badgeClass: "bg-teal-100 text-teal-800", icon: "fa-motorcycle", intentGroup: "produtos", rawCode: code };
         case "servicos_motos":
-          return { deptId: "motos", deptName: "Motos", badge: "SERV. MOTO", badgeClass: "bg-sky-100 text-sky-800", icon: "fa-screwdriver-wrench", intentGroup: "servicos" };
+          return { deptId: "motos", deptName: "Motos", badge: "SERV. MOTO", badgeClass: "bg-sky-100 text-sky-800", icon: "fa-screwdriver-wrench", intentGroup: "servicos", rawCode: code };
         case "servicos_gerais":
-          return { deptId: "servicos_gerais", deptName: "Serviços & Seguros", badge: "SERVIÇOS", badgeClass: "bg-purple-100 text-purple-800", icon: "fa-shield-heart", intentGroup: "servicos" };
+          return { deptId: "servicos_gerais", deptName: "Serviços & Seguros", badge: "SERVIÇOS", badgeClass: "bg-purple-100 text-purple-800", icon: "fa-shield-heart", intentGroup: "servicos", rawCode: code };
         default:
           if (post.type === "conserto") {
-            return { deptId: "servicos_gerais", deptName: "Serviços & Seguros", badge: "CONSERTO", badgeClass: "bg-blue-100 text-blue-800", icon: "fa-screwdriver-wrench", intentGroup: "servicos" };
+            return { deptId: "servicos_gerais", deptName: "Serviços & Seguros", badge: "CONSERTO", badgeClass: "bg-blue-100 text-blue-800", icon: "fa-screwdriver-wrench", intentGroup: "servicos", rawCode: "servicos_gerais" };
           }
-          return { deptId: "eletronicos", deptName: "Eletrônicos", badge: "VENDA", badgeClass: "bg-emerald-100 text-emerald-800", icon: "fa-tag", intentGroup: "produtos" };
+          return { deptId: "eletronicos", deptName: "Eletrônicos", badge: "VENDA", badgeClass: "bg-emerald-100 text-emerald-800", icon: "fa-tag", intentGroup: "produtos", rawCode: "eletronicos" };
       }
+    }
+
+    function parseNumericPrice(priceStr) {
+      if (!priceStr) return null;
+      const match = String(priceStr).match(/[\d.,]+/);
+      if (!match) return null;
+      const cleaned = match[0].replace(/\./g, "").replace(",", ".");
+      const num = parseFloat(cleaned);
+      return isFinite(num) ? num : null;
+    }
+
+    function calcDiscountPercent(oldPriceStr, currentPriceStr) {
+      const oldVal = parseNumericPrice(oldPriceStr);
+      const curVal = parseNumericPrice(currentPriceStr);
+      if (!oldVal || !curVal || oldVal <= curVal) return 0;
+      return Math.round(((oldVal - curVal) / oldVal) * 100);
     }
 
     const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
@@ -1004,7 +1275,9 @@
 
     if (isSharedVitrineMode) {
       const adminBtn = document.getElementById("adminToggleBtn");
+      const moreAdminBtn = document.getElementById("moreAdminBtn");
       if (adminBtn) adminBtn.style.display = "none";
+      if (moreAdminBtn) moreAdminBtn.style.display = "none";
     }
 
     const ua = navigator.userAgent || "";
@@ -1076,10 +1349,15 @@
     let activeVideos = [];
     let promoBanners = [];
     let savedIds = JSON.parse(localStorage.getItem("tereshop_saved")) || [];
+    let cartItems = JSON.parse(localStorage.getItem("tereshop_cart")) || [];
+    let searchHistory = JSON.parse(localStorage.getItem("tereshop_search_history")) || [];
+    let selectedLocation = localStorage.getItem("tereshop_location") || "Teresina - PI (Todas as Zonas)";
 
     let currentIntentFilter = "all";
     let currentDepartmentFilter = "all";
+    let currentSubcategoryFilter = "all";
     let currentSearchQuery = "";
+    let feedLayoutMode = "grid";
 
     let isAdminLogged = false;
     let pendingPostImages = [];
@@ -1102,37 +1380,173 @@
     let studioUploadedImg = null;
     let qrCodeGenerated = false;
 
-    function renderDepartmentsCarousel() {
-      const box = document.getElementById("departmentsCarousel");
-      const clearBtn = document.getElementById("clearDeptBtn");
+    document.getElementById("selectedLocationLabel").textContent = selectedLocation;
+
+    function startFlashDealsTimer() {
+      setInterval(() => {
+        const timerEl = document.getElementById("flashCountdownTimer");
+        if (!timerEl) return;
+        let targetEnd = 0;
+        if (activeVideos.length > 0) {
+          const earliest = Math.min(...activeVideos.map(v => v.timestamp || Date.now()));
+          targetEnd = earliest + TWENTY_FOUR_HOURS_MS;
+        } else {
+          const endOfDay = new Date();
+          endOfDay.setHours(23, 59, 59, 999);
+          targetEnd = endOfDay.getTime();
+        }
+        const diff = Math.max(0, targetEnd - Date.now());
+        const hrs = Math.floor(diff / 3600000);
+        const mins = Math.floor((diff % 3600000) / 60000);
+        const secs = Math.floor((diff % 60000) / 1000);
+        timerEl.textContent = `${String(hrs).padStart(2, "0")}:${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+      }, 1000);
+    }
+    startFlashDealsTimer();
+
+    window.scrollToFlashDeals = function() {
+      const sec = document.getElementById("storiesSection");
+      if (sec && !sec.classList.contains("hidden")) {
+        sec.scrollIntoView({ behavior: "smooth" });
+      } else {
+        setIntentFilter("all");
+        showToast("Exibindo todas as ofertas do dia!");
+      }
+    };
+
+    window.openVideosTab = function() {
+      if (activeVideos.length > 0) {
+        openStoryViewer(0);
+      } else {
+        showToast("Nenhum vídeo ou destaque 24h ativo no momento.");
+      }
+    };
+
+    window.openCategoriesDirectoryModal = function() {
+      document.getElementById("categoriesDirectoryModal").classList.replace("hidden", "flex");
+    };
+
+    window.openSearchSuggestions = function() {
+      const box = document.getElementById("searchSuggestionsDropdown");
+      const histBox = document.getElementById("searchHistoryBox");
+      const histChips = document.getElementById("searchHistoryChips");
       if (!box) return;
 
-      if (clearBtn) {
-        clearBtn.classList.toggle("hidden", currentDepartmentFilter === "all");
+      if (searchHistory.length > 0) {
+        histBox.classList.remove("hidden");
+        histChips.innerHTML = searchHistory.map(term => `
+          <button type="button" onclick="applyQuickSearch('${term.replace(/'/g, "")}')"
+            class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-semibold flex items-center gap-1">
+            <i class="fa-solid fa-clock-rotate-left text-[10px]"></i>
+            <span>${term}</span>
+          </button>
+        `).join("");
+      } else {
+        histBox.classList.add("hidden");
       }
+      box.classList.remove("hidden");
+    };
+
+    window.closeSearchSuggestions = function() {
+      const box = document.getElementById("searchSuggestionsDropdown");
+      if (box) box.classList.add("hidden");
+    };
+
+    window.saveSearchHistory = function(term) {
+      const clean = (term || "").trim();
+      if (clean.length < 2) return;
+      searchHistory = [clean, ...searchHistory.filter(t => t.toLowerCase() !== clean.toLowerCase())].slice(0, 5);
+      localStorage.setItem("tereshop_search_history", JSON.stringify(searchHistory));
+    };
+
+    window.clearSearchHistory = function() {
+      searchHistory = [];
+      localStorage.removeItem("tereshop_search_history");
+      openSearchSuggestions();
+    };
+
+    window.applyQuickSearch = function(term) {
+      const input = document.getElementById("searchInput");
+      if (input) input.value = term;
+      saveSearchHistory(term);
+      closeSearchSuggestions();
+      handleSearchInput();
+    };
+
+    window.openLocationModal = function() {
+      document.getElementById("locationModal").classList.replace("hidden", "flex");
+    };
+
+    window.selectDeliveryLocation = function(locName) {
+      selectedLocation = locName;
+      localStorage.setItem("tereshop_location", locName);
+      document.getElementById("selectedLocationLabel").textContent = locName;
+      closeModal("locationModal");
+      showToast(`Região definida: ${locName}`);
+    };
+
+    window.openMoreMenuModal = function() {
+      const countEl = document.getElementById("moreSavedCount");
+      if (countEl) countEl.textContent = savedIds.length;
+      document.getElementById("moreMenuModal").classList.replace("hidden", "flex");
+    };
+
+    function renderDepartmentsCarousel() {
+      const box = document.getElementById("departmentsCarousel");
+      const subBar = document.getElementById("subcategoriesBar");
+      if (!box) return;
 
       box.innerHTML = DEPARTMENTS.map(dept => {
         const isSelected = currentDepartmentFilter === dept.id;
         return `
           <button type="button" onclick="setDepartmentFilter('${dept.id}')"
-            class="flex-shrink-0 flex flex-col items-center gap-1.5 w-[74px] sm:w-[84px] group active:scale-95 transition-transform">
-            <div class="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl flex items-center justify-center text-base sm:text-lg shadow-xs border transition
+            class="flex-shrink-0 flex flex-col items-center gap-1.5 w-[72px] sm:w-[82px] pb-1.5 border-b-2 transition active:scale-95
+              ${isSelected ? "border-[#3483FA]" : "border-transparent"}">
+            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-base sm:text-lg border transition
               ${isSelected
-                ? "bg-[#031238] text-amber-400 border-amber-400 ring-2 ring-amber-400/40"
-                : "bg-slate-50 text-[#081c45] border-slate-200 group-hover:border-blue-400"}">
+                ? "bg-[#031238] text-amber-400 border-amber-400 shadow-xs"
+                : "bg-slate-50 text-[#081c45] border-slate-200"}">
               <i class="fa-solid ${dept.icon}"></i>
             </div>
-            <span class="text-[10px] sm:text-[11px] font-bold leading-tight text-center line-clamp-1
-              ${isSelected ? "text-blue-700 font-extrabold" : "text-slate-700"}">
+            <span class="text-[10px] sm:text-[11px] leading-tight text-center line-clamp-1
+              ${isSelected ? "text-[#3483FA] font-extrabold" : "text-slate-700 font-bold"}">
               ${dept.short}
             </span>
           </button>
         `;
       }).join("");
+
+      if (subBar) {
+        if (currentDepartmentFilter === "carros") {
+          subBar.classList.remove("hidden");
+          subBar.innerHTML = `
+            <button onclick="setSubcategoryFilter('all')" class="px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap ${currentSubcategoryFilter === 'all' ? 'bg-[#031238] text-amber-400' : 'bg-slate-100 text-slate-700'}">Todos Carros</button>
+            <button onclick="setSubcategoryFilter('venda_carros')" class="px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap ${currentSubcategoryFilter === 'venda_carros' ? 'bg-[#031238] text-amber-400' : 'bg-slate-100 text-slate-700'}">Venda de Veículos</button>
+            <button onclick="setSubcategoryFilter('servicos_carros')" class="px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap ${currentSubcategoryFilter === 'servicos_carros' ? 'bg-[#031238] text-amber-400' : 'bg-slate-100 text-slate-700'}">Oficinas & Estética</button>
+          `;
+        } else if (currentDepartmentFilter === "motos") {
+          subBar.classList.remove("hidden");
+          subBar.innerHTML = `
+            <button onclick="setSubcategoryFilter('all')" class="px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap ${currentSubcategoryFilter === 'all' ? 'bg-[#031238] text-amber-400' : 'bg-slate-100 text-slate-700'}">Todas Motos</button>
+            <button onclick="setSubcategoryFilter('venda_motos')" class="px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap ${currentSubcategoryFilter === 'venda_motos' ? 'bg-[#031238] text-amber-400' : 'bg-slate-100 text-slate-700'}">Venda de Motos</button>
+            <button onclick="setSubcategoryFilter('servicos_motos')" class="px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap ${currentSubcategoryFilter === 'servicos_motos' ? 'bg-[#031238] text-amber-400' : 'bg-slate-100 text-slate-700'}">Oficina & Peças</button>
+          `;
+        } else {
+          subBar.classList.add("hidden");
+          subBar.innerHTML = "";
+        }
+      }
     }
 
     window.setDepartmentFilter = function(deptId) {
       currentDepartmentFilter = currentDepartmentFilter === deptId ? "all" : deptId;
+      currentSubcategoryFilter = "all";
+      renderDepartmentsCarousel();
+      renderFeed();
+    };
+
+    window.setSubcategoryFilter = function(subCode) {
+      currentSubcategoryFilter = subCode;
       renderDepartmentsCarousel();
       renderFeed();
     };
@@ -1140,23 +1554,13 @@
     window.setIntentFilter = function(intent) {
       currentIntentFilter = intent;
       currentDepartmentFilter = "all";
+      currentSubcategoryFilter = "all";
       renderDepartmentsCarousel();
 
-      ["all", "produtos", "servicos", "saved"].forEach(tab => {
-        const el = document.getElementById(`nav-${tab}`);
-        if (!el) return;
-        if (tab === intent) {
-          el.classList.add("text-blue-700");
-          el.classList.remove("text-gray-400");
-        } else {
-          el.classList.remove("text-blue-700");
-          el.classList.add("text-gray-400");
-        }
-      });
-
-      const savedIcon = document.getElementById("nav-saved-icon");
-      if (savedIcon) {
-        savedIcon.className = intent === "saved" ? "fa-solid fa-bookmark text-base sm:text-lg" : "fa-regular fa-bookmark text-base sm:text-lg";
+      const navAll = document.getElementById("nav-all");
+      if (navAll) {
+        navAll.classList.toggle("text-[#3483FA]", intent === "all");
+        navAll.classList.toggle("text-gray-400", intent !== "all");
       }
 
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1179,13 +1583,24 @@
       currentSearchQuery = "";
       const clearBtn = document.getElementById("clearSearchBtn");
       if (clearBtn) clearBtn.classList.add("hidden");
+      closeSearchSuggestions();
       renderFeed();
     };
 
     window.resetAllFilters = function() {
       clearSearch();
       currentDepartmentFilter = "all";
+      currentSubcategoryFilter = "all";
       setIntentFilter("all");
+    };
+
+    window.toggleFeedLayout = function() {
+      feedLayoutMode = feedLayoutMode === "grid" ? "list" : "grid";
+      const icon = document.getElementById("layoutToggleIcon");
+      if (icon) {
+        icon.className = feedLayoutMode === "grid" ? "fa-solid fa-list" : "fa-solid fa-grip";
+      }
+      renderFeed();
     };
 
     function formatSecondsMMSS(sec) {
@@ -1318,9 +1733,6 @@
       }
     }
 
-    // =========================================================================
-    // CARROSSEL DINÂMICO DE BANNERS DO TOPO (AUTO-SLIDE 4s + TOQUE SEM BOTÕES)
-    // =========================================================================
     function startBannerAutoPlay() {
       if (bannerAutoPlayTimer) clearInterval(bannerAutoPlayTimer);
       if (promoBanners.length <= 1) return;
@@ -1406,14 +1818,16 @@
       }
     };
 
-    function updateSavedBadge() {
-      const badge = document.getElementById("savedBadgeCount");
-      if (!badge) return;
-      if (savedIds.length > 0) {
-        badge.textContent = savedIds.length;
-        badge.classList.remove("hidden");
-      } else {
-        badge.classList.add("hidden");
+    function updateSavedAndCartBadges() {
+      const cartBadge = document.getElementById("cartBadgeCount");
+      const totalQty = cartItems.reduce((acc, item) => acc + (item.qty || 1), 0);
+      if (cartBadge) {
+        if (totalQty > 0) {
+          cartBadge.textContent = totalQty;
+          cartBadge.classList.remove("hidden");
+        } else {
+          cartBadge.classList.add("hidden");
+        }
       }
     }
 
@@ -1464,7 +1878,7 @@
       carousel.innerHTML = activeVideos.map((item, idx) => {
         const isImg = isStoryImage(item);
         return `
-        <div class="snap-start flex-shrink-0 w-[36vw] min-w-[130px] max-w-[158px] rounded-2xl story-ring shadow-xs relative group">
+        <div class="snap-start flex-shrink-0 w-[34vw] min-w-[125px] max-w-[152px] rounded-2xl story-ring shadow-xs relative group">
           <div class="bg-slate-950 rounded-[14px] overflow-hidden relative aspect-[9/15]">
             ${isImg ? `
               <img src="${item.videoData}" alt="${item.title}" decoding="async" onclick="openStoryViewer(${idx})"
@@ -1693,7 +2107,7 @@
       const item = activeVideos[idx];
       if (!item || !item.contactLink) return;
       const raw = item.contactLink.trim();
-      const msg = `Olá! Vi o destaque "${item.title}" (24h) na TERÊ SHOPPING e tenho interesse!`;
+      const msg = `Olá! Vi o destaque "${item.title}" (24h) na TERÊ SHOPPING (${selectedLocation}) e tenho interesse!`;
 
       if (raw.includes("instagram.com") || raw.startsWith("@")) {
         if (navigator.clipboard) navigator.clipboard.writeText(msg).catch(() => {});
@@ -1701,6 +2115,257 @@
         setTimeout(() => window.open(resolveInstagramUrl(raw), "_blank"), 500);
       } else {
         window.open(resolveWhatsappUrl(raw, msg), "_blank");
+      }
+    };
+
+    // PÁGINA COMPLETA DE DETALHES DO PRODUTO / SERVIÇO
+    window.openProductDetail = function(postId) {
+      const post = posts.find(p => p.id === postId);
+      if (!post) return;
+
+      const info = getPostClassification(post);
+      const images = post.images || [];
+      const isSaved = savedIds.includes(post.id);
+      const discountPct = calcDiscountPercent(post.oldPrice, post.price);
+      const partnerTitle = (post.partnerName && post.partnerName.trim()) ? post.partnerName.trim() : (config.companyName || "TERÊ SHOPPING");
+      const serviceModeLabel = post.serviceMode || "Atendimento Online e Presencial • Teresina-PI";
+      const safeTitle = (post.title || "").replace(/'/g, "");
+
+      const saveBtn = document.getElementById("detailSaveBtn");
+      saveBtn.innerHTML = `<i class="${isSaved ? 'fa-solid text-amber-400' : 'fa-regular'} fa-heart"></i>`;
+      saveBtn.onclick = () => {
+        toggleSave(post.id);
+        openProductDetail(post.id);
+      };
+
+      document.getElementById("detailShareBtn").onclick = () => sharePost(safeTitle);
+
+      const body = document.getElementById("productDetailBody");
+      body.innerHTML = `
+        <div class="bg-slate-950 relative">
+          <div id="detailGalleryTrack" onscroll="updateDetailGalleryCounter(${images.length})" class="carousel-track flex overflow-x-auto no-scrollbar max-h-[380px]">
+            ${images.map((img, idx) => `
+              <div onclick="openPhotoLightbox('${post.id}', ${idx})" class="carousel-slide w-full flex items-center justify-center bg-slate-950 cursor-zoom-in">
+                <img src="${img}" alt="${safeTitle}" class="w-full max-h-[380px] object-contain mx-auto" />
+              </div>
+            `).join("")}
+          </div>
+          ${images.length > 1 ? `
+            <span id="detailGalleryCounter" class="absolute top-3 right-3 bg-black/75 text-white text-[11px] font-bold px-2.5 py-1 rounded-full">
+              1/${images.length}
+            </span>
+          ` : ""}
+          <span class="absolute bottom-3 left-3 bg-black/75 text-white text-[10px] font-bold px-2.5 py-1 rounded-full pointer-events-none">
+            <i class="fa-solid fa-magnifying-glass-plus mr-1 text-amber-400"></i> Toque para ampliar
+          </span>
+        </div>
+
+        <div class="p-4 bg-white border-b border-gray-200 space-y-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full ${info.badgeClass}">${info.badge}</span>
+            <span class="text-[11px] text-gray-500 font-semibold">${serviceModeLabel}</span>
+          </div>
+
+          <h1 class="text-base sm:text-lg font-extrabold text-slate-900 leading-snug">${post.title}</h1>
+
+          <div class="pt-1">
+            ${post.oldPrice && discountPct > 0 ? `<p class="text-xs text-gray-400 line-through">${post.oldPrice}</p>` : ""}
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-2xl font-black text-slate-900">${post.price || "Consulte condições"}</span>
+              ${discountPct > 0 ? `<span class="text-xs font-extrabold text-[#00A650] bg-emerald-50 px-2 py-0.5 rounded-md">${discountPct}% OFF</span>` : ""}
+            </div>
+          </div>
+
+          <div class="p-2.5 rounded-xl bg-emerald-50/80 border border-emerald-200 flex items-center gap-2.5 text-xs text-emerald-950">
+            <i class="fa-solid fa-truck-fast text-[#00A650] text-base"></i>
+            <div>
+              <p class="font-bold text-[#00A650]">Atendimento & Entrega Disponível</p>
+              <p class="text-[11px] text-slate-600">Região selecionada: <b>${selectedLocation}</b></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-2.5 p-4 bg-white border-y border-gray-200 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-11 h-11 rounded-2xl bg-[#031238] text-amber-400 flex items-center justify-center text-base border border-amber-400/50 flex-shrink-0">
+              <i class="fa-solid ${info.icon}"></i>
+            </div>
+            <div class="min-w-0">
+              <p class="text-xs sm:text-sm font-extrabold text-slate-900 truncate flex items-center gap-1">
+                <span>${partnerTitle}</span>
+                <i class="fa-solid fa-circle-check text-[#3483FA] text-xs"></i>
+              </p>
+              <p class="text-[11px] text-gray-500">Parceiro Verificado TERÊ SHOPPING</p>
+            </div>
+          </div>
+          ${post.instagram ? `
+            <button onclick="openPostInstagram('${post.id}')" class="px-3 py-2 rounded-xl bg-pink-50 text-pink-700 font-bold text-xs flex items-center gap-1.5 flex-shrink-0">
+              <i class="fa-brands fa-instagram text-sm"></i>
+              <span>Perfil</span>
+            </button>
+          ` : ""}
+        </div>
+
+        <div class="mt-2.5 p-4 bg-white border-y border-gray-200 space-y-2">
+          <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Descrição e Características</h3>
+          <p class="text-xs sm:text-sm text-slate-700 leading-relaxed whitespace-pre-line">${post.description}</p>
+        </div>
+      `;
+
+      const hasWhats = Boolean(post.whatsapp && post.whatsapp.trim());
+      const hasInsta = Boolean(post.instagram && post.instagram.trim());
+      const footer = document.getElementById("productDetailFooter");
+
+      footer.innerHTML = `
+        <button onclick="addToCart('${post.id}')" class="px-3.5 py-3 rounded-xl bg-blue-50 hover:bg-blue-100 text-[#3483FA] font-extrabold text-xs flex items-center justify-center gap-1.5 flex-shrink-0">
+          <i class="fa-solid fa-cart-plus text-sm"></i>
+          <span>+ Sacola</span>
+        </button>
+        ${hasWhats ? `
+          <button onclick="openPostWhatsapp('${post.id}')" class="flex-1 py-3 px-4 rounded-xl bg-[#00A650] hover:bg-[#008f44] text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm">
+            <i class="fa-brands fa-whatsapp text-base"></i>
+            <span>Comprar / Orçar Agora</span>
+          </button>
+        ` : hasInsta ? `
+          <button onclick="openPostInstagram('${post.id}')" class="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2">
+            <i class="fa-brands fa-instagram text-base"></i>
+            <span>Chamar no Instagram</span>
+          </button>
+        ` : `
+          <button onclick="sharePost('${safeTitle}')" class="flex-1 py-3 px-4 rounded-xl bg-[#031238] text-white font-extrabold text-xs sm:text-sm">
+            Compartilhar Oferta
+          </button>
+        `}
+      `;
+
+      const modal = document.getElementById("productDetailModal");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    };
+
+    window.updateDetailGalleryCounter = function(total) {
+      const track = document.getElementById("detailGalleryTrack");
+      const counter = document.getElementById("detailGalleryCounter");
+      if (!track || !counter || !track.clientWidth) return;
+      const idx = Math.round(track.scrollLeft / track.clientWidth);
+      counter.textContent = `${idx + 1}/${total}`;
+    };
+
+    window.closeProductDetail = function() {
+      const modal = document.getElementById("productDetailModal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    };
+
+    // SACOLA DE COMPRAS / LISTA DE ORÇAMENTO
+    window.addToCart = function(postId) {
+      const existing = cartItems.find(item => item.id === postId);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cartItems.push({ id: postId, qty: 1 });
+      }
+      localStorage.setItem("tereshop_cart", JSON.stringify(cartItems));
+      updateSavedAndCartBadges();
+      showToast("Adicionado à sua sacola!");
+    };
+
+    window.updateCartQty = function(postId, delta) {
+      const idx = cartItems.findIndex(item => item.id === postId);
+      if (idx === -1) return;
+      cartItems[idx].qty += delta;
+      if (cartItems[idx].qty <= 0) {
+        cartItems.splice(idx, 1);
+      }
+      localStorage.setItem("tereshop_cart", JSON.stringify(cartItems));
+      updateSavedAndCartBadges();
+      renderCartModal();
+    };
+
+    window.openCartModal = function() {
+      renderCartModal();
+      document.getElementById("cartModal").classList.replace("hidden", "flex");
+    };
+
+    function renderCartModal() {
+      const itemsBox = document.getElementById("cartItemsContainer");
+      const footerBox = document.getElementById("cartFooterContainer");
+
+      const validCart = cartItems
+        .map(c => ({ ...c, post: posts.find(p => p.id === c.id) }))
+        .filter(c => Boolean(c.post));
+
+      if (validCart.length === 0) {
+        itemsBox.innerHTML = `
+          <div class="py-14 text-center text-gray-400 space-y-2">
+            <i class="fa-solid fa-bag-shopping text-4xl text-slate-300"></i>
+            <p class="text-sm font-bold text-slate-600">Sua sacola está vazia</p>
+            <p class="text-xs">Adicione produtos ou serviços para montar seu pedido.</p>
+          </div>
+        `;
+        footerBox.innerHTML = `
+          <button onclick="closeModal('cartModal')" class="w-full py-3 rounded-xl bg-[#031238] text-white font-bold text-xs">
+            Explorar Ofertas
+          </button>
+        `;
+        return;
+      }
+
+      let subtotal = 0;
+      itemsBox.innerHTML = validCart.map(({ post, qty }) => {
+        const unitNum = parseNumericPrice(post.price);
+        if (unitNum) subtotal += unitNum * qty;
+        const thumb = (post.images && post.images[0]) || "./icon-512.png";
+        const partner = post.partnerName || "TERÊ SHOPPING";
+
+        return `
+          <div class="bg-white p-3 rounded-2xl border border-gray-200 flex items-center gap-3">
+            <img src="${thumb}" class="w-16 h-16 rounded-xl object-contain bg-slate-950 flex-shrink-0" />
+            <div class="flex-1 min-w-0">
+              <p class="text-[10px] font-bold text-gray-400 truncate">${partner}</p>
+              <p class="text-xs font-extrabold text-slate-900 truncate">${post.title}</p>
+              <p class="text-xs font-black text-[#00A650] mt-0.5">${post.price || "Sob consulta"}</p>
+            </div>
+            <div class="flex items-center gap-1.5 bg-slate-100 rounded-xl p-1">
+              <button onclick="updateCartQty('${post.id}', -1)" class="w-6 h-6 rounded-lg bg-white text-slate-700 font-bold text-xs shadow-2xs">-</button>
+              <span class="text-xs font-extrabold px-1">${qty}</span>
+              <button onclick="updateCartQty('${post.id}', 1)" class="w-6 h-6 rounded-lg bg-white text-slate-700 font-bold text-xs shadow-2xs">+</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      const formattedSubtotal = subtotal > 0
+        ? subtotal.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
+        : "A combinar";
+
+      footerBox.innerHTML = `
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-gray-500 font-semibold">Região: <b>${selectedLocation}</b></span>
+          <span class="font-extrabold text-slate-900">Estimado: ${formattedSubtotal}</span>
+        </div>
+        <button onclick="checkoutCartViaWhatsapp()" class="w-full py-3 rounded-xl bg-[#00A650] hover:bg-[#008f44] text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm">
+          <i class="fa-brands fa-whatsapp text-base"></i>
+          <span>Finalizar Pedido no WhatsApp</span>
+        </button>
+      `;
+    }
+
+    window.checkoutCartViaWhatsapp = function() {
+      const validCart = cartItems
+        .map(c => ({ ...c, post: posts.find(p => p.id === c.id) }))
+        .filter(c => Boolean(c.post));
+      if (validCart.length === 0) return;
+
+      const firstWithWhats = validCart.find(c => c.post.whatsapp && c.post.whatsapp.trim());
+      const lines = validCart.map(c => `• ${c.qty}x ${c.post.title} (${c.post.price || "Consultar"})`).join("\n");
+      const msg = `Olá! Gostaria de fechar este pedido pela TERÊ SHOPPING:\n\n${lines}\n\n📍 Região: ${selectedLocation}`;
+
+      if (firstWithWhats) {
+        window.open(resolveWhatsappUrl(firstWithWhats.post.whatsapp, msg), "_blank");
+      } else {
+        if (navigator.clipboard) navigator.clipboard.writeText(msg).catch(() => {});
+        showToast("Resumo do pedido copiado! Cole no contato do anunciante.");
       }
     };
 
@@ -1761,27 +2426,38 @@
     };
 
     function renderFeed() {
-      updateSavedBadge();
+      updateSavedAndCartBadges();
       const container = document.getElementById("feedContainer");
-      const filterBar = document.getElementById("activeFilterBar");
-      const filterLabel = document.getElementById("activeFilterLabel");
+      const titleEl = document.getElementById("feedSectionTitle");
+      const countBadge = document.getElementById("feedCountBadge");
+      const clearBtn = document.getElementById("clearAllFiltersBtn");
+      const sortMode = (document.getElementById("sortSelect") || {}).value || "recent";
 
-      let filtered = posts;
-      let activeDescriptions = [];
+      let filtered = [...posts];
+      let hasActiveFilter = false;
 
       if (currentIntentFilter === "saved") {
         filtered = filtered.filter(p => savedIds.includes(p.id));
-        activeDescriptions.push("Itens Salvos");
+        titleEl.textContent = "Meus Favoritos";
+        hasActiveFilter = true;
       } else if (currentIntentFilter !== "all") {
         filtered = filtered.filter(p => getPostClassification(p).intentGroup === currentIntentFilter);
-        const names = { produtos: "Produtos & Veículos", servicos: "Serviços & Seguros" };
-        activeDescriptions.push(names[currentIntentFilter] || currentIntentFilter);
+        titleEl.textContent = currentIntentFilter === "produtos" ? "Produtos & Veículos" : "Serviços & Seguros";
+        hasActiveFilter = true;
+      } else {
+        titleEl.textContent = "Destaques para você";
       }
 
       if (currentDepartmentFilter !== "all") {
         filtered = filtered.filter(p => getPostClassification(p).deptId === currentDepartmentFilter);
         const deptObj = DEPARTMENTS.find(d => d.id === currentDepartmentFilter);
-        if (deptObj) activeDescriptions.push(deptObj.name);
+        if (deptObj) titleEl.textContent = deptObj.name;
+        hasActiveFilter = true;
+      }
+
+      if (currentSubcategoryFilter !== "all") {
+        filtered = filtered.filter(p => getPostClassification(p).rawCode === currentSubcategoryFilter);
+        hasActiveFilter = true;
       }
 
       if (currentSearchQuery) {
@@ -1796,19 +2472,22 @@
             info.badge.toLowerCase().includes(currentSearchQuery)
           );
         });
-        activeDescriptions.push(`Busca: "${currentSearchQuery}"`);
+        titleEl.textContent = `Resultados: "${currentSearchQuery}"`;
+        hasActiveFilter = true;
       }
 
-      if (activeDescriptions.length > 0) {
-        filterBar.classList.remove("hidden");
-        filterLabel.textContent = `Exibindo (${filtered.length}): ${activeDescriptions.join(" • ")}`;
-      } else {
-        filterBar.classList.add("hidden");
+      if (sortMode === "price_asc") {
+        filtered.sort((a, b) => (parseNumericPrice(a.price) ?? Infinity) - (parseNumericPrice(b.price) ?? Infinity));
+      } else if (sortMode === "price_desc") {
+        filtered.sort((a, b) => (parseNumericPrice(b.price) ?? -1) - (parseNumericPrice(a.price) ?? -1));
       }
+
+      countBadge.textContent = filtered.length;
+      if (clearBtn) clearBtn.classList.toggle("hidden", !hasActiveFilter);
 
       if (filtered.length === 0) {
         container.innerHTML = `
-          <div class="py-20 px-6 text-center text-gray-400">
+          <div class="py-20 px-6 text-center text-gray-400 bg-white rounded-2xl">
             <i class="fa-solid fa-store-slash text-4xl mb-3 text-slate-300"></i>
             <p class="text-sm font-semibold text-slate-600">Nenhuma oferta encontrada neste filtro.</p>
             <p class="text-xs mt-1">Tente limpar a busca ou explorar outros departamentos.</p>
@@ -1816,138 +2495,153 @@
         return;
       }
 
-      container.innerHTML = filtered.map((post, postIndex) => {
-        const isSaved = savedIds.includes(post.id);
-        const images = post.images || [];
-        const info = getPostClassification(post);
-        const partnerTitle = (post.partnerName && post.partnerName.trim()) ? post.partnerName.trim() : (config.companyName || "TERÊ SHOPPING");
-        const serviceModeLabel = post.serviceMode || "Atendimento Online e Presencial • Teresina-PI";
-        const safeTitle = (post.title || "").replace(/'/g, "");
+      if (feedLayoutMode === "grid") {
+        container.innerHTML = `
+          <div class="grid grid-cols-2 gap-2.5 sm:gap-3.5">
+            ${filtered.map((post, idx) => {
+              const isSaved = savedIds.includes(post.id);
+              const images = post.images || [];
+              const coverImg = images[0] || "./icon-512.png";
+              const info = getPostClassification(post);
+              const discountPct = calcDiscountPercent(post.oldPrice, post.price);
+              const isService = info.intentGroup === "servicos";
+              const safeTitle = (post.title || "").replace(/'/g, "");
 
-        const hasPostInsta = Boolean(post.instagram && post.instagram.trim());
-        const hasPostWhats = Boolean(post.whatsapp && post.whatsapp.trim());
-        const imgLoadingAttr = postIndex < 2 ? "eager" : "lazy";
-
-        return `
-          <article class="pb-5 sm:pb-6 bg-white">
-            <div class="px-3.5 sm:px-5 py-3 flex items-center justify-between gap-2">
-              <div class="flex items-center gap-2.5 min-w-0">
-                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#031238] text-amber-400 flex items-center justify-center text-xs sm:text-sm border border-amber-400/50 flex-shrink-0">
-                  <i class="fa-solid ${info.icon}"></i>
-                </div>
-                <div class="min-w-0">
-                  <p class="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight truncate flex items-center gap-1">
-                    <span>${partnerTitle}</span>
-                    <i class="fa-solid fa-circle-check text-blue-600 text-[11px]" title="Parceiro Verificado TERÊ SHOPPING"></i>
-                  </p>
-                  <p class="text-[11px] text-gray-500 font-medium truncate">${serviceModeLabel}</p>
-                </div>
-              </div>
-              <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
-                <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full tracking-wide whitespace-nowrap ${info.badgeClass}">${info.badge}</span>
-                ${isAdminLogged && !isSharedVitrineMode ? `
-                  <button onclick="startEditPost('${post.id}')" title="Editar anúncio" class="text-blue-600 hover:text-blue-800 p-1.5 bg-blue-50 rounded-lg">
-                    <i class="fa-solid fa-pen text-xs"></i>
+              return `
+                <article class="bg-white rounded-2xl border border-gray-200/90 overflow-hidden shadow-2xs flex flex-col justify-between relative group">
+                  <button onclick="event.stopPropagation(); toggleSave('${post.id}')" title="Favoritar"
+                    class="z-10 absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 shadow-xs border border-gray-200 flex items-center justify-center text-xs ${isSaved ? 'text-red-500' : 'text-gray-400'}">
+                    <i class="${isSaved ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
                   </button>
-                  <button onclick="deletePost('${post.id}')" title="Excluir anúncio" class="text-red-500 hover:text-red-700 p-1.5 bg-red-50 rounded-lg">
-                    <i class="fa-solid fa-trash text-xs"></i>
-                  </button>` : ""}
-              </div>
-            </div>
 
-            <div class="relative bg-slate-900 border-y border-gray-100">
-              <div id="track-${post.id}" onscroll="updateCarouselIndicator('${post.id}', ${images.length})"
-                class="carousel-track flex overflow-x-auto no-scrollbar min-h-[260px] sm:min-h-[340px] max-h-[480px] sm:max-h-[560px]">
-                ${images.map((img, idx) => `
-                  <div onclick="openPhotoLightbox('${post.id}', ${idx})" class="carousel-slide relative w-full flex items-center justify-center bg-slate-950 cursor-zoom-in">
-                    <img src="${img}" alt="${safeTitle} - Foto ${idx + 1}" loading="${idx === 0 ? imgLoadingAttr : 'lazy'}" decoding="async"
-                      class="w-full max-h-[480px] sm:max-h-[560px] object-contain mx-auto" />
+                  ${isAdminLogged && !isSharedVitrineMode ? `
+                    <div class="z-10 absolute top-2 left-2 flex gap-1">
+                      <button onclick="event.stopPropagation(); startEditPost('${post.id}')" class="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center text-[10px] shadow"><i class="fa-solid fa-pen"></i></button>
+                      <button onclick="event.stopPropagation(); deletePost('${post.id}')" class="w-7 h-7 rounded-lg bg-red-600 text-white flex items-center justify-center text-[10px] shadow"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                  ` : ""}
+
+                  <div onclick="openProductDetail('${post.id}')" class="relative aspect-square bg-slate-950 flex items-center justify-center overflow-hidden cursor-pointer">
+                    <img src="${coverImg}" alt="${safeTitle}" loading="${idx < 4 ? 'eager' : 'lazy'}" decoding="async"
+                      class="w-full h-full object-contain" />
+                    ${images.length > 1 ? `
+                      <span class="absolute bottom-1.5 right-1.5 bg-black/75 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-md">
+                        +${images.length - 1} fotos
+                      </span>
+                    ` : ""}
                   </div>
-                `).join("")}
-              </div>
 
-              ${images.length > 1 ? `
-                <div id="counter-${post.id}" class="absolute top-3 right-3 bg-black/80 text-white text-[11px] font-bold px-2.5 py-1 rounded-full pointer-events-none">
-                  1/${images.length}
-                </div>
-              ` : ""}
-            </div>
+                  <div onclick="openProductDetail('${post.id}')" class="p-2.5 sm:p-3 flex-1 flex flex-col justify-between space-y-1.5 cursor-pointer">
+                    <div class="space-y-1">
+                      <span class="inline-block text-[9px] font-extrabold px-2 py-0.5 rounded-md ${info.badgeClass}">${info.badge}</span>
+                      <h2 class="text-xs sm:text-[13px] font-semibold text-slate-800 leading-snug line-clamp-2">${post.title}</h2>
+                    </div>
 
-            ${images.length > 1 ? `
-              <div id="dots-${post.id}" class="flex justify-center gap-1.5 pt-2.5">
-                ${images.map((_, i) => `
-                  <span class="w-1.5 h-1.5 rounded-full ${i === 0 ? "bg-blue-600 w-3.5" : "bg-gray-300"}"></span>
-                `).join("")}
-              </div>
-            ` : ""}
+                    <div class="pt-1 space-y-0.5">
+                      ${post.oldPrice && discountPct > 0 ? `<p class="text-[10px] text-gray-400 line-through leading-none">${post.oldPrice}</p>` : ""}
+                      <div class="flex items-baseline gap-1.5 flex-wrap">
+                        <span class="text-sm sm:text-base font-black text-slate-900 leading-tight">${post.price || "Sob consulta"}</span>
+                        ${discountPct > 0 ? `<span class="text-[10px] font-extrabold text-[#00A650]">${discountPct}% OFF</span>` : ""}
+                      </div>
+                      <p class="text-[10px] font-bold text-[#00A650] truncate">
+                        ${isService ? "✓ Orçamento rápido" : "✓ Entrega Teresina-PI"}
+                      </p>
+                    </div>
+                  </div>
 
-            <div class="px-3.5 sm:px-5 pt-3">
-              <div class="flex items-center gap-2 mb-3">
-                ${hasPostInsta ? `
-                  <button onclick="openPostInstagram('${post.id}')"
-                    class="flex-1 min-w-0 bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-bold text-xs py-2.5 px-2.5 sm:px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.97] transition-transform">
-                    <i class="fa-brands fa-instagram text-base flex-shrink-0"></i>
-                    <span class="truncate">Instagram</span>
-                  </button>` : ""}
-
-                ${hasPostWhats ? `
-                  <button onclick="openPostWhatsapp('${post.id}')"
-                    class="flex-1 min-w-0 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs py-2.5 px-2.5 sm:px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.97] transition-transform">
-                    <i class="fa-brands fa-whatsapp text-base flex-shrink-0"></i>
-                    <span class="truncate">WhatsApp</span>
-                  </button>` : ""}
-
-                <button onclick="sharePost('${safeTitle}')" title="Partilhar anúncio"
-                  class="p-2.5 rounded-xl border border-gray-200 text-slate-700 hover:bg-gray-50 active:scale-95 transition-transform flex-shrink-0 ${(!hasPostInsta && !hasPostWhats) ? 'flex-1 justify-center flex items-center gap-1.5 text-xs font-bold' : ''}">
-                  <i class="fa-regular fa-paper-plane text-base"></i>
-                  ${(!hasPostInsta && !hasPostWhats) ? '<span>Compartilhar</span>' : ''}
-                </button>
-
-                <button onclick="toggleSave('${post.id}')" title="Guardar nos favoritos"
-                  class="p-2.5 rounded-xl border border-gray-200 ${isSaved ? "text-blue-700 bg-blue-50 border-blue-200" : "text-slate-700"} hover:bg-gray-50 active:scale-95 transition-transform flex-shrink-0">
-                  <i class="${isSaved ? "fa-solid" : "fa-regular"} fa-bookmark text-base"></i>
-                </button>
-              </div>
-
-              <div class="space-y-1">
-                <div class="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-1">
-                  <h2 class="font-extrabold text-sm sm:text-base text-slate-900">${post.title}</h2>
-                  ${post.price ? `<span class="font-black text-sm sm:text-base text-emerald-700 whitespace-nowrap">${post.price}</span>` : ""}
-                </div>
-                <p class="text-xs sm:text-[13px] text-gray-600 leading-relaxed whitespace-pre-line">${post.description}</p>
-              </div>
-            </div>
-          </article>
+                  <div class="px-2.5 pb-2.5 flex items-center gap-1.5">
+                    <button onclick="addToCart('${post.id}')" class="flex-1 py-1.5 px-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-[#3483FA] font-extrabold text-[11px] flex items-center justify-center gap-1 transition">
+                      <i class="fa-solid fa-cart-plus text-[10px]"></i>
+                      <span>Sacola</span>
+                    </button>
+                    <button onclick="openProductDetail('${post.id}')" class="py-1.5 px-2.5 rounded-lg bg-[#031238] text-amber-400 font-bold text-[11px]">
+                      Ver
+                    </button>
+                  </div>
+                </article>
+              `;
+            }).join("")}
+          </div>
         `;
-      }).join("");
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="space-y-3">
+          ${filtered.map((post, postIndex) => {
+            const isSaved = savedIds.includes(post.id);
+            const images = post.images || [];
+            const info = getPostClassification(post);
+            const partnerTitle = (post.partnerName && post.partnerName.trim()) ? post.partnerName.trim() : (config.companyName || "TERÊ SHOPPING");
+            const serviceModeLabel = post.serviceMode || "Atendimento Online e Presencial • Teresina-PI";
+            const safeTitle = (post.title || "").replace(/'/g, "");
+            const hasPostInsta = Boolean(post.instagram && post.instagram.trim());
+            const hasPostWhats = Boolean(post.whatsapp && post.whatsapp.trim());
+            const imgLoadingAttr = postIndex < 2 ? "eager" : "lazy";
+
+            return `
+              <article class="pb-5 bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-2xs">
+                <div class="px-3.5 py-3 flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2.5 min-w-0">
+                    <div class="w-9 h-9 rounded-full bg-[#031238] text-amber-400 flex items-center justify-center text-xs border border-amber-400/50 flex-shrink-0">
+                      <i class="fa-solid ${info.icon}"></i>
+                    </div>
+                    <div class="min-w-0">
+                      <p class="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight truncate flex items-center gap-1">
+                        <span>${partnerTitle}</span>
+                        <i class="fa-solid fa-circle-check text-[#3483FA] text-[11px]"></i>
+                      </p>
+                      <p class="text-[11px] text-gray-500 font-medium truncate">${serviceModeLabel}</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-1.5 flex-shrink-0">
+                    <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full ${info.badgeClass}">${info.badge}</span>
+                    ${isAdminLogged && !isSharedVitrineMode ? `
+                      <button onclick="startEditPost('${post.id}')" class="text-blue-600 p-1.5 bg-blue-50 rounded-lg"><i class="fa-solid fa-pen text-xs"></i></button>
+                      <button onclick="deletePost('${post.id}')" class="text-red-500 p-1.5 bg-red-50 rounded-lg"><i class="fa-solid fa-trash text-xs"></i></button>` : ""}
+                  </div>
+                </div>
+
+                <div onclick="openProductDetail('${post.id}')" class="relative bg-slate-950 border-y border-gray-100 cursor-pointer">
+                  <img src="${images[0] || './icon-512.png'}" alt="${safeTitle}" loading="${imgLoadingAttr}" class="w-full max-h-[380px] object-contain mx-auto" />
+                </div>
+
+                <div class="px-3.5 pt-3 space-y-2.5">
+                  <div onclick="openProductDetail('${post.id}')" class="cursor-pointer space-y-1">
+                    <div class="flex flex-wrap items-baseline justify-between gap-x-2">
+                      <h2 class="font-extrabold text-sm sm:text-base text-slate-900">${post.title}</h2>
+                      ${post.price ? `<span class="font-black text-sm sm:text-base text-[#00A650]">${post.price}</span>` : ""}
+                    </div>
+                    <p class="text-xs text-gray-600 line-clamp-2">${post.description}</p>
+                  </div>
+
+                  <div class="flex items-center gap-2">
+                    <button onclick="addToCart('${post.id}')" class="px-3 py-2.5 rounded-xl bg-blue-50 text-[#3483FA] font-bold text-xs flex items-center gap-1">
+                      <i class="fa-solid fa-cart-plus"></i><span>Sacola</span>
+                    </button>
+                    ${hasPostWhats ? `
+                      <button onclick="openPostWhatsapp('${post.id}')" class="flex-1 bg-[#25D366] text-white font-bold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5">
+                        <i class="fa-brands fa-whatsapp text-base"></i><span>WhatsApp</span>
+                      </button>` : ""}
+                    ${hasPostInsta ? `
+                      <button onclick="openPostInstagram('${post.id}')" class="flex-1 bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-bold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5">
+                        <i class="fa-brands fa-instagram text-base"></i><span>Instagram</span>
+                      </button>` : ""}
+                  </div>
+                </div>
+              </article>
+            `;
+          }).join("")}
+        </div>
+      `;
     }
-
-    const carouselRafMap = {};
-    window.updateCarouselIndicator = function(postId, total) {
-      if (carouselRafMap[postId]) return;
-      carouselRafMap[postId] = requestAnimationFrame(() => {
-        carouselRafMap[postId] = null;
-        const track = document.getElementById(`track-${postId}`);
-        if (!track || !track.clientWidth) return;
-        const index = Math.round(track.scrollLeft / track.clientWidth);
-        const counter = document.getElementById(`counter-${postId}`);
-        if (counter) counter.textContent = `${index + 1}/${total}`;
-
-        const dotsContainer = document.getElementById(`dots-${postId}`);
-        if (dotsContainer) {
-          Array.from(dotsContainer.children).forEach((dot, i) => {
-            dot.className = i === index ? "w-3.5 h-1.5 rounded-full bg-blue-600" : "w-1.5 h-1.5 rounded-full bg-gray-300";
-          });
-        }
-      });
-    };
 
     window.openPostInstagram = function(postId) {
       const post = posts.find(p => p.id === postId);
       if (!post || !post.instagram) return;
       const url = resolveInstagramUrl(post.instagram);
       const info = getPostClassification(post);
-      const msg = `Olá! Vi o anúncio em ${info.deptName}: "${post.title}" na TERÊ SHOPPING e gostaria de mais informações.`;
+      const msg = `Olá! Vi o anúncio em ${info.deptName}: "${post.title}" na TERÊ SHOPPING (${selectedLocation}) e gostaria de mais informações.`;
 
       if (navigator.clipboard) navigator.clipboard.writeText(msg).catch(() => {});
       showToast("Mensagem copiada! Cole no Direct do Instagram.");
@@ -1958,7 +2652,7 @@
       const post = posts.find(p => p.id === postId);
       if (!post || !post.whatsapp) return;
       const info = getPostClassification(post);
-      const msg = `Olá! Vi o anúncio em ${info.deptName}: "${post.title}" na TERÊ SHOPPING e gostaria de mais informações.`;
+      const msg = `Olá! Vi o anúncio em ${info.deptName}: "${post.title}" (${post.price || "Consultar"}) na TERÊ SHOPPING.\n📍 Região: ${selectedLocation}\nGostaria de mais informações!`;
       const url = resolveWhatsappUrl(post.whatsapp, msg);
       window.open(url, "_blank");
     };
@@ -1966,10 +2660,10 @@
     window.toggleSave = function(postId) {
       if (savedIds.includes(postId)) {
         savedIds = savedIds.filter(id => id !== postId);
-        showToast("Removido dos salvos");
+        showToast("Removido dos favoritos");
       } else {
         savedIds.push(postId);
-        showToast("Salvo na sua lista!");
+        showToast("Salvo nos favoritos!");
       }
       localStorage.setItem("tereshop_saved", JSON.stringify(savedIds));
       renderFeed();
@@ -2111,7 +2805,8 @@
       if (trimCheckInterval) clearInterval(trimCheckInterval);
       const trimVid = document.getElementById("trimPreviewVideo");
       if (trimVid) trimVid.pause();
-      document.getElementById(id).classList.replace("flex", "hidden");
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.replace("flex", "hidden");
     };
 
     window.switchAdminTab = function(tab) {
@@ -2132,9 +2827,7 @@
       if (tab === "cardStudio") renderStudioCanvas();
     };
 
-    // =========================================================================
     // ESTÚDIO CRIATIVO DE CARDS PROFISSIONAIS (HTML5 CANVAS 1080x1080)
-    // =========================================================================
     window.handleStudioPhotoUpload = function(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -2293,9 +2986,7 @@
       showToast("Arte salva na galeria/downloads!");
     };
 
-    // =========================================================================
     // BANNERS PROMOCIONAIS DO TOPO
-    // =========================================================================
     window.handleBannerImageUpload = async function(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -2361,9 +3052,7 @@
       `;
     }
 
-    // =========================================================================
     // PUBLICADOR MISTO 24H (FOTO OU VÍDEO COM FAIXA DESLIZANTE DE 15s)
-    // =========================================================================
     function resetVideoForm() {
       const form = document.getElementById("newVideoForm");
       if (form) form.reset();
@@ -2785,9 +3474,7 @@
       `;
     }
 
-    // =========================================================================
     // CONFIGURAÇÕES E GESTÃO DE ANÚNCIOS
-    // =========================================================================
     window.handleLogoUpload = function(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -2898,6 +3585,7 @@
       document.getElementById("postServiceMode").value = post.serviceMode || "Atendimento Online e Presencial • Teresina-PI";
       document.getElementById("postTitle").value = post.title || "";
       document.getElementById("postPrice").value = post.price || "";
+      document.getElementById("postOldPrice").value = post.oldPrice || "";
       document.getElementById("postDescription").value = post.description || "";
       document.getElementById("postInstagram").value = post.instagram || "";
       document.getElementById("postWhatsapp").value = post.whatsapp || "";
@@ -2939,6 +3627,7 @@
         const serviceMode = document.getElementById("postServiceMode").value;
         const title = document.getElementById("postTitle").value.trim();
         const price = document.getElementById("postPrice").value.trim();
+        const oldPrice = document.getElementById("postOldPrice").value.trim();
         const description = document.getElementById("postDescription").value.trim();
         const instagram = document.getElementById("postInstagram").value.trim();
         const whatsapp = document.getElementById("postWhatsapp").value.trim();
@@ -2953,6 +3642,7 @@
           serviceMode,
           title,
           price,
+          oldPrice,
           description,
           instagram,
           whatsapp,
@@ -3015,7 +3705,6 @@
       setTimeout(() => toast.classList.add("opacity-0"), 3400);
     }
 
-    // Inicializa carrossel dos 7 departamentos imediatamente
     renderDepartmentsCarousel();
   </script>
 </body>
