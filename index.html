@@ -97,9 +97,6 @@
       scroll-snap-align: start;
       flex: 0 0 100%;
     }
-    .stories-scroll {
-      touch-action: pan-x pan-y;
-    }
     .gpu-layer {
       transform: translateZ(0);
     }
@@ -190,7 +187,7 @@
           </button>
         </div>
 
-        <!-- Dropdown de Sugestões Rápidas e Histórico (Sem Emojis) -->
+        <!-- Dropdown de Sugestões Rápidas e Histórico -->
         <div id="searchSuggestionsDropdown" class="hidden absolute left-3 right-3 sm:left-4 sm:right-4 top-full mt-1 bg-white rounded-2xl shadow-2xl border border-gray-200 p-3 z-50 space-y-2.5">
           <div id="searchHistoryBox" class="hidden space-y-1.5">
             <div class="flex items-center justify-between text-[10px] font-extrabold uppercase text-gray-400">
@@ -224,7 +221,7 @@
   <!-- CONTENTOR PRINCIPAL FLUIDO -->
   <div class="w-full max-w-2xl mx-auto md:my-3 md:rounded-2xl md:overflow-hidden md:shadow-md md:border md:border-gray-200/80 bg-[#F5F5F5]">
 
-    <!-- BARRA DE WIDGETS PADRONIZADOS EM BRANCO (SEM EMOJIS): CATEGORIAS | PRODUTOS | SERVIÇOS -->
+    <!-- BARRA DE WIDGETS PADRONIZADOS EM BRANCO: CATEGORIAS | PRODUTOS | SERVIÇOS -->
     <section class="w-full bg-[#F5F5F5] border-b border-gray-200">
       <div class="px-3 sm:px-4 py-2.5 grid grid-cols-3 gap-2">
         <button type="button" onclick="toggleCategoriesDrawer()" id="widget-categorias"
@@ -247,7 +244,7 @@
         </button>
       </div>
 
-      <!-- GAVETA EXPANSÍVEL COM OS 19 DEPARTAMENTOS (SEM EMOJIS) -->
+      <!-- GAVETA EXPANSÍVEL COM OS 19 DEPARTAMENTOS -->
       <div id="categoriesDrawer" class="hidden px-3 sm:px-4 pb-3.5 pt-2.5 border-t border-gray-200 bg-white space-y-2.5">
         <div class="flex items-center justify-between">
           <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500">Selecione um Departamento</span>
@@ -299,7 +296,7 @@
       </div>
     </div>
 
-    <!-- VITRINE DE PRODUTOS E SERVIÇOS (GRADE 2 COLUNAS ESTILO MARKETPLACE) -->
+    <!-- VITRINE DE PRODUTOS, VÍDEOS CURTOS 15s E SERVIÇOS (GRADE 2 COLUNAS COMPACTA) -->
     <main id="feedContainer" class="w-full px-3 sm:px-4 pt-3 pb-4 min-h-[55vh]">
       <div class="py-24 px-6 text-center text-gray-400 bg-white rounded-2xl">
         <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-blue-600"></i>
@@ -315,7 +312,7 @@
 
   </div>
 
-  <!-- MENU INFERIOR FIXO COM 5 OPÇÕES SEM REPETIÇÃO -->
+  <!-- MENU INFERIOR FIXO COM 5 OPÇÕES -->
   <nav class="fixed bottom-0 inset-x-0 md:bottom-3 md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-2xl z-40 bg-white border-t md:border border-gray-200 md:rounded-2xl shadow-[0_-2px_10px_rgba(0,0,0,0.06)] md:shadow-xl safe-bottom gpu-layer">
     <div class="w-full flex items-center justify-around h-16 px-1 sm:px-3">
       <button onclick="setIntentFilter('all')" id="nav-all" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-[#3483FA] active:scale-90 transition-transform">
@@ -348,7 +345,7 @@
     </div>
   </nav>
 
-  <!-- MODAL PÁGINA COMPLETA DE DETALHES DO PRODUTO / SERVIÇO -->
+  <!-- MODAL PÁGINA COMPLETA DE DETALHES DO ANÚNCIO (FOTOS OU VÍDEO 15s) -->
   <div id="productDetailModal" class="fixed inset-0 z-50 bg-[#F5F5F5] hidden flex-col safe-top safe-bottom">
     <div class="bg-[#031238] text-white px-3.5 py-3 flex items-center justify-between gap-2 max-w-2xl w-full mx-auto">
       <button onclick="closeProductDetail()" class="px-3 py-1.5 rounded-full bg-white/15 flex items-center gap-1.5 text-xs font-bold">
@@ -513,7 +510,7 @@
         </div>
         <button onclick="closeModal('loginModal')" class="text-gray-400 hover:text-gray-700 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
-      <p class="text-xs text-gray-500 mb-4">Insira a senha de administrador para gerir anúncios, banners e cards.</p>
+      <p class="text-xs text-gray-500 mb-4">Insira a senha de administrador para gerir anúncios, banners e configurações.</p>
       
       <form onsubmit="event.preventDefault(); verifyAdminLogin();" class="space-y-3">
         <div class="relative">
@@ -534,7 +531,7 @@
     </div>
   </div>
 
-  <!-- MODAL PAINEL ADMINISTRATIVO EXPANDIDO -->
+  <!-- MODAL PAINEL ADMINISTRATIVO EXPANDIDO (SEM ESTÚDIO CARDS) -->
   <div id="adminModal" class="fixed inset-0 z-50 bg-black/65 hidden items-end sm:items-center justify-center">
     <div class="bg-white w-full max-w-2xl rounded-t-3xl sm:rounded-3xl max-h-[93vh] flex flex-col shadow-2xl">
       
@@ -554,18 +551,15 @@
         </button>
       </div>
 
-      <!-- Navegação Interna do Admin (Sem Emojis) -->
-      <div class="flex overflow-x-auto no-scrollbar border-b border-gray-200 text-[11px] font-bold bg-gray-50">
-        <button type="button" onclick="switchAdminTab('newPost')" id="admTab-newPost" class="px-3.5 py-3 border-b-2 border-blue-700 text-blue-700 whitespace-nowrap">
+      <!-- Navegação Interna do Admin (3 Abas Limpas) -->
+      <div class="flex overflow-x-auto no-scrollbar border-b border-gray-200 text-xs font-bold bg-gray-50">
+        <button type="button" onclick="switchAdminTab('newPost')" id="admTab-newPost" class="flex-1 px-4 py-3 border-b-2 border-blue-700 text-blue-700 whitespace-nowrap">
           + Novo Anúncio
         </button>
-        <button type="button" onclick="switchAdminTab('cardStudio')" id="admTab-cardStudio" class="px-3.5 py-3 border-b-2 border-transparent text-amber-700 whitespace-nowrap">
-          Estúdio Cards
-        </button>
-        <button type="button" onclick="switchAdminTab('banners')" id="admTab-banners" class="px-3.5 py-3 border-b-2 border-transparent text-gray-500 whitespace-nowrap">
+        <button type="button" onclick="switchAdminTab('banners')" id="admTab-banners" class="flex-1 px-4 py-3 border-b-2 border-transparent text-gray-500 whitespace-nowrap">
           Banners Topo
         </button>
-        <button type="button" onclick="switchAdminTab('settings')" id="admTab-settings" class="px-3.5 py-3 border-b-2 border-transparent text-gray-500 whitespace-nowrap">
+        <button type="button" onclick="switchAdminTab('settings')" id="admTab-settings" class="flex-1 px-4 py-3 border-b-2 border-transparent text-gray-500 whitespace-nowrap">
           Capa & Senha
         </button>
       </div>
@@ -573,7 +567,7 @@
       <!-- Conteúdo Scrollável Admin -->
       <div class="p-4 sm:p-6 overflow-y-auto space-y-4">
 
-        <!-- ABA 1: CRIAR OU EDITAR ANÚNCIO (19 DEPARTAMENTOS SEM EMOJIS) -->
+        <!-- ABA 1: CRIAR OU EDITAR ANÚNCIO (FOTOS OU VÍDEO CURTO DE 15s + INSTAGRAM + WHATSAPP) -->
         <form id="newPostForm" onsubmit="handleSavePost(event)" class="space-y-4">
           <input type="hidden" id="editingPostId" value="" />
 
@@ -630,14 +624,72 @@
             </div>
           </div>
 
-          <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1.5">Imagens ou Cards em Alta Definição (Máx. 10) *</label>
-            <label for="postImagesInput" class="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl border-2 border-dashed border-blue-300 bg-blue-50/70 text-blue-800 text-xs font-bold cursor-pointer active:scale-[0.99] transition">
-              <i class="fa-solid fa-images text-base"></i>
-              <span>Selecionar Fotos da Galeria (até 10)</span>
-            </label>
+          <!-- SELETOR DE FOTOS OU VÍDEO CURTO DE 15 SEGUNDOS -->
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+            <label class="block text-xs font-bold text-gray-800">Mídia da Divulgação (Fotos HD ou Vídeo Curto 15s) *</label>
+
+            <div class="grid grid-cols-2 gap-2">
+              <label for="postImagesInput" class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl border-2 border-dashed border-blue-400 bg-blue-50 text-blue-900 text-xs font-bold cursor-pointer active:scale-[0.98] transition text-center">
+                <i class="fa-solid fa-images text-sm"></i>
+                <span>Fotos (até 10)</span>
+              </label>
+
+              <label for="postVideoInput" class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl border-2 border-dashed border-amber-400 bg-amber-50 text-amber-950 text-xs font-bold cursor-pointer active:scale-[0.98] transition text-center">
+                <i class="fa-solid fa-video text-sm text-amber-600"></i>
+                <span>Vídeo Curto 15s</span>
+              </label>
+            </div>
+
             <input type="file" id="postImagesInput" accept="image/*" multiple onchange="previewSelectedImages(event)" class="sr-only" />
-            <div id="imagePreviewGrid" class="grid grid-cols-5 gap-1.5 mt-2"></div>
+            <input type="file" id="postVideoInput" accept="video/*" onchange="handlePostVideoLoaded(event)" class="sr-only" />
+
+            <p id="postMediaStatus" class="text-[11px] font-bold text-blue-700 hidden"></p>
+            <div id="imagePreviewGrid" class="grid grid-cols-5 gap-1.5"></div>
+
+            <!-- RECORTADOR DE VÍDEO 15 SEGUNDOS -->
+            <div id="postVideoTrimmerBox" class="hidden p-3.5 rounded-xl bg-slate-900 text-white space-y-3">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-amber-400"><i class="fa-solid fa-scissors mr-1"></i> Recorte de 15s para o Feed</span>
+                <span id="postTrimWindowBadge" class="bg-amber-500 text-slate-950 px-2.5 py-0.5 rounded-full text-[11px] font-black">00:00 → 00:15</span>
+              </div>
+
+              <div class="relative bg-black rounded-lg overflow-hidden flex items-center justify-center max-h-56">
+                <video id="postTrimPreviewVideo" playsinline webkit-playsinline class="max-h-56 w-auto object-contain"></video>
+              </div>
+
+              <div class="space-y-2 select-none">
+                <div class="flex items-center justify-between text-[10px] text-gray-400 font-semibold">
+                  <span>Início: 00:00</span>
+                  <span id="postTotalVideoDurationText" class="text-white">Duração total: 00:00</span>
+                </div>
+
+                <div id="postTimelineTrack" class="relative h-11 bg-slate-800 rounded-xl border border-slate-700 overflow-hidden cursor-pointer touch-none">
+                  <div id="postTimelineWindow"
+                    class="absolute top-0 bottom-0 bg-amber-500/30 border-y-2 border-x-4 border-amber-400 rounded-lg flex items-center justify-center cursor-grab active:cursor-grabbing"
+                    style="left: 0%; width: 100%;">
+                    <span class="bg-amber-400 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full pointer-events-none whitespace-nowrap">
+                      ◄ 15s ►
+                    </span>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between gap-1.5 pt-0.5">
+                  <button type="button" onclick="jumpPostTimelinePreset('start')" class="flex-1 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-[10px] font-bold">15s Iniciais</button>
+                  <button type="button" onclick="jumpPostTimelinePreset('middle')" class="flex-1 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-[10px] font-bold">Meio</button>
+                  <button type="button" onclick="jumpPostTimelinePreset('end')" class="flex-1 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-[10px] font-bold">15s Finais</button>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between pt-1 border-t border-slate-800">
+                <button type="button" onclick="previewPostTrimmedSegment()" class="text-xs bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 px-3 py-1.5 rounded-lg font-bold">
+                  <i class="fa-solid fa-play mr-1"></i> Testar Trecho 15s
+                </button>
+                <label class="flex items-center gap-1.5 text-xs cursor-pointer">
+                  <input type="checkbox" id="postIncludeVideoAudio" checked class="accent-amber-500" />
+                  <span>Com Áudio</span>
+                </label>
+              </div>
+            </div>
           </div>
 
           <div>
@@ -666,21 +718,21 @@
           </div>
 
           <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
-            <label class="block text-xs font-bold text-slate-800">Canais Diretos do Vendedor / Parceiro</label>
+            <label class="block text-xs font-bold text-slate-800">Canais de Atendimento da Loja (Exibidos no Card)</label>
             
             <div>
               <label class="block text-[11px] font-bold text-gray-600 mb-1">
-                <i class="fa-brands fa-instagram text-pink-600 mr-1"></i> Instagram do Parceiro (Link ou @usuário)
+                <i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i> WhatsApp para Conversar com Vendedor (Link ou DDD + Número)
               </label>
-              <input type="text" id="postInstagram" placeholder="Ex: https://instagram.com/loja ou @loja"
+              <input type="text" id="postWhatsapp" placeholder="Ex: https://wa.me/5586999999999 ou 86999999999"
                 class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:border-blue-600" />
             </div>
 
             <div>
               <label class="block text-[11px] font-bold text-gray-600 mb-1">
-                <i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i> WhatsApp do Parceiro (Link ou DDD + Número)
+                <i class="fa-brands fa-instagram text-pink-600 mr-1"></i> Link ou @ do Instagram da Loja
               </label>
-              <input type="text" id="postWhatsapp" placeholder="Ex: https://wa.me/5586999999999 ou 86999999999"
+              <input type="text" id="postInstagram" placeholder="Ex: https://instagram.com/loja ou @loja"
                 class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:border-blue-600" />
             </div>
           </div>
@@ -695,76 +747,7 @@
           </div>
         </form>
 
-        <!-- ABA 2: ESTÚDIO DE CARDS PROFISSIONAIS EDITÁVEIS -->
-        <div id="cardStudioSection" class="space-y-4 hidden">
-          <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-950">
-            <b>Estúdio Criativo TERÊ SHOPPING:</b> Crie cards profissionais em Alta Definição (`1080x1080`) para qualquer nicho e envie direto para um anúncio ou baixe para divulgação.
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label class="block text-xs font-bold text-gray-700 mb-1">Estilo / Template do Card</label>
-              <select id="studioTemplate" onchange="renderStudioCanvas()" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-xs font-bold bg-white">
-                <option value="royal_gold">Oficial TERÊ SHOPPING (Azul & Ouro)</option>
-                <option value="vehicles">Feirão Veículos (Carros & Motos)</option>
-                <option value="construction">Construção & Casa (Laranja & Escuro)</option>
-                <option value="services">Serviços & Seguros (Esmeralda Corp)</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="block text-xs font-bold text-gray-700 mb-1">Foto Principal do Card</label>
-              <label for="studioPhotoInput" class="flex items-center justify-center gap-1.5 w-full py-2 px-3 rounded-xl border border-blue-300 bg-blue-50 text-blue-800 text-xs font-bold cursor-pointer">
-                <i class="fa-solid fa-camera"></i>
-                <span>Escolher Foto</span>
-              </label>
-              <input type="file" id="studioPhotoInput" accept="image/*" onchange="handleStudioPhotoUpload(event)" class="sr-only" />
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-2.5">
-            <div>
-              <label class="block text-[11px] font-bold text-gray-700 mb-1">Selo Superior</label>
-              <input type="text" id="studioBadgeText" value="OFERTA VERIFICADA" oninput="renderStudioCanvas()"
-                class="w-full border border-gray-300 rounded-xl px-3 py-1.5 text-xs" />
-            </div>
-            <div>
-              <label class="block text-[11px] font-bold text-gray-700 mb-1">Nome da Loja / Parceiro</label>
-              <input type="text" id="studioPartnerText" value="TERÊ SHOPPING • TERESINA-PI" oninput="renderStudioCanvas()"
-                class="w-full border border-gray-300 rounded-xl px-3 py-1.5 text-xs" />
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-            <div>
-              <label class="block text-[11px] font-bold text-gray-700 mb-1">Manchete / Título no Card</label>
-              <input type="text" id="studioHeadline" value="Qualidade e Garantia em Teresina" oninput="renderStudioCanvas()"
-                class="w-full border border-gray-300 rounded-xl px-3 py-1.5 text-xs" />
-            </div>
-            <div>
-              <label class="block text-[11px] font-bold text-gray-700 mb-1">Destaque de Preço / Condição</label>
-              <input type="text" id="studioPriceTag" value="CONSULTE CONDIÇÕES" oninput="renderStudioCanvas()"
-                class="w-full border border-gray-300 rounded-xl px-3 py-1.5 text-xs" />
-            </div>
-          </div>
-
-          <div class="bg-slate-900 p-3 rounded-2xl flex flex-col items-center">
-            <canvas id="studioCanvas" width="1080" height="1080" class="w-full max-w-[300px] aspect-square rounded-xl shadow-lg bg-[#031238]"></canvas>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <button type="button" onclick="useStudioCardInPost()" class="bg-[#081c45] text-white font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5">
-              <i class="fa-solid fa-plus"></i>
-              <span>Usar em Novo Anúncio</span>
-            </button>
-            <button type="button" onclick="downloadStudioCard()" class="bg-emerald-600 text-white font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5">
-              <i class="fa-solid fa-download"></i>
-              <span>Baixar Arte</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- ABA 3: BANNERS PROMOCIONAIS ROTATIVOS DO TOPO (VINCULADOS À LOJA E AO NICHO) -->
+        <!-- ABA 2: BANNERS PROMOCIONAIS ROTATIVOS DO TOPO -->
         <form id="bannersForm" onsubmit="handleSavePromoBanner(event)" class="space-y-4 hidden">
           <div class="p-3 rounded-xl bg-blue-50 border border-blue-200 text-[11px] text-blue-950">
             <b>Banners Inteligentes no Topo:</b> Ao vincular um <b>Departamento</b>, o banner aparece automaticamente quando o cliente clicar naquela categoria. Ao informar o <b>Nome da Loja</b>, clicar no banner abre todas as publicações daquela loja em grade.
@@ -829,7 +812,7 @@
           <div id="adminActiveBannersList" class="pt-3 border-t border-gray-200 space-y-2"></div>
         </form>
 
-        <!-- ABA 4: CAPA PANORÂMICA DO TOPO & CONFIGURAÇÕES -->
+        <!-- ABA 3: CAPA PANORÂMICA DO TOPO & CONFIGURAÇÕES -->
         <form id="settingsForm" onsubmit="handleSaveSettings(event)" class="space-y-4 hidden">
           
           <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
@@ -998,7 +981,6 @@
       }
     }
 
-    // Extrator numérico brasileiro preciso para ordenação e cálculo de desconto
     function parseNumericPrice(priceStr) {
       if (!priceStr) return null;
       const str = String(priceStr).trim();
@@ -1024,6 +1006,10 @@
       if (!oldVal || !curVal || oldVal <= curVal) return 0;
       return Math.round(((oldVal - curVal) / oldVal) * 100);
     }
+
+    const WINDOW_DURATION_SEC = 15;
+    const MAX_DIRECT_FILE_BYTES = 7.2 * 1024 * 1024;
+    const MAX_RAW_VIDEO_BYTES = 120 * 1024 * 1024;
 
     const urlParams = new URLSearchParams(window.location.search);
     const isSharedVitrineMode = urlParams.get("vitrine") === "1";
@@ -1115,15 +1101,63 @@
 
     let isAdminLogged = false;
     let pendingPostImages = [];
+    let pendingPostVideoData = "";
+    let selectedRawPostVideoFile = null;
+    let loadedPostVideoObjectUrl = "";
+    let postVideoTotalDuration = 0;
+    let postTrimStartSec = 0;
+    let postTrimEndSec = 15;
+    let postTrimCheckInterval = null;
+
     let pendingBannerImage = "";
     let pendingLogoData = "";
 
     let bannerAutoPlayTimer = null;
     let isUserTouchingBanner = false;
     let visibleBannersCache = [];
-
-    let studioUploadedImg = null;
     let qrCodeGenerated = false;
+
+    function formatSecondsMMSS(sec) {
+      const s = Math.max(0, Math.floor(sec || 0));
+      const mins = Math.floor(s / 60);
+      const rem = s % 60;
+      return `${String(mins).padStart(2, "0")}:${String(rem).padStart(2, "0")}`;
+    }
+
+    function applyVideoAudioState(videoEl, shouldMute) {
+      if (!videoEl) return;
+      if (shouldMute) {
+        videoEl.muted = true;
+        videoEl.defaultMuted = true;
+        videoEl.setAttribute("muted", "");
+      } else {
+        videoEl.removeAttribute("muted");
+        videoEl.defaultMuted = false;
+        videoEl.muted = false;
+        videoEl.volume = 1.0;
+      }
+    }
+
+    let gridVideoObserver = null;
+    function setupGridVideoVisibilityControl() {
+      if (gridVideoObserver) gridVideoObserver.disconnect();
+      if (!("IntersectionObserver" in window)) return;
+
+      gridVideoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const vidEl = entry.target;
+          if (entry.isIntersecting) {
+            vidEl.play().catch(() => {});
+          } else {
+            vidEl.pause();
+          }
+        });
+      }, { threshold: 0.25 });
+
+      document.querySelectorAll("#feedContainer video").forEach(v => {
+        gridVideoObserver.observe(v);
+      });
+    }
 
     // =========================================================================
     // CONTROLE DOS WIDGETS PADRONIZADOS EM BRANCO E GAVETA DE CATEGORIAS
@@ -1231,7 +1265,6 @@
       toggleCategoriesDrawer(false);
     };
 
-    // AO SELECIONAR CATEGORIA, SINCRONIZA FEED E BANNERS DO MESMO NICHO
     window.setDepartmentFilter = function(deptId) {
       currentDepartmentFilter = currentDepartmentFilter === deptId ? "all" : deptId;
       currentSubcategoryFilter = "all";
@@ -1457,7 +1490,6 @@
         return;
       }
 
-      // Se uma categoria está selecionada, puxa banners do mesmo nicho para o topo
       let listToRender = [...promoBanners];
       if (currentDepartmentFilter !== "all") {
         const matched = promoBanners.filter(b => normalizeBannerDept(b.targetDept) === currentDepartmentFilter);
@@ -1516,7 +1548,6 @@
       });
     };
 
-    // AO CLICAR NO BANNER, ABRE TODAS AS PUBLICAÇÕES DA LOJA EM GRADE
     window.handleBannerClick = function(targetDept, partnerName) {
       feedLayoutMode = "grid";
       const icon = document.getElementById("layoutToggleIcon");
@@ -1574,7 +1605,7 @@
     }
 
     // =========================================================================
-    // PÁGINA COMPLETA DE DETALHES: CONVERSAR COM VENDEDOR + SALVAR
+    // PÁGINA COMPLETA DE DETALHES (SUPORTA FOTOS E VÍDEO CURTO DE 15s)
     // =========================================================================
     window.openProductDetail = function(postId) {
       const post = posts.find(p => p.id === postId);
@@ -1582,6 +1613,7 @@
 
       const info = getPostClassification(post);
       const images = post.images || [];
+      const hasVideo = Boolean(post.videoData && post.videoData.trim());
       const isSaved = savedIds.includes(post.id);
       const discountPct = calcDiscountPercent(post.oldPrice, post.price);
       const partnerTitle = (post.partnerName && post.partnerName.trim()) ? post.partnerName.trim() : (config.companyName || "TERÊ SHOPPING");
@@ -1601,24 +1633,31 @@
       const body = document.getElementById("productDetailBody");
       body.innerHTML = `
         <div class="bg-slate-950 relative">
-          <div id="detailGalleryTrack" onscroll="updateDetailGalleryCounter(${images.length})" class="carousel-track flex overflow-x-auto no-scrollbar max-h-[380px]">
-            ${images.map((img, idx) => `
-              <div onclick="openPhotoLightbox('${post.id}', ${idx})" class="carousel-slide w-full flex items-center justify-center bg-slate-950 cursor-zoom-in">
-                <img src="${img}" alt="${safeTitle}" class="w-full max-h-[380px] object-contain mx-auto" />
-              </div>
-            `).join("")}
-          </div>
-          ${images.length > 1 ? `
-            <span id="detailGalleryCounter" class="absolute top-3 right-3 bg-black/75 text-white text-[11px] font-bold px-2.5 py-1 rounded-full">
-              1/${images.length}
+          ${hasVideo ? `
+            <div class="w-full flex items-center justify-center bg-black max-h-[420px]">
+              <video id="detailPostVideo" src="${post.videoData}" controls autoplay loop playsinline webkit-playsinline
+                class="w-full max-h-[420px] object-contain mx-auto"></video>
+            </div>
+          ` : `
+            <div id="detailGalleryTrack" onscroll="updateDetailGalleryCounter(${images.length})" class="carousel-track flex overflow-x-auto no-scrollbar max-h-[380px]">
+              ${images.map((img, idx) => `
+                <div onclick="openPhotoLightbox('${post.id}', ${idx})" class="carousel-slide w-full flex items-center justify-center bg-slate-950 cursor-zoom-in">
+                  <img src="${img}" alt="${safeTitle}" class="w-full max-h-[380px] object-contain mx-auto" />
+                </div>
+              `).join("")}
+            </div>
+            ${images.length > 1 ? `
+              <span id="detailGalleryCounter" class="absolute top-3 right-3 bg-black/75 text-white text-[11px] font-bold px-2.5 py-1 rounded-full">
+                1/${images.length}
+              </span>
+            ` : ""}
+            <span class="absolute bottom-3 left-3 bg-black/75 text-white text-[10px] font-bold px-2.5 py-1 rounded-full pointer-events-none">
+              <i class="fa-solid fa-magnifying-glass-plus mr-1 text-amber-400"></i> Toque para ampliar
             </span>
-          ` : ""}
-          <span class="absolute bottom-3 left-3 bg-black/75 text-white text-[10px] font-bold px-2.5 py-1 rounded-full pointer-events-none">
-            <i class="fa-solid fa-magnifying-glass-plus mr-1 text-amber-400"></i> Toque para ampliar
-          </span>
+          `}
         </div>
 
-        <div class="p-4 bg-white border-b border-gray-200 space-y-2.5">
+        <div class="p-4 bg-white border-b border-gray-200 space-y-2">
           <div class="flex items-center justify-between gap-2">
             <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full ${info.badgeClass}">${info.badge}</span>
             <span class="text-[11px] text-gray-500 font-semibold">${serviceModeLabel}</span>
@@ -1626,7 +1665,7 @@
 
           <h1 class="text-base sm:text-lg font-extrabold text-slate-900 leading-snug">${post.title}</h1>
 
-          <div class="pt-1">
+          <div class="pt-0.5">
             ${post.oldPrice && discountPct > 0 ? `<p class="text-xs text-gray-400 line-through">${post.oldPrice}</p>` : ""}
             <div class="flex items-center gap-2 flex-wrap">
               <span class="text-2xl font-black text-slate-900">${post.price || "Sob consulta"}</span>
@@ -1635,9 +1674,9 @@
           </div>
         </div>
 
-        <div onclick="closeProductDetail(); handleBannerClick('all', '${safePartner}')" class="mt-2.5 p-4 bg-white border-y border-gray-200 flex items-center justify-between gap-3 cursor-pointer">
+        <div onclick="closeProductDetail(); handleBannerClick('all', '${safePartner}')" class="mt-2.5 p-3.5 bg-white border-y border-gray-200 flex items-center justify-between gap-3 cursor-pointer">
           <div class="flex items-center gap-3 min-w-0">
-            <div class="w-11 h-11 rounded-2xl bg-[#031238] text-amber-400 flex items-center justify-center text-base border border-amber-400/50 flex-shrink-0">
+            <div class="w-10 h-10 rounded-2xl bg-[#031238] text-amber-400 flex items-center justify-center text-sm border border-amber-400/50 flex-shrink-0">
               <i class="fa-solid ${info.icon}"></i>
             </div>
             <div class="min-w-0">
@@ -1662,25 +1701,27 @@
       const footer = document.getElementById("productDetailFooter");
 
       footer.innerHTML = `
-        <button onclick="toggleSave('${post.id}'); openProductDetail('${post.id}');" class="px-3.5 py-3 rounded-xl border border-gray-200 ${isSaved ? 'bg-red-50 text-red-600 border-red-200' : 'bg-white text-slate-700'} font-extrabold text-xs flex items-center justify-center gap-1.5 flex-shrink-0">
+        <button onclick="toggleSave('${post.id}'); openProductDetail('${post.id}');" class="px-3 py-3 rounded-xl border border-gray-200 ${isSaved ? 'bg-red-50 text-red-600 border-red-200' : 'bg-white text-slate-700'} font-extrabold text-xs flex items-center justify-center gap-1.5 flex-shrink-0">
           <i class="${isSaved ? 'fa-solid' : 'fa-regular'} fa-heart text-sm"></i>
           <span>${isSaved ? 'Salvo' : 'Salvar'}</span>
         </button>
         ${hasWhats ? `
-          <button onclick="openPostWhatsapp('${post.id}')" class="flex-1 py-3 px-4 rounded-xl bg-[#00A650] hover:bg-[#008f44] text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm">
+          <button onclick="openPostWhatsapp('${post.id}')" class="flex-1 py-3 px-3 rounded-xl bg-[#00A650] hover:bg-[#008f44] text-white font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-sm">
             <i class="fa-brands fa-whatsapp text-base"></i>
             <span>Conversar com Vendedor</span>
           </button>
-        ` : hasInsta ? `
-          <button onclick="openPostInstagram('${post.id}')" class="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2">
+        ` : ""}
+        ${hasInsta ? `
+          <button onclick="openPostInstagram('${post.id}')" class="${hasWhats ? 'px-3.5' : 'flex-1 px-4'} py-3 rounded-xl bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-sm">
             <i class="fa-brands fa-instagram text-base"></i>
-            <span>Conversar com Vendedor</span>
+            <span>Instagram</span>
           </button>
-        ` : `
-          <button onclick="sharePost('${safeTitle}')" class="flex-1 py-3 px-4 rounded-xl bg-[#031238] text-white font-extrabold text-xs sm:text-sm">
+        ` : ""}
+        ${(!hasWhats && !hasInsta) ? `
+          <button onclick="sharePost('${safeTitle}')" class="flex-1 py-3 px-4 rounded-xl bg-[#031238] text-white font-extrabold text-xs">
             Compartilhar Anúncio
           </button>
-        `}
+        ` : ""}
       `;
 
       const modal = document.getElementById("productDetailModal");
@@ -1697,6 +1738,8 @@
     };
 
     window.closeProductDetail = function() {
+      const detailVid = document.getElementById("detailPostVideo");
+      if (detailVid) detailVid.pause();
       const modal = document.getElementById("productDetailModal");
       modal.classList.add("hidden");
       modal.classList.remove("flex");
@@ -1759,7 +1802,7 @@
     };
 
     // =========================================================================
-    // RENDERIZAÇÃO DO FEED (GRADE 2 COLUNAS ESTILO MARKETPLACE + ORDENAÇÃO EXATA)
+    // RENDERIZAÇÃO DO FEED (CARDS COMPACTOS + BOTÕES DIVIDIDOS + VÍDEOS 15s)
     // =========================================================================
     function renderFeed() {
       updateSavedBadge();
@@ -1818,7 +1861,6 @@
         hasActiveFilter = true;
       }
 
-      // Ordenação precisa por preço brasileiro ou mais recentes
       if (sortMode === "price_asc") {
         filtered.sort((a, b) => {
           const pa = parseNumericPrice(a.price);
@@ -1856,69 +1898,105 @@
 
       if (feedLayoutMode === "grid") {
         container.innerHTML = `
-          <div class="grid grid-cols-2 gap-2.5 sm:gap-3.5">
+          <div class="grid grid-cols-2 gap-2.5 sm:gap-3">
             ${filtered.map((post, idx) => {
               const isSaved = savedIds.includes(post.id);
               const images = post.images || [];
+              const hasVideo = Boolean(post.videoData && post.videoData.trim());
               const coverImg = images[0] || "./icon-512.png";
               const info = getPostClassification(post);
               const discountPct = calcDiscountPercent(post.oldPrice, post.price);
               const partnerTitle = (post.partnerName && post.partnerName.trim()) ? post.partnerName.trim() : "TERÊ SHOPPING";
               const safeTitle = (post.title || "").replace(/'/g, "");
-              const hasContact = Boolean((post.whatsapp && post.whatsapp.trim()) || (post.instagram && post.instagram.trim()));
+              const hasWhats = Boolean(post.whatsapp && post.whatsapp.trim());
+              const hasInsta = Boolean(post.instagram && post.instagram.trim());
 
               return `
-                <article class="bg-white rounded-2xl border border-gray-200/90 overflow-hidden shadow-2xs flex flex-col justify-between relative group">
+                <article class="bg-white rounded-2xl border border-gray-200/90 overflow-hidden shadow-2xs flex flex-col justify-between relative">
+                  <!-- Botão Salvar Flutuante -->
                   <button onclick="event.stopPropagation(); toggleSave('${post.id}')" title="Salvar"
-                    class="z-10 absolute top-2 right-2 w-7 h-7 rounded-full bg-white/95 shadow-xs border border-gray-200 flex items-center justify-center text-xs ${isSaved ? 'text-red-500' : 'text-gray-400'}">
+                    class="z-10 absolute top-1.5 right-1.5 w-7 h-7 rounded-full bg-white/95 shadow-xs border border-gray-200 flex items-center justify-center text-xs ${isSaved ? 'text-red-500' : 'text-gray-400'}">
                     <i class="${isSaved ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
                   </button>
 
                   ${isAdminLogged && !isSharedVitrineMode ? `
-                    <div class="z-10 absolute top-2 left-2 flex gap-1">
-                      <button onclick="event.stopPropagation(); startEditPost('${post.id}')" class="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center text-[10px] shadow"><i class="fa-solid fa-pen"></i></button>
-                      <button onclick="event.stopPropagation(); deletePost('${post.id}')" class="w-7 h-7 rounded-lg bg-red-600 text-white flex items-center justify-center text-[10px] shadow"><i class="fa-solid fa-trash"></i></button>
+                    <div class="z-10 absolute top-1.5 left-1.5 flex gap-1">
+                      <button onclick="event.stopPropagation(); startEditPost('${post.id}')" class="w-6 h-6 rounded-lg bg-blue-600 text-white flex items-center justify-center text-[10px] shadow"><i class="fa-solid fa-pen"></i></button>
+                      <button onclick="event.stopPropagation(); deletePost('${post.id}')" class="w-6 h-6 rounded-lg bg-red-600 text-white flex items-center justify-center text-[10px] shadow"><i class="fa-solid fa-trash"></i></button>
                     </div>
                   ` : ""}
 
-                  <div onclick="openProductDetail('${post.id}')" class="relative aspect-square bg-slate-950 flex items-center justify-center overflow-hidden cursor-pointer">
-                    <img src="${coverImg}" alt="${safeTitle}" loading="${idx < 4 ? 'eager' : 'lazy'}" decoding="async"
-                      class="w-full h-full object-contain" />
-                    ${images.length > 1 ? `
-                      <span class="absolute bottom-1.5 right-1.5 bg-black/75 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-md">
-                        +${images.length - 1} fotos
+                  <!-- Mídia Compacta (aspect-[4/3] para adequar ao quadro) -->
+                  <div onclick="openProductDetail('${post.id}')" class="relative aspect-[4/3] bg-slate-950 flex items-center justify-center overflow-hidden cursor-pointer">
+                    ${hasVideo ? `
+                      <video id="grid-vid-${post.id}" src="${post.videoData}" loop muted playsinline webkit-playsinline preload="metadata"
+                        class="w-full h-full object-contain"></video>
+                      <span class="absolute bottom-1.5 left-1.5 bg-amber-400 text-[#031238] text-[9px] font-black px-1.5 py-0.5 rounded-md pointer-events-none">
+                        VÍDEO 15s
                       </span>
-                    ` : ""}
+                      <button onclick="toggleGridVideoAudio(event, '${post.id}')" title="Som"
+                        class="z-10 absolute bottom-1.5 right-1.5 w-6 h-6 rounded-full bg-black/75 text-white flex items-center justify-center text-[10px] border border-white/20">
+                        <i id="grid-audio-icon-${post.id}" class="fa-solid fa-volume-xmark"></i>
+                      </button>
+                    ` : `
+                      <img src="${coverImg}" alt="${safeTitle}" loading="${idx < 4 ? 'eager' : 'lazy'}" decoding="async"
+                        class="w-full h-full object-contain" />
+                      ${images.length > 1 ? `
+                        <span class="absolute bottom-1.5 right-1.5 bg-black/75 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-md">
+                          +${images.length - 1}
+                        </span>
+                      ` : ""}
+                    `}
                   </div>
 
-                  <div onclick="openProductDetail('${post.id}')" class="p-2.5 sm:p-3 flex-1 flex flex-col justify-between space-y-1.5 cursor-pointer">
-                    <div class="space-y-1">
-                      <span class="inline-block text-[9px] font-extrabold px-2 py-0.5 rounded-md ${info.badgeClass}">${info.badge}</span>
-                      <h2 class="text-xs sm:text-[13px] font-semibold text-slate-800 leading-snug line-clamp-2">${post.title}</h2>
+                  <!-- Corpo Compacto do Card -->
+                  <div onclick="openProductDetail('${post.id}')" class="p-2 sm:p-2.5 flex-1 flex flex-col justify-between space-y-1 cursor-pointer">
+                    <div class="space-y-0.5">
+                      <span class="inline-block text-[8px] font-extrabold px-1.5 py-0.5 rounded ${info.badgeClass}">${info.badge}</span>
+                      <h2 class="text-xs font-semibold text-slate-800 leading-tight line-clamp-1">${post.title}</h2>
                     </div>
 
-                    <div class="pt-1 space-y-0.5">
-                      ${post.oldPrice && discountPct > 0 ? `<p class="text-[10px] text-gray-400 line-through leading-none">${post.oldPrice}</p>` : ""}
-                      <div class="flex items-baseline gap-1.5 flex-wrap">
-                        <span class="text-sm sm:text-base font-black text-slate-900 leading-tight">${post.price || "Sob consulta"}</span>
-                        ${discountPct > 0 ? `<span class="text-[10px] font-extrabold text-[#00A650]">${discountPct}% OFF</span>` : ""}
+                    <div class="pt-0.5">
+                      ${post.oldPrice && discountPct > 0 ? `<p class="text-[9px] text-gray-400 line-through leading-none">${post.oldPrice}</p>` : ""}
+                      <div class="flex items-baseline gap-1 flex-wrap">
+                        <span class="text-xs sm:text-sm font-black text-slate-900 leading-tight">${post.price || "Sob consulta"}</span>
+                        ${discountPct > 0 ? `<span class="text-[9px] font-extrabold text-[#00A650]">${discountPct}% OFF</span>` : ""}
                       </div>
-                      <p class="text-[10px] font-semibold text-gray-400 truncate">${partnerTitle}</p>
+                      <p class="text-[9px] font-bold text-gray-400 truncate mt-0.5">${partnerTitle}</p>
                     </div>
                   </div>
 
-                  <div class="px-2.5 pb-2.5">
-                    <button onclick="${hasContact ? `contactSellerDirect('${post.id}')` : `openProductDetail('${post.id}')`}"
-                      class="w-full py-2 px-2 rounded-xl bg-[#00A650] hover:bg-[#008f44] text-white font-extrabold text-[11px] flex items-center justify-center gap-1.5 transition active:scale-95">
-                      <i class="fa-regular fa-comment-dots text-xs"></i>
-                      <span>Conversar com Vendedor</span>
-                    </button>
+                  <!-- Botões Divididos na Base: Conversar com Vendedor + Instagram -->
+                  <div class="px-2 pb-2 flex items-center gap-1">
+                    ${hasWhats ? `
+                      <button onclick="openPostWhatsapp('${post.id}')" title="Conversar com Vendedor"
+                        class="${hasInsta ? 'flex-1' : 'w-full'} py-1.5 px-1.5 rounded-lg bg-[#00A650] hover:bg-[#008f44] text-white font-extrabold text-[10px] flex items-center justify-center gap-1 transition active:scale-95 truncate">
+                        <i class="fa-brands fa-whatsapp text-xs flex-shrink-0"></i>
+                        <span class="truncate">${hasInsta ? 'Conversar' : 'Conversar com Vendedor'}</span>
+                      </button>
+                    ` : ""}
+
+                    ${hasInsta ? `
+                      <button onclick="openPostInstagram('${post.id}')" title="Instagram da Loja"
+                        class="${hasWhats ? 'flex-1' : 'w-full'} py-1.5 px-1.5 rounded-lg bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-extrabold text-[10px] flex items-center justify-center gap-1 transition active:scale-95 truncate">
+                        <i class="fa-brands fa-instagram text-xs flex-shrink-0"></i>
+                        <span class="truncate">Instagram</span>
+                      </button>
+                    ` : ""}
+
+                    ${(!hasWhats && !hasInsta) ? `
+                      <button onclick="openProductDetail('${post.id}')"
+                        class="w-full py-1.5 px-2 rounded-lg bg-[#031238] text-amber-400 font-extrabold text-[10px] flex items-center justify-center gap-1">
+                        <span>Ver Detalhes</span>
+                      </button>
+                    ` : ""}
                   </div>
                 </article>
               `;
             }).join("")}
           </div>
         `;
+        setupGridVideoVisibilityControl();
         return;
       }
 
@@ -1928,6 +2006,7 @@
           ${filtered.map((post, postIndex) => {
             const isSaved = savedIds.includes(post.id);
             const images = post.images || [];
+            const hasVideo = Boolean(post.videoData && post.videoData.trim());
             const info = getPostClassification(post);
             const partnerTitle = (post.partnerName && post.partnerName.trim()) ? post.partnerName.trim() : (config.companyName || "TERÊ SHOPPING");
             const serviceModeLabel = post.serviceMode || "Atendimento Online e Presencial";
@@ -1937,22 +2016,22 @@
             const imgLoadingAttr = postIndex < 2 ? "eager" : "lazy";
 
             return `
-              <article class="pb-5 bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-2xs">
-                <div class="px-3.5 py-3 flex items-center justify-between gap-2">
+              <article class="pb-4 bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-2xs">
+                <div class="px-3.5 py-2.5 flex items-center justify-between gap-2">
                   <div class="flex items-center gap-2.5 min-w-0">
-                    <div class="w-9 h-9 rounded-full bg-[#031238] text-amber-400 flex items-center justify-center text-xs border border-amber-400/50 flex-shrink-0">
+                    <div class="w-8 h-8 rounded-full bg-[#031238] text-amber-400 flex items-center justify-center text-xs border border-amber-400/50 flex-shrink-0">
                       <i class="fa-solid ${info.icon}"></i>
                     </div>
                     <div class="min-w-0">
-                      <p class="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight truncate flex items-center gap-1">
+                      <p class="text-xs font-extrabold text-slate-900 leading-tight truncate flex items-center gap-1">
                         <span>${partnerTitle}</span>
-                        <i class="fa-solid fa-circle-check text-[#3483FA] text-[11px]"></i>
+                        <i class="fa-solid fa-circle-check text-[#3483FA] text-[10px]"></i>
                       </p>
-                      <p class="text-[11px] text-gray-500 font-medium truncate">${serviceModeLabel}</p>
+                      <p class="text-[10px] text-gray-500 font-medium truncate">${serviceModeLabel}</p>
                     </div>
                   </div>
                   <div class="flex items-center gap-1.5 flex-shrink-0">
-                    <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full ${info.badgeClass}">${info.badge}</span>
+                    <span class="text-[9px] font-extrabold px-2 py-0.5 rounded-full ${info.badgeClass}">${info.badge}</span>
                     ${isAdminLogged && !isSharedVitrineMode ? `
                       <button onclick="startEditPost('${post.id}')" class="text-blue-600 p-1.5 bg-blue-50 rounded-lg"><i class="fa-solid fa-pen text-xs"></i></button>
                       <button onclick="deletePost('${post.id}')" class="text-red-500 p-1.5 bg-red-50 rounded-lg"><i class="fa-solid fa-trash text-xs"></i></button>` : ""}
@@ -1960,29 +2039,34 @@
                 </div>
 
                 <div onclick="openProductDetail('${post.id}')" class="relative bg-slate-950 border-y border-gray-100 cursor-pointer">
-                  <img src="${images[0] || './icon-512.png'}" alt="${safeTitle}" loading="${imgLoadingAttr}" class="w-full max-h-[380px] object-contain mx-auto" />
+                  ${hasVideo ? `
+                    <video src="${post.videoData}" loop muted playsinline webkit-playsinline preload="metadata" class="w-full max-h-[340px] object-contain mx-auto"></video>
+                    <span class="absolute bottom-2 left-2 bg-amber-400 text-[#031238] text-[10px] font-black px-2 py-0.5 rounded-md">VÍDEO 15s</span>
+                  ` : `
+                    <img src="${images[0] || './icon-512.png'}" alt="${safeTitle}" loading="${imgLoadingAttr}" class="w-full max-h-[340px] object-contain mx-auto" />
+                  `}
                 </div>
 
-                <div class="px-3.5 pt-3 space-y-2.5">
-                  <div onclick="openProductDetail('${post.id}')" class="cursor-pointer space-y-1">
+                <div class="px-3.5 pt-2.5 space-y-2">
+                  <div onclick="openProductDetail('${post.id}')" class="cursor-pointer space-y-0.5">
                     <div class="flex flex-wrap items-baseline justify-between gap-x-2">
-                      <h2 class="font-extrabold text-sm sm:text-base text-slate-900">${post.title}</h2>
-                      ${post.price ? `<span class="font-black text-sm sm:text-base text-[#00A650]">${post.price}</span>` : ""}
+                      <h2 class="font-extrabold text-sm text-slate-900">${post.title}</h2>
+                      ${post.price ? `<span class="font-black text-sm text-[#00A650]">${post.price}</span>` : ""}
                     </div>
                     <p class="text-xs text-gray-600 line-clamp-2">${post.description}</p>
                   </div>
 
-                  <div class="flex items-center gap-2">
-                    <button onclick="toggleSave('${post.id}')" class="px-3 py-2.5 rounded-xl border border-gray-200 ${isSaved ? 'bg-red-50 text-red-600 border-red-200' : 'bg-white text-slate-700'} font-bold text-xs flex items-center gap-1">
+                  <div class="flex items-center gap-1.5">
+                    <button onclick="toggleSave('${post.id}')" class="px-2.5 py-2 rounded-xl border border-gray-200 ${isSaved ? 'bg-red-50 text-red-600 border-red-200' : 'bg-white text-slate-700'} font-bold text-xs flex items-center gap-1">
                       <i class="${isSaved ? 'fa-solid' : 'fa-regular'} fa-heart"></i><span>Salvar</span>
                     </button>
                     ${hasPostWhats ? `
-                      <button onclick="openPostWhatsapp('${post.id}')" class="flex-1 bg-[#00A650] text-white font-bold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5">
-                        <i class="fa-brands fa-whatsapp text-base"></i><span>Conversar com Vendedor</span>
+                      <button onclick="openPostWhatsapp('${post.id}')" class="flex-1 bg-[#00A650] text-white font-bold text-xs py-2 px-2.5 rounded-xl flex items-center justify-center gap-1.5">
+                        <i class="fa-brands fa-whatsapp text-sm"></i><span>Conversar</span>
                       </button>` : ""}
                     ${hasPostInsta ? `
-                      <button onclick="openPostInstagram('${post.id}')" class="flex-1 bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-bold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5">
-                        <i class="fa-brands fa-instagram text-base"></i><span>Instagram</span>
+                      <button onclick="openPostInstagram('${post.id}')" class="flex-1 bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-bold text-xs py-2 px-2.5 rounded-xl flex items-center justify-center gap-1.5">
+                        <i class="fa-brands fa-instagram text-sm"></i><span>Instagram</span>
                       </button>` : ""}
                   </div>
                 </div>
@@ -1991,17 +2075,34 @@
           }).join("")}
         </div>
       `;
+      setupGridVideoVisibilityControl();
     }
 
-    window.contactSellerDirect = function(postId) {
-      const post = posts.find(p => p.id === postId);
-      if (!post) return;
-      if (post.whatsapp && post.whatsapp.trim()) {
-        openPostWhatsapp(postId);
-      } else if (post.instagram && post.instagram.trim()) {
-        openPostInstagram(postId);
+    window.toggleGridVideoAudio = function(event, postId) {
+      event.stopPropagation();
+      const vidEl = document.getElementById(`grid-vid-${postId}`);
+      const iconEl = document.getElementById(`grid-audio-icon-${postId}`);
+      if (!vidEl) return;
+
+      const willEnable = vidEl.muted;
+      document.querySelectorAll("#feedContainer video").forEach(v => {
+        if (v.id !== `grid-vid-${postId}`) {
+          applyVideoAudioState(v, true);
+          const otherIcon = document.getElementById(v.id.replace("grid-vid-", "grid-audio-icon-"));
+          if (otherIcon) otherIcon.className = "fa-solid fa-volume-xmark";
+        }
+      });
+
+      if (willEnable) {
+        applyVideoAudioState(vidEl, false);
+        vidEl.play().then(() => {
+          if (iconEl) iconEl.className = "fa-solid fa-volume-high text-amber-400";
+        }).catch(() => {
+          applyVideoAudioState(vidEl, true);
+        });
       } else {
-        openProductDetail(postId);
+        applyVideoAudioState(vidEl, true);
+        if (iconEl) iconEl.className = "fa-solid fa-volume-xmark";
       }
     };
 
@@ -2161,177 +2262,309 @@
       }
 
       renderAdminBannersList();
-      renderStudioCanvas();
       document.getElementById("adminModal").classList.replace("hidden", "flex");
     }
 
     window.closeModal = function(id) {
+      if (postTrimCheckInterval) clearInterval(postTrimCheckInterval);
+      const trimVid = document.getElementById("postTrimPreviewVideo");
+      if (trimVid) trimVid.pause();
       const modal = document.getElementById(id);
       if (modal) modal.classList.replace("flex", "hidden");
     };
 
     window.switchAdminTab = function(tab) {
       document.getElementById("newPostForm").classList.toggle("hidden", tab !== "newPost");
-      document.getElementById("cardStudioSection").classList.toggle("hidden", tab !== "cardStudio");
       document.getElementById("bannersForm").classList.toggle("hidden", tab !== "banners");
       document.getElementById("settingsForm").classList.toggle("hidden", tab !== "settings");
 
-      ["newPost", "cardStudio", "banners", "settings"].forEach(t => {
+      ["newPost", "banners", "settings"].forEach(t => {
         const btn = document.getElementById(`admTab-${t}`);
         if (!btn) return;
         btn.className = t === tab
-          ? "px-3.5 py-3 border-b-2 border-blue-700 text-blue-700 whitespace-nowrap"
-          : "px-3.5 py-3 border-b-2 border-transparent text-gray-500 whitespace-nowrap";
+          ? "flex-1 px-4 py-3 border-b-2 border-blue-700 text-blue-700 whitespace-nowrap"
+          : "flex-1 px-4 py-3 border-b-2 border-transparent text-gray-500 whitespace-nowrap";
       });
-
-      if (tab === "cardStudio") renderStudioCanvas();
     };
 
-    // ESTÚDIO CRIATIVO DE CARDS PROFISSIONAIS (HTML5 CANVAS 1080x1080)
-    window.handleStudioPhotoUpload = function(event) {
+    // =========================================================================
+    // VÍDEO CURTO DE 15s DENTRO DE + NOVO ANÚNCIO
+    // =========================================================================
+    window.handlePostVideoLoaded = function(event) {
       const file = event.target.files[0];
+      const statusEl = document.getElementById("postMediaStatus");
       if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          studioUploadedImg = img;
-          renderStudioCanvas();
-        };
-        img.src = e.target.result;
+
+      const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
+      if (file.size > MAX_RAW_VIDEO_BYTES) {
+        showToast(`Vídeo acima de 120 MB (${sizeMB} MB). Selecione um arquivo menor.`);
+        event.target.value = "";
+        return;
+      }
+
+      // Limpa fotos caso o usuário tenha optado por vídeo curto
+      pendingPostImages = [];
+      pendingPostVideoData = "";
+      document.getElementById("imagePreviewGrid").innerHTML = "";
+      document.getElementById("postImagesInput").value = "";
+
+      selectedRawPostVideoFile = file;
+      statusEl.textContent = `Vídeo selecionado (${sizeMB} MB) — ajuste a faixa de 15s abaixo.`;
+      statusEl.classList.remove("hidden");
+
+      if (loadedPostVideoObjectUrl) URL.revokeObjectURL(loadedPostVideoObjectUrl);
+      loadedPostVideoObjectUrl = URL.createObjectURL(file);
+
+      const videoEl = document.getElementById("postTrimPreviewVideo");
+      videoEl.src = loadedPostVideoObjectUrl;
+      videoEl.load();
+
+      videoEl.onloadedmetadata = () => {
+        postVideoTotalDuration = isFinite(videoEl.duration) && videoEl.duration > 0 ? videoEl.duration : WINDOW_DURATION_SEC;
+        postTrimStartSec = 0;
+        postTrimEndSec = Math.min(postVideoTotalDuration, WINDOW_DURATION_SEC);
+
+        document.getElementById("postTotalVideoDurationText").textContent = `Duração total: ${formatSecondsMMSS(postVideoTotalDuration)}`;
+        updatePostTimelineWindowUI();
+        document.getElementById("postVideoTrimmerBox").classList.remove("hidden");
       };
-      reader.readAsDataURL(file);
     };
 
-    function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines) {
-      const words = text.split(" ");
-      let line = "";
-      let lineCount = 0;
-      for (let n = 0; n < words.length; n++) {
-        const testLine = line + words[n] + " ";
-        const metrics = ctx.measureText(testLine);
-        if (metrics.width > maxWidth && n > 0) {
-          ctx.fillText(line.trim(), x, y);
-          line = words[n] + " ";
-          y += lineHeight;
-          lineCount++;
-          if (lineCount >= maxLines - 1) break;
-        } else {
-          line = testLine;
-        }
+    function updatePostTimelineWindowUI() {
+      const winEl = document.getElementById("postTimelineWindow");
+      const badgeEl = document.getElementById("postTrimWindowBadge");
+      if (!winEl || !badgeEl) return;
+
+      const total = Math.max(postVideoTotalDuration, WINDOW_DURATION_SEC);
+      const widthPct = Math.min(100, (WINDOW_DURATION_SEC / total) * 100);
+      const leftPct = total > WINDOW_DURATION_SEC ? (postTrimStartSec / total) * 100 : 0;
+
+      winEl.style.width = `${widthPct}%`;
+      winEl.style.left = `${Math.max(0, Math.min(100 - widthPct, leftPct))}%`;
+      badgeEl.textContent = `${formatSecondsMMSS(postTrimStartSec)} → ${formatSecondsMMSS(postTrimEndSec)}`;
+
+      const videoEl = document.getElementById("postTrimPreviewVideo");
+      if (videoEl && isFinite(postTrimStartSec)) {
+        try { videoEl.currentTime = postTrimStartSec; } catch (_) {}
       }
-      ctx.fillText(line.trim(), x, y);
     }
 
-    window.renderStudioCanvas = function() {
-      const canvas = document.getElementById("studioCanvas");
-      if (!canvas) return;
-      const ctx = canvas.getContext("2d");
-      const W = 1080;
-      const H = 1080;
-
-      const tpl = document.getElementById("studioTemplate").value;
-      const badge = (document.getElementById("studioBadgeText").value || "OFERTA").toUpperCase();
-      const partner = (document.getElementById("studioPartnerText").value || "TERÊ SHOPPING").toUpperCase();
-      const headline = document.getElementById("studioHeadline").value || "Oferta Especial Teresina";
-      const priceTag = (document.getElementById("studioPriceTag").value || "CONFIRA").toUpperCase();
-
-      const palettes = {
-        royal_gold: { bg1: "#031238", bg2: "#0b2e8a", accent: "#f59e0b", accentText: "#031238", text: "#ffffff" },
-        vehicles: { bg1: "#0f172a", bg2: "#1e293b", accent: "#10b981", accentText: "#022c22", text: "#ffffff" },
-        construction: { bg1: "#1c1917", bg2: "#292524", accent: "#f97316", accentText: "#ffffff", text: "#ffffff" },
-        services: { bg1: "#042f2e", bg2: "#115e59", accent: "#34d399", accentText: "#022c22", text: "#ffffff" }
-      };
-      const p = palettes[tpl] || palettes.royal_gold;
-
-      const grad = ctx.createLinearGradient(0, 0, W, H);
-      grad.addColorStop(0, p.bg1);
-      grad.addColorStop(1, p.bg2);
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, W, H);
-
-      ctx.strokeStyle = p.accent;
-      ctx.lineWidth = 14;
-      ctx.strokeRect(24, 24, W - 48, H - 48);
-
-      ctx.fillStyle = p.accent;
-      ctx.beginPath();
-      ctx.roundRect(70, 64, 460, 62, 31);
-      ctx.fill();
-      ctx.fillStyle = p.accentText;
-      ctx.font = "900 28px sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText(badge.slice(0, 24), 300, 105);
-
-      ctx.fillStyle = "rgba(255,255,255,0.85)";
-      ctx.font = "700 24px sans-serif";
-      ctx.textAlign = "right";
-      ctx.fillText(partner.slice(0, 28), W - 70, 104);
-
-      const photoBoxX = 70;
-      const photoBoxY = 160;
-      const photoBoxW = W - 140;
-      const photoBoxH = 540;
-
-      ctx.fillStyle = "rgba(0,0,0,0.45)";
-      ctx.beginPath();
-      ctx.roundRect(photoBoxX, photoBoxY, photoBoxW, photoBoxH, 28);
-      ctx.fill();
-
-      if (studioUploadedImg) {
-        const scale = Math.min(photoBoxW / studioUploadedImg.width, photoBoxH / studioUploadedImg.height);
-        const drawW = studioUploadedImg.width * scale;
-        const drawH = studioUploadedImg.height * scale;
-        const drawX = photoBoxX + (photoBoxW - drawW) / 2;
-        const drawY = photoBoxY + (photoBoxH - drawH) / 2;
-        ctx.drawImage(studioUploadedImg, drawX, drawY, drawW, drawH);
+    function setPostTimelineStartPosition(newStartSec) {
+      if (postVideoTotalDuration <= WINDOW_DURATION_SEC) {
+        postTrimStartSec = 0;
+        postTrimEndSec = postVideoTotalDuration;
       } else {
-        ctx.fillStyle = "rgba(255,255,255,0.35)";
-        ctx.font = "700 32px sans-serif";
-        ctx.textAlign = "center";
-        ctx.fillText("SELECIONE UMA FOTO ACIMA", W / 2, photoBoxY + photoBoxH / 2);
+        const maxStart = Math.max(0, postVideoTotalDuration - WINDOW_DURATION_SEC);
+        postTrimStartSec = Math.max(0, Math.min(maxStart, newStartSec));
+        postTrimEndSec = postTrimStartSec + WINDOW_DURATION_SEC;
       }
+      updatePostTimelineWindowUI();
+    }
 
-      ctx.fillStyle = p.text;
-      ctx.font = "900 46px sans-serif";
-      ctx.textAlign = "left";
-      wrapCanvasText(ctx, headline, 70, 775, W - 140, 56, 2);
-
-      ctx.fillStyle = p.accent;
-      ctx.beginPath();
-      ctx.roundRect(70, 895, W - 140, 96, 24);
-      ctx.fill();
-
-      ctx.fillStyle = p.accentText;
-      ctx.font = "900 44px sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText(priceTag.slice(0, 28), W / 2, 958);
+    window.jumpPostTimelinePreset = function(preset) {
+      if (!postVideoTotalDuration || postVideoTotalDuration <= WINDOW_DURATION_SEC) {
+        setPostTimelineStartPosition(0);
+        return;
+      }
+      if (preset === "start") setPostTimelineStartPosition(0);
+      else if (preset === "middle") setPostTimelineStartPosition((postVideoTotalDuration - WINDOW_DURATION_SEC) / 2);
+      else if (preset === "end") setPostTimelineStartPosition(postVideoTotalDuration - WINDOW_DURATION_SEC);
     };
 
-    window.useStudioCardInPost = function() {
-      const canvas = document.getElementById("studioCanvas");
-      const dataUrl = canvas.toDataURL("image/jpeg", 0.90);
-      pendingPostImages.push(dataUrl);
-      document.getElementById("imagePreviewGrid").innerHTML = pendingPostImages.map(src => `
-        <img src="${src}" class="w-full aspect-square object-contain bg-slate-900 rounded-lg border border-gray-200" />
-      `).join("");
-      document.getElementById("postTitle").value = document.getElementById("studioHeadline").value;
-      document.getElementById("postPrice").value = document.getElementById("studioPriceTag").value;
-      document.getElementById("postPartnerName").value = document.getElementById("studioPartnerText").value;
-      switchAdminTab("newPost");
-      showToast("Card adicionado ao Novo Anúncio!");
+    (function initPostTimelineScrubber() {
+      const track = document.getElementById("postTimelineTrack");
+      if (!track) return;
+      let isDragging = false;
+
+      const handlePointerMove = (clientX) => {
+        if (postVideoTotalDuration <= WINDOW_DURATION_SEC) return;
+        const rect = track.getBoundingClientRect();
+        const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+        const targetCenterSec = ratio * postVideoTotalDuration;
+        setPostTimelineStartPosition(targetCenterSec - (WINDOW_DURATION_SEC / 2));
+      };
+
+      track.addEventListener("pointerdown", (e) => {
+        isDragging = true;
+        track.setPointerCapture(e.pointerId);
+        handlePointerMove(e.clientX);
+      });
+      track.addEventListener("pointermove", (e) => {
+        if (!isDragging) return;
+        handlePointerMove(e.clientX);
+      });
+      track.addEventListener("pointerup", () => { isDragging = false; });
+      track.addEventListener("pointercancel", () => { isDragging = false; });
+    })();
+
+    window.previewPostTrimmedSegment = function() {
+      const videoEl = document.getElementById("postTrimPreviewVideo");
+      if (!videoEl || !loadedPostVideoObjectUrl) return;
+      if (postTrimCheckInterval) clearInterval(postTrimCheckInterval);
+
+      const wantAudio = document.getElementById("postIncludeVideoAudio").checked;
+      applyVideoAudioState(videoEl, !wantAudio);
+
+      videoEl.currentTime = postTrimStartSec;
+      videoEl.play().catch(() => {
+        applyVideoAudioState(videoEl, true);
+        videoEl.play();
+      });
+
+      postTrimCheckInterval = setInterval(() => {
+        if (videoEl.currentTime >= postTrimEndSec || videoEl.paused) {
+          videoEl.pause();
+          videoEl.currentTime = postTrimStartSec;
+          clearInterval(postTrimCheckInterval);
+        }
+      }, 100);
     };
 
-    window.downloadStudioCard = function() {
-      const canvas = document.getElementById("studioCanvas");
-      const link = document.createElement("a");
-      link.download = `tereshopping-card-${Date.now()}.jpg`;
-      link.href = canvas.toDataURL("image/jpeg", 0.92);
-      link.click();
-      showToast("Arte salva na galeria/downloads!");
-    };
+    function fileToBase64Direct(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error("Falha ao ler arquivo."));
+        reader.readAsDataURL(file);
+      });
+    }
 
-    // BANNERS PROMOCIONAIS DO TOPO (COM LOJA VINCULADA E NICHO)
+    function processPostVideoSafely(file, videoUrl, startSec, endSec, keepAudio) {
+      return new Promise(async (resolve, reject) => {
+        const isFullShortVideo = startSec <= 0.1 && (postVideoTotalDuration <= WINDOW_DURATION_SEC + 0.5 || postVideoTotalDuration === 0);
+
+        if (isFullShortVideo && file.size <= MAX_DIRECT_FILE_BYTES) {
+          try {
+            return resolve(await fileToBase64Direct(file));
+          } catch (err) {
+            return reject(err);
+          }
+        }
+
+        const supportsRecorder = typeof MediaRecorder !== "undefined" && typeof HTMLCanvasElement.prototype.captureStream === "function";
+        if (!supportsRecorder) {
+          if (file.size <= MAX_DIRECT_FILE_BYTES) return resolve(await fileToBase64Direct(file));
+          return reject(new Error("Neste navegador, recorte o vídeo para até 15s na galeria antes de enviar."));
+        }
+
+        let finished = false;
+        let audioCtx = null;
+        const tempVideo = document.createElement("video");
+        tempVideo.style.position = "fixed";
+        tempVideo.style.left = "-9999px";
+        tempVideo.style.width = "1px";
+        tempVideo.style.height = "1px";
+        tempVideo.src = videoUrl;
+        tempVideo.playsInline = true;
+        applyVideoAudioState(tempVideo, false);
+        document.body.appendChild(tempVideo);
+
+        const cleanup = () => {
+          if (audioCtx && audioCtx.state !== "closed") audioCtx.close().catch(() => {});
+          if (tempVideo.parentNode) tempVideo.parentNode.removeChild(tempVideo);
+        };
+
+        const safetyTimer = setTimeout(async () => {
+          if (finished) return;
+          finished = true;
+          cleanup();
+          if (file.size <= MAX_DIRECT_FILE_BYTES) resolve(await fileToBase64Direct(file));
+          else reject(new Error("Tempo limite ao recortar. Tente um vídeo mais leve."));
+        }, 28000);
+
+        tempVideo.onloadedmetadata = () => {
+          const targetMaxW = 420;
+          const scale = Math.min(1, targetMaxW / (tempVideo.videoWidth || 420));
+          const canvas = document.createElement("canvas");
+          canvas.width = Math.max(2, Math.round((tempVideo.videoWidth || 420) * scale));
+          canvas.height = Math.max(2, Math.round((tempVideo.videoHeight || 560) * scale));
+          const ctx = canvas.getContext("2d");
+
+          const canvasStream = canvas.captureStream(20);
+          const tracks = [...canvasStream.getVideoTracks()];
+
+          if (keepAudio) {
+            try {
+              const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+              if (AudioContextClass) {
+                audioCtx = new AudioContextClass();
+                const sourceNode = audioCtx.createMediaElementSource(tempVideo);
+                const destNode = audioCtx.createMediaStreamDestination();
+                sourceNode.connect(destNode);
+                destNode.stream.getAudioTracks().forEach(t => tracks.push(t));
+              }
+            } catch (_) {
+              try {
+                const rawStream = tempVideo.captureStream ? tempVideo.captureStream() : null;
+                if (rawStream) rawStream.getAudioTracks().forEach(t => tracks.push(t));
+              } catch (__) {}
+            }
+          }
+
+          const combinedStream = new MediaStream(tracks);
+          const mimeOptions = ["video/mp4", "video/webm;codecs=vp8,opus", "video/webm"];
+          const supportedMime = mimeOptions.find(m => MediaRecorder.isTypeSupported(m)) || "";
+
+          const recorder = supportedMime
+            ? new MediaRecorder(combinedStream, { mimeType: supportedMime, videoBitsPerSecond: 650000 })
+            : new MediaRecorder(combinedStream);
+
+          const chunks = [];
+          recorder.ondataavailable = (e) => { if (e.data && e.data.size > 0) chunks.push(e.data); };
+
+          recorder.onstop = () => {
+            if (finished) return;
+            finished = true;
+            clearTimeout(safetyTimer);
+            cleanup();
+
+            const blob = new Blob(chunks, { type: supportedMime || "video/webm" });
+            if (blob.size > MAX_DIRECT_FILE_BYTES) {
+              return reject(new Error("O trecho de 15s excedeu 7,2 MB. Tente outro vídeo."));
+            }
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          };
+
+          let recordingStarted = false;
+          const beginCapture = () => {
+            if (recordingStarted || finished) return;
+            recordingStarted = true;
+            if (audioCtx && audioCtx.state === "suspended") audioCtx.resume().catch(() => {});
+            recorder.start(250);
+            tempVideo.play().catch(async () => {
+              if (!finished) {
+                finished = true;
+                clearTimeout(safetyTimer);
+                cleanup();
+                if (file.size <= MAX_DIRECT_FILE_BYTES) resolve(await fileToBase64Direct(file));
+                else reject(new Error("Não foi possível processar este vídeo."));
+              }
+            });
+
+            const drawLoop = () => {
+              if (finished) return;
+              if (tempVideo.currentTime >= endSec || tempVideo.ended || tempVideo.paused) {
+                tempVideo.pause();
+                if (recorder.state !== "inactive") recorder.stop();
+                return;
+              }
+              ctx.drawImage(tempVideo, 0, 0, canvas.width, canvas.height);
+              requestAnimationFrame(drawLoop);
+            };
+            drawLoop();
+          };
+
+          tempVideo.onseeked = beginCapture;
+          tempVideo.currentTime = startSec;
+          setTimeout(beginCapture, 350);
+        };
+      });
+    }
+
+    // BANNERS PROMOCIONAIS DO TOPO
     window.handleBannerImageUpload = async function(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -2449,6 +2682,16 @@
         showToast("Limite máximo de 10 imagens por anúncio.");
       }
 
+      // Limpa vídeo pendente se o usuário escolheu fotos
+      selectedRawPostVideoFile = null;
+      pendingPostVideoData = "";
+      document.getElementById("postVideoInput").value = "";
+      document.getElementById("postVideoTrimmerBox").classList.add("hidden");
+
+      const statusEl = document.getElementById("postMediaStatus");
+      statusEl.textContent = `${files.length} foto(s) selecionada(s).`;
+      statusEl.classList.remove("hidden");
+
       const grid = document.getElementById("imagePreviewGrid");
       grid.innerHTML = "<p class='col-span-5 text-xs text-gray-400'>Otimizando imagens em HD...</p>";
       pendingPostImages = [];
@@ -2515,11 +2758,22 @@
       document.getElementById("postDescription").value = post.description || "";
       document.getElementById("postInstagram").value = post.instagram || "";
       document.getElementById("postWhatsapp").value = post.whatsapp || "";
-      pendingPostImages = [...(post.images || [])];
 
-      document.getElementById("imagePreviewGrid").innerHTML = pendingPostImages.map(src => `
-        <img src="${src}" class="w-full aspect-square object-contain bg-slate-900 rounded-lg border border-gray-200" />
-      `).join("");
+      pendingPostImages = [...(post.images || [])];
+      pendingPostVideoData = post.videoData || "";
+      selectedRawPostVideoFile = null;
+
+      const statusEl = document.getElementById("postMediaStatus");
+      if (pendingPostVideoData) {
+        statusEl.textContent = "Este anúncio possui um Vídeo Curto de 15s anexado.";
+        statusEl.classList.remove("hidden");
+        document.getElementById("imagePreviewGrid").innerHTML = "";
+      } else {
+        statusEl.classList.add("hidden");
+        document.getElementById("imagePreviewGrid").innerHTML = pendingPostImages.map(src => `
+          <img src="${src}" class="w-full aspect-square object-contain bg-slate-900 rounded-lg border border-gray-200" />
+        `).join("");
+      }
 
       openAdminPanel();
     };
@@ -2530,22 +2784,51 @@
       document.getElementById("editingBannerAlert").classList.add("hidden");
       document.getElementById("publishBtn").textContent = "Publicar no Marketplace";
       document.getElementById("imagePreviewGrid").innerHTML = "";
+      document.getElementById("postVideoTrimmerBox").classList.add("hidden");
+      const statusEl = document.getElementById("postMediaStatus");
+      if (statusEl) {
+        statusEl.textContent = "";
+        statusEl.classList.add("hidden");
+      }
+      if (loadedPostVideoObjectUrl) {
+        URL.revokeObjectURL(loadedPostVideoObjectUrl);
+        loadedPostVideoObjectUrl = "";
+      }
       pendingPostImages = [];
+      pendingPostVideoData = "";
+      selectedRawPostVideoFile = null;
+      postVideoTotalDuration = 0;
+      postTrimStartSec = 0;
+      postTrimEndSec = 15;
     };
 
     window.handleSavePost = async function(event) {
       event.preventDefault();
-      if (pendingPostImages.length === 0) {
-        showToast("Selecione pelo menos 1 imagem.");
+      if (pendingPostImages.length === 0 && !selectedRawPostVideoFile && !pendingPostVideoData) {
+        showToast("Selecione pelo menos 1 foto ou 1 vídeo curto de 15s.");
         return;
       }
 
       const btn = document.getElementById("publishBtn");
       const editingId = document.getElementById("editingPostId").value;
       btn.disabled = true;
-      btn.textContent = "Salvando na nuvem...";
 
       try {
+        let finalVideoData = pendingPostVideoData;
+
+        if (selectedRawPostVideoFile) {
+          btn.textContent = "Processando vídeo de 15s...";
+          const keepAudio = document.getElementById("postIncludeVideoAudio").checked;
+          finalVideoData = await processPostVideoSafely(
+            selectedRawPostVideoFile,
+            loadedPostVideoObjectUrl,
+            postTrimStartSec,
+            postTrimEndSec,
+            keepAudio
+          );
+        }
+
+        btn.textContent = "Salvando na nuvem...";
         const department = document.getElementById("postDepartment").value;
         const isService = department.startsWith("servicos_");
         const legacyType = isService ? "conserto" : "venda";
@@ -2572,7 +2855,8 @@
           description,
           instagram,
           whatsapp,
-          images: pendingPostImages,
+          images: finalVideoData ? [] : pendingPostImages,
+          videoData: finalVideoData || "",
           timestamp: existingPost ? existingPost.timestamp : Date.now()
         });
 
@@ -2582,7 +2866,7 @@
         showToast(editingId ? "Anúncio atualizado!" : "Publicado no Marketplace!");
       } catch (err) {
         console.error(err);
-        showToast("Erro ao guardar na nuvem.");
+        showToast(err.message || "Erro ao guardar na nuvem.");
       } finally {
         btn.disabled = false;
         btn.textContent = "Publicar no Marketplace";
