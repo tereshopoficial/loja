@@ -129,7 +129,7 @@
 
   <!-- AVISO PARA NAVEGADOR INTERNO DO INSTAGRAM / WHATSAPP -->
   <div id="inAppBrowserBanner" class="hidden bg-amber-500 text-slate-950 px-3.5 py-2 text-[11px] font-bold">
-    <div class="max-w-2xl mx-auto flex items-center justify-between gap-2">
+    <div class="max-w-2xl md:max-w-4xl lg:max-w-6xl mx-auto flex items-center justify-between gap-2">
       <span id="inAppBrowserText"><i class="fa-solid fa-up-right-from-square mr-1"></i> Para instalar o App, toque nos 3 pontinhos (⋮) e escolha <b>Abrir no Chrome</b>.</span>
       <button onclick="document.getElementById('inAppBrowserBanner').classList.add('hidden')" class="px-2 py-0.5 bg-black/15 rounded-md text-xs">OK</button>
     </div>
@@ -137,10 +137,10 @@
 
   <!-- CABEÇALHO SUPERIOR + PESQUISA INTELIGENTE -->
   <header class="sticky top-0 z-40 bg-[#031238] shadow-md gpu-layer">
-    <div class="w-full max-w-2xl mx-auto relative">
+    <div class="w-full max-w-2xl md:max-w-4xl lg:max-w-6xl mx-auto relative">
       
       <!-- Botões Flutuantes Semitransparentes (Compartilhar, QR Code Único, Acesso ADM) -->
-      <div class="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-3 sm:px-4 pt-2.5 safe-top pointer-events-none">
+      <div class="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-3 sm:px-5 pt-2.5 safe-top pointer-events-none">
         <div class="pointer-events-auto flex items-center gap-1.5">
           <button onclick="shareApp()" title="Compartilhar App"
             class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-black/55 hover:bg-black/75 border border-white/25 text-white shadow-sm active:scale-90 transition-transform">
@@ -160,13 +160,13 @@
 
       <!-- MODO 1: CAPA PANORÂMICA / SLOGAN EM ALTA DEFINIÇÃO -->
       <div id="headerLogoWrapper" onclick="resetAllFilters()" class="hidden w-full bg-[#031238] cursor-pointer overflow-hidden">
-        <img id="headerLogoImg" src="" alt="TERÊ SHOPPING • Teresina-PI" decoding="async" class="w-full h-auto max-h-[175px] sm:max-h-[220px] object-contain block mx-auto" />
+        <img id="headerLogoImg" src="" alt="TERÊ SHOPPING • Teresina-PI" decoding="async" class="w-full h-auto max-h-[175px] sm:max-h-[220px] lg:max-h-[260px] object-contain block mx-auto" />
       </div>
 
       <!-- MODO 2: TÍTULO ESCRITO ESTILIZADO -->
       <div id="headerTitleWrapper" onclick="resetAllFilters()"
-        class="w-full min-h-[68px] sm:min-h-[78px] pt-2 pb-2 px-24 flex flex-col items-center justify-center text-center bg-gradient-to-r from-[#031238] via-[#0a2d82] to-[#031238] safe-top cursor-pointer">
-        <h1 id="headerCompanyName" class="font-black text-xl sm:text-2xl tracking-tight leading-none text-white">
+        class="w-full min-h-[68px] sm:min-h-[82px] pt-2 pb-2 px-24 flex flex-col items-center justify-center text-center bg-gradient-to-r from-[#031238] via-[#0a2d82] to-[#031238] safe-top cursor-pointer">
+        <h1 id="headerCompanyName" class="font-black text-xl sm:text-2xl lg:text-3xl tracking-tight leading-none text-white">
           TERÊ SHOPPING
         </h1>
         <span class="text-[10px] sm:text-[11px] font-bold tracking-[0.22em] text-amber-400 uppercase mt-1">
@@ -175,20 +175,20 @@
       </div>
 
       <!-- BARRA DE PESQUISA INTELIGENTE COM SUGESTÕES E HISTÓRICO -->
-      <div class="px-3 sm:px-4 pb-2.5 pt-1 bg-[#031238] relative">
-        <div class="relative flex items-center">
+      <div class="px-3 sm:px-5 pb-2.5 pt-1 bg-[#031238] relative">
+        <div class="relative flex items-center max-w-3xl mx-auto">
           <i class="fa-solid fa-magnifying-glass absolute left-3.5 text-gray-400 text-xs sm:text-sm pointer-events-none"></i>
           <input type="search" id="searchInput" onfocus="openSearchSuggestions()" oninput="handleSearchInput()"
             onkeydown="if(event.key==='Enter'){saveSearchHistory(this.value); closeSearchSuggestions();}"
             placeholder="Buscar produtos, veículos, moda, construção ou serviços..."
-            class="w-full bg-white text-slate-900 placeholder-gray-400 text-xs sm:text-sm font-medium rounded-full pl-9 pr-9 py-2 shadow-inner focus:outline-none focus:ring-2 focus:ring-amber-400" />
+            class="w-full bg-white text-slate-900 placeholder-gray-400 text-xs sm:text-sm font-medium rounded-full pl-9 pr-9 py-2 sm:py-2.5 shadow-inner focus:outline-none focus:ring-2 focus:ring-amber-400" />
           <button type="button" id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-3 text-gray-400 hover:text-gray-700 p-1">
             <i class="fa-solid fa-circle-xmark text-sm"></i>
           </button>
         </div>
 
         <!-- Dropdown de Sugestões Rápidas e Histórico -->
-        <div id="searchSuggestionsDropdown" class="hidden absolute left-3 right-3 sm:left-4 sm:right-4 top-full mt-1 bg-white rounded-2xl shadow-2xl border border-gray-200 p-3 z-50 space-y-2.5">
+        <div id="searchSuggestionsDropdown" class="hidden absolute left-3 right-3 sm:left-5 sm:right-5 max-w-3xl mx-auto top-full mt-1 bg-white rounded-2xl shadow-2xl border border-gray-200 p-3 z-50 space-y-2.5">
           <div id="searchHistoryBox" class="hidden space-y-1.5">
             <div class="flex items-center justify-between text-[10px] font-extrabold uppercase text-gray-400">
               <span>Buscas recentes</span>
@@ -218,51 +218,51 @@
     </div>
   </header>
 
-  <!-- CONTENTOR PRINCIPAL FLUIDO -->
-  <div class="w-full max-w-2xl mx-auto md:my-3 md:rounded-2xl md:overflow-hidden md:shadow-md md:border md:border-gray-200/80 bg-[#F5F5F5]">
+  <!-- CONTENTOR PRINCIPAL RESPONSIVO (CELULAR, TABLET E COMPUTADOR) -->
+  <div class="w-full max-w-2xl md:max-w-4xl lg:max-w-6xl mx-auto md:my-3 md:rounded-2xl md:overflow-hidden md:shadow-md md:border md:border-gray-200/80 bg-[#F5F5F5]">
 
     <!-- BARRA DE WIDGETS PADRONIZADOS EM BRANCO: CATEGORIAS | PRODUTOS | SERVIÇOS -->
     <section class="w-full bg-[#F5F5F5] border-b border-gray-200">
-      <div class="px-2.5 sm:px-4 py-2.5 grid grid-cols-3 gap-2">
+      <div class="px-2.5 sm:px-5 py-2.5 grid grid-cols-3 gap-2 sm:gap-3">
         <button type="button" onclick="toggleCategoriesDrawer()" id="widget-categorias"
-          class="px-3 py-2.5 rounded-xl bg-white border border-gray-200 text-slate-800 font-bold text-xs flex items-center justify-center gap-1.5 shadow-2xs active:scale-95 transition">
+          class="px-3 py-2.5 rounded-xl bg-white border border-gray-200 text-slate-800 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-2xs active:scale-95 transition">
           <i class="fa-solid fa-layer-group text-slate-600"></i>
           <span>Categorias</span>
           <i id="categoriesChevronIcon" class="fa-solid fa-chevron-down text-[9px] text-slate-500 transition-transform duration-200"></i>
         </button>
 
         <button type="button" onclick="setIntentFilter('produtos')" id="widget-produtos"
-          class="px-3 py-2.5 rounded-xl bg-white border border-gray-200 text-slate-800 font-bold text-xs flex items-center justify-center gap-1.5 shadow-2xs active:scale-95 transition">
+          class="px-3 py-2.5 rounded-xl bg-white border border-gray-200 text-slate-800 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-2xs active:scale-95 transition">
           <i class="fa-solid fa-bag-shopping text-slate-600"></i>
           <span>Produtos</span>
         </button>
 
         <button type="button" onclick="setIntentFilter('servicos')" id="widget-servicos"
-          class="px-3 py-2.5 rounded-xl bg-white border border-gray-200 text-slate-800 font-bold text-xs flex items-center justify-center gap-1.5 shadow-2xs active:scale-95 transition">
+          class="px-3 py-2.5 rounded-xl bg-white border border-gray-200 text-slate-800 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-2xs active:scale-95 transition">
           <i class="fa-solid fa-screwdriver-wrench text-slate-600"></i>
           <span>Serviços</span>
         </button>
       </div>
 
       <!-- GAVETA EXPANSÍVEL COM OS 19 DEPARTAMENTOS -->
-      <div id="categoriesDrawer" class="hidden px-2.5 sm:px-4 pb-3.5 pt-2.5 border-t border-gray-200 bg-white space-y-2.5">
+      <div id="categoriesDrawer" class="hidden px-2.5 sm:px-5 pb-3.5 pt-2.5 border-t border-gray-200 bg-white space-y-2.5">
         <div class="flex items-center justify-between">
           <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500">Selecione um Departamento</span>
           <button type="button" onclick="setDepartmentFilter('all'); toggleCategoriesDrawer(false);" class="text-[11px] font-bold text-[#3483FA] hover:underline">
             Mostrar todos
           </button>
         </div>
-        <div id="categoriesGrid" class="grid grid-cols-3 sm:grid-cols-4 gap-2">
+        <div id="categoriesGrid" class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2">
           <!-- 19 Departamentos renderizados via JS -->
         </div>
       </div>
 
       <!-- Subcategorias dinâmicas (ex: Venda vs Serviços em Carros e Motos) -->
-      <div id="subcategoriesBar" class="hidden px-3 sm:px-4 py-2 border-t border-gray-200 flex items-center gap-1.5 overflow-x-auto no-scrollbar bg-white"></div>
+      <div id="subcategoriesBar" class="hidden px-3 sm:px-5 py-2 border-t border-gray-200 flex items-center gap-1.5 overflow-x-auto no-scrollbar bg-white"></div>
     </section>
 
     <!-- CARROSSEL DINÂMICO DE BANNERS DO TOPO (AUTO-SLIDE 4s + ARRASTE + SINCRONIZADO POR NICHO E LOJA) -->
-    <section id="promoBannersSection" class="px-2.5 sm:px-4 pt-2.5 hidden">
+    <section id="promoBannersSection" class="px-2.5 sm:px-5 pt-2.5 hidden">
       <div class="w-full bg-slate-950 rounded-2xl overflow-hidden border border-gray-200 shadow-2xs relative">
         <div id="promoBannersTrack" onscroll="handleBannerScroll()" class="carousel-track flex overflow-x-auto no-scrollbar">
           <!-- Banners clicáveis renderizados dinamicamente -->
@@ -272,10 +272,10 @@
     </section>
 
     <!-- BARRA DE CONTROLE DA VITRINE (ORDENAÇÃO + MODO GRADE/LISTA + LIMPAR FILTRO) -->
-    <div class="px-2.5 sm:px-4 pt-2.5">
+    <div class="px-2.5 sm:px-5 pt-2.5">
       <div class="bg-white rounded-xl border border-gray-200/90 px-3 py-2 flex items-center justify-between gap-2">
         <div class="flex items-center gap-1.5 min-w-0">
-          <span id="feedSectionTitle" class="text-xs font-extrabold text-slate-800 truncate">Destaques para você</span>
+          <span id="feedSectionTitle" class="text-xs sm:text-sm font-extrabold text-slate-800 truncate">Destaques para você</span>
           <span id="feedCountBadge" class="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">0</span>
         </div>
 
@@ -283,7 +283,7 @@
           <button type="button" id="clearAllFiltersBtn" onclick="resetAllFilters()" class="hidden text-[10px] font-extrabold text-[#3483FA] bg-blue-50 px-2 py-1 rounded-lg">
             Limpar
           </button>
-          <select id="sortSelect" onchange="renderFeed()" class="text-[11px] font-bold text-slate-700 bg-slate-100 rounded-lg px-2 py-1 focus:outline-none">
+          <select id="sortSelect" onchange="renderFeed()" class="text-[11px] sm:text-xs font-bold text-slate-700 bg-slate-100 rounded-lg px-2 py-1 focus:outline-none">
             <option value="recent">Mais recentes</option>
             <option value="price_asc">Menor preço</option>
             <option value="price_desc">Maior preço</option>
@@ -296,8 +296,8 @@
       </div>
     </div>
 
-    <!-- VITRINE DE PRODUTOS, VÍDEOS CURTOS 15s E SERVIÇOS (GRADE 2 COLUNAS AMPLIADA COM ARTE PREENCHENDO O CARD) -->
-    <main id="feedContainer" class="w-full px-2 sm:px-3.5 pt-2.5 pb-4 min-h-[55vh]">
+    <!-- VITRINE DE PRODUTOS, VÍDEOS CURTOS 15s E SERVIÇOS (GRADE RESPONSIVA COM ARTE PREENCHENDO O CARD) -->
+    <main id="feedContainer" class="w-full px-2 sm:px-4 pt-2.5 pb-4 min-h-[55vh]">
       <div class="py-24 px-6 text-center text-gray-400 bg-white rounded-2xl">
         <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-blue-600"></i>
         <p class="text-xs font-medium">Carregando marketplace TERÊ SHOPPING...</p>
@@ -312,17 +312,17 @@
 
   </div>
 
-  <!-- MENU INFERIOR FIXO COM 5 OPÇÕES -->
-  <nav class="fixed bottom-0 inset-x-0 md:bottom-3 md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-2xl z-40 bg-white border-t md:border border-gray-200 md:rounded-2xl shadow-[0_-2px_10px_rgba(0,0,0,0.06)] md:shadow-xl safe-bottom gpu-layer">
-    <div class="w-full flex items-center justify-around h-16 px-1 sm:px-3">
+  <!-- MENU INFERIOR FIXO RESPONSIVO COM 5 OPÇÕES -->
+  <nav class="fixed bottom-0 inset-x-0 md:bottom-3 md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-4xl lg:max-w-6xl z-40 bg-white border-t md:border border-gray-200 md:rounded-2xl shadow-[0_-2px_10px_rgba(0,0,0,0.06)] md:shadow-xl safe-bottom gpu-layer">
+    <div class="w-full flex items-center justify-around h-16 px-1 sm:px-4">
       <button onclick="setIntentFilter('all')" id="nav-all" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-[#3483FA] active:scale-90 transition-transform">
         <i class="fa-solid fa-house text-base sm:text-lg"></i>
-        <span class="text-[10px] sm:text-[11px] font-extrabold truncate">Início</span>
+        <span class="text-[10px] sm:text-xs font-extrabold truncate">Início</span>
       </button>
 
       <button onclick="openCategoriesAndScroll()" id="nav-categories" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
         <i class="fa-solid fa-layer-group text-base sm:text-lg"></i>
-        <span class="text-[10px] sm:text-[11px] font-bold truncate">Categorias</span>
+        <span class="text-[10px] sm:text-xs font-bold truncate">Categorias</span>
       </button>
 
       <button onclick="setIntentFilter('saved')" id="nav-saved" class="relative flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
@@ -330,24 +330,24 @@
           <i id="nav-saved-icon" class="fa-regular fa-heart text-base sm:text-lg"></i>
           <span id="savedBadgeCount" class="hidden absolute -top-1.5 -right-2.5 bg-[#00A650] text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center">0</span>
         </div>
-        <span class="text-[10px] sm:text-[11px] font-bold truncate">Salvos</span>
+        <span class="text-[10px] sm:text-xs font-bold truncate">Salvos</span>
       </button>
 
       <button onclick="triggerAppInstall()" id="nav-install" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
         <i class="fa-solid fa-mobile-screen-button text-base sm:text-lg"></i>
-        <span class="text-[10px] sm:text-[11px] font-bold truncate">Instalar</span>
+        <span class="text-[10px] sm:text-xs font-bold truncate">Instalar</span>
       </button>
 
       <button onclick="openMoreMenuModal()" id="nav-more" class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-gray-700 active:scale-90 transition-transform">
         <i class="fa-solid fa-bars text-base sm:text-lg"></i>
-        <span class="text-[10px] sm:text-[11px] font-bold truncate">Mais</span>
+        <span class="text-[10px] sm:text-xs font-bold truncate">Mais</span>
       </button>
     </div>
   </nav>
 
   <!-- MODAL PÁGINA COMPLETA DE DETALHES DO ANÚNCIO (FOTOS OU VÍDEO 15s) -->
   <div id="productDetailModal" class="fixed inset-0 z-50 bg-[#F5F5F5] hidden flex-col safe-top safe-bottom">
-    <div class="bg-[#031238] text-white px-3.5 py-3 flex items-center justify-between gap-2 max-w-2xl w-full mx-auto">
+    <div class="bg-[#031238] text-white px-3.5 py-3 flex items-center justify-between gap-2 max-w-2xl md:max-w-4xl w-full mx-auto">
       <button onclick="closeProductDetail()" class="px-3 py-1.5 rounded-full bg-white/15 flex items-center gap-1.5 text-xs font-bold">
         <i class="fa-solid fa-arrow-left"></i>
         <span>Voltar</span>
@@ -363,9 +363,9 @@
       </div>
     </div>
 
-    <div id="productDetailBody" class="flex-1 overflow-y-auto max-w-2xl w-full mx-auto pb-24"></div>
+    <div id="productDetailBody" class="flex-1 overflow-y-auto max-w-2xl md:max-w-4xl w-full mx-auto pb-24"></div>
 
-    <div id="productDetailFooter" class="bg-white border-t border-gray-200 p-3 max-w-2xl w-full mx-auto flex items-center gap-2"></div>
+    <div id="productDetailFooter" class="bg-white border-t border-gray-200 p-3 max-w-2xl md:max-w-4xl w-full mx-auto flex items-center gap-2"></div>
   </div>
 
   <!-- MODAL MENU "MAIS" -->
@@ -426,7 +426,7 @@
 
   <!-- LIGHTBOX DE FOTOS EM TELA CHEIA -->
   <div id="photoLightboxModal" class="fixed inset-0 z-50 bg-black hidden flex-col justify-between safe-top safe-bottom">
-    <div class="max-w-3xl w-full mx-auto p-3.5 sm:p-4 flex items-center justify-between text-white bg-black/85">
+    <div class="max-w-3xl md:max-w-5xl w-full mx-auto p-3.5 sm:p-4 flex items-center justify-between text-white bg-black/85">
       <button onclick="closePhotoLightbox()" class="px-3 py-1.5 rounded-full bg-white/15 flex items-center gap-1.5 text-white text-xs font-bold flex-shrink-0">
         <i class="fa-solid fa-arrow-left"></i>
         <span>Voltar</span>
@@ -440,9 +440,9 @@
       </button>
     </div>
 
-    <div id="lightboxTrack" onscroll="handleLightboxScroll()" class="carousel-track flex-1 flex overflow-x-auto no-scrollbar items-center max-w-4xl w-full mx-auto"></div>
+    <div id="lightboxTrack" onscroll="handleLightboxScroll()" class="carousel-track flex-1 flex overflow-x-auto no-scrollbar items-center max-w-4xl md:max-w-6xl w-full mx-auto"></div>
 
-    <div id="lightboxFooter" class="max-w-2xl w-full mx-auto p-4 bg-black/90 flex gap-2.5"></div>
+    <div id="lightboxFooter" class="max-w-2xl md:max-w-4xl w-full mx-auto p-4 bg-black/90 flex gap-2.5"></div>
   </div>
 
   <!-- MODAL INSTRUÇÕES DE INSTALAÇÃO (ANDROID + IPHONE) -->
@@ -1159,13 +1159,12 @@
       });
     }
 
-    // CONTROLE DOS WIDGETS PADRONIZADOS EM BRANCO E GAVETA DE CATEGORIAS
     function updateWidgetsVisualState() {
       const wCat = document.getElementById("widget-categorias");
       const wProd = document.getElementById("widget-produtos");
       const wServ = document.getElementById("widget-servicos");
 
-      const baseClass = "px-3 py-2.5 rounded-xl bg-white border font-bold text-xs flex items-center justify-center gap-1.5 shadow-2xs active:scale-95 transition";
+      const baseClass = "px-3 py-2.5 rounded-xl bg-white border font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-2xs active:scale-95 transition";
       const activeClass = " border-[#3483FA] text-[#3483FA] ring-1 ring-[#3483FA]/30";
       const inactiveClass = " border-gray-200 text-slate-800";
 
@@ -1503,7 +1502,7 @@
         const safeDept = normalizeBannerDept(b.targetDept);
         return `
           <div onclick="handleBannerClick('${safeDept}', '${safePartner}')" class="carousel-slide w-full relative cursor-pointer bg-[#031238]">
-            <img src="${b.imageData}" alt="${b.title}" decoding="async" class="w-full h-auto max-h-[190px] sm:max-h-[240px] object-contain mx-auto block select-none" />
+            <img src="${b.imageData}" alt="${b.title}" decoding="async" class="w-full h-auto max-h-[190px] sm:max-h-[240px] lg:max-h-[280px] object-contain mx-auto block select-none" />
             <div class="absolute bottom-2.5 left-3 bg-black/75 text-white text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full pointer-events-none">
               ${b.partnerName ? `${b.title} • Ver loja` : b.title} <i class="fa-solid fa-chevron-right text-[9px] ml-1 text-amber-400"></i>
             </div>
@@ -1628,15 +1627,15 @@
       body.innerHTML = `
         <div class="bg-slate-950 relative">
           ${hasVideo ? `
-            <div class="w-full flex items-center justify-center bg-black max-h-[420px]">
+            <div class="w-full flex items-center justify-center bg-black max-h-[460px]">
               <video id="detailPostVideo" src="${post.videoData}" controls autoplay loop playsinline webkit-playsinline
-                class="w-full max-h-[420px] object-contain mx-auto"></video>
+                class="w-full max-h-[460px] object-contain mx-auto"></video>
             </div>
           ` : `
-            <div id="detailGalleryTrack" onscroll="updateDetailGalleryCounter(${images.length})" class="carousel-track flex overflow-x-auto no-scrollbar max-h-[380px]">
+            <div id="detailGalleryTrack" onscroll="updateDetailGalleryCounter(${images.length})" class="carousel-track flex overflow-x-auto no-scrollbar max-h-[440px]">
               ${images.map((img, idx) => `
                 <div onclick="openPhotoLightbox('${post.id}', ${idx})" class="carousel-slide w-full flex items-center justify-center bg-slate-950 cursor-zoom-in">
-                  <img src="${img}" alt="${safeTitle}" class="w-full max-h-[380px] object-contain mx-auto" />
+                  <img src="${img}" alt="${safeTitle}" class="w-full max-h-[440px] object-contain mx-auto" />
                 </div>
               `).join("")}
             </div>
@@ -1651,13 +1650,13 @@
           `}
         </div>
 
-        <div class="p-4 bg-white border-b border-gray-200 space-y-2">
+        <div class="p-4 sm:p-5 bg-white border-b border-gray-200 space-y-2">
           <div class="flex items-center justify-between gap-2">
             <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full ${info.badgeClass}">${info.badge}</span>
             <span class="text-[11px] text-gray-500 font-semibold">${serviceModeLabel}</span>
           </div>
 
-          <h1 class="text-base sm:text-lg font-extrabold text-slate-900 leading-snug">${post.title}</h1>
+          <h1 class="text-base sm:text-xl font-extrabold text-slate-900 leading-snug">${post.title}</h1>
 
           <div class="pt-0.5">
             ${post.oldPrice && discountPct > 0 ? `<p class="text-xs text-gray-400 line-through">${post.oldPrice}</p>` : ""}
@@ -1668,7 +1667,7 @@
           </div>
         </div>
 
-        <div onclick="closeProductDetail(); handleBannerClick('all', '${safePartner}')" class="mt-2.5 p-3.5 bg-white border-y border-gray-200 flex items-center justify-between gap-3 cursor-pointer">
+        <div onclick="closeProductDetail(); handleBannerClick('all', '${safePartner}')" class="mt-2.5 p-3.5 sm:px-5 bg-white border-y border-gray-200 flex items-center justify-between gap-3 cursor-pointer">
           <div class="flex items-center gap-3 min-w-0">
             <div class="w-10 h-10 rounded-2xl bg-[#031238] text-amber-400 flex items-center justify-center text-sm border border-amber-400/50 flex-shrink-0">
               <i class="fa-solid ${info.icon}"></i>
@@ -1684,7 +1683,7 @@
           <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
         </div>
 
-        <div class="mt-2.5 p-4 bg-white border-y border-gray-200 space-y-2">
+        <div class="mt-2.5 p-4 sm:p-5 bg-white border-y border-gray-200 space-y-2">
           <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Descrição e Detalhes</h3>
           <p class="text-xs sm:text-sm text-slate-700 leading-relaxed whitespace-pre-line">${post.description}</p>
         </div>
@@ -1795,9 +1794,7 @@
       modal.classList.remove("flex");
     };
 
-    // =========================================================================
-    // RENDERIZAÇÃO DO FEED (GRADE AMPLA COM ARTE PREENCHENDO O CARD POR COMPLETO)
-    // =========================================================================
+    // RENDERIZAÇÃO DO FEED (GRADE RESPONSIVA 2 / 3 / 4 COLUNAS + ARTE PREENCHENDO O CARD)
     function renderFeed() {
       updateSavedBadge();
       updateWidgetsVisualState();
@@ -1892,7 +1889,7 @@
 
       if (feedLayoutMode === "grid") {
         container.innerHTML = `
-          <div class="grid grid-cols-2 gap-2 sm:gap-2.5">
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
             ${filtered.map((post, idx) => {
               const isSaved = savedIds.includes(post.id);
               const images = post.images || [];
@@ -1920,7 +1917,7 @@
                     </div>
                   ` : ""}
 
-                  <!-- Arte / Foto / Vídeo Preenchendo 100% do Card (aspect-[4/5] + object-cover) -->
+                  <!-- Arte / Foto / Vídeo Preenchendo 100% do Card -->
                   <div onclick="openProductDetail('${post.id}')" class="relative aspect-[4/5] w-full bg-white flex items-center justify-center overflow-hidden cursor-pointer border-b border-gray-100">
                     ${hasVideo ? `
                       <video id="grid-vid-${post.id}" src="${post.videoData}" loop muted playsinline webkit-playsinline preload="metadata"
@@ -1996,7 +1993,7 @@
 
       // MODO LISTA (1 COLUNA)
       container.innerHTML = `
-        <div class="space-y-3">
+        <div class="space-y-3 max-w-3xl mx-auto">
           ${filtered.map((post, postIndex) => {
             const isSaved = savedIds.includes(post.id);
             const images = post.images || [];
@@ -2034,10 +2031,10 @@
 
                 <div onclick="openProductDetail('${post.id}')" class="relative bg-white border-y border-gray-100 cursor-pointer overflow-hidden">
                   ${hasVideo ? `
-                    <video src="${post.videoData}" loop muted playsinline webkit-playsinline preload="metadata" class="w-full max-h-[380px] object-cover mx-auto"></video>
+                    <video src="${post.videoData}" loop muted playsinline webkit-playsinline preload="metadata" class="w-full max-h-[420px] object-cover mx-auto"></video>
                     <span class="absolute bottom-2 left-2 bg-amber-400 text-[#031238] text-[10px] font-black px-2 py-0.5 rounded-md">VÍDEO 15s</span>
                   ` : `
-                    <img src="${images[0] || './icon-512.png'}" alt="${safeTitle}" loading="${imgLoadingAttr}" class="w-full max-h-[380px] object-cover mx-auto" />
+                    <img src="${images[0] || './icon-512.png'}" alt="${safeTitle}" loading="${imgLoadingAttr}" class="w-full max-h-[420px] object-cover mx-auto" />
                   `}
                 </div>
 
